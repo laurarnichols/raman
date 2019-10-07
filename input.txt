@@ -1,0 +1,4 @@
+temperature n1 limit gamma1 gamma2 Elaser Elevel Eshift_num
+100 500 0.0001 5.00 0.1 1.70 1.5979 4
+44.5 48.3 50.9 52.2 
+
