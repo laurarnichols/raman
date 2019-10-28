@@ -1,17 +1,21 @@
 module para
   integer, parameter :: dp = selected_real_kind(15, 307)
-  real(kind = dp), parameter :: pi  =  3.1415926535897932_dp
-    !! \(\pi\)
-  real(kind = dp), parameter :: tpi  =  2.0*3.1415926535897932_dp
-    !! \(2\pi\)
-  real(kind = dp), parameter :: hbar = 1.0545718d-34
-    !! \(\bar{h}\)
+
   real(kind = dp), parameter :: ev = 1.6021766d-19
     !! Conversion factor from eV to J
+  real(kind = dp), parameter :: hbar = 1.0545718d-34
+    !! \(\bar{h}\)
+  real(kind = dp), parameter :: k = 1.38064852d-23
+    !! Boltzmann constant
   real(kind = dp), parameter :: mev = 1.6021766d-22
     !! Conversion factor from meV to J
   real(kind = dp), parameter :: mevtocm = 8.0655438354 
     !! Conversion factor from meV to cm\(^{-1}\)
+  real(kind = dp), parameter :: pi  =  3.1415926535897932_dp
+    !! \(\pi\)
+  real(kind = dp), parameter :: tpi  =  2.0*3.1415926535897932_dp
+    !! \(2\pi\)
+
   complex(kind = dp), parameter :: I = cmplx(0.0d0, 1.0d0, dp)  
     !! \(i\)
 end module
@@ -39,6 +43,7 @@ integer :: max_l
 integer :: n1
 integer :: n2
 integer :: nmode
+  !! Number of phonon modes
 integer :: nprocs
   !! Number of MPI processes
 integer :: tmp_i
@@ -74,6 +79,7 @@ complex(kind = dp) :: zfactor1
 complex(kind = dp) :: zfactor2 
 
 character(len = 256) :: Inputfile
+  !! Input file name
 character(len = 256) :: dummy
 
 integer,allocatable :: interval(:)
@@ -98,19 +104,33 @@ complex(kind = dp), allocatable :: T3(:)
 call MPI_INIT(ierror)
 call MPI_COMM_RANK(MPI_COMM_WORLD, id, ierror)
 call MPI_COMM_SIZE(MPI_COMM_WORLD, nprocs, ierror)
-
+  !! * Initialize MPI pool
 
 Inputfile = 'Sj.out'
+  !! * Define input file name
+  !! @todo Make this an input variable rather than hardcode @endtodo
 omega=1.0d14
 n2=100000
 
 if(id == 0) then
+  !! * If root process
+  !!    * Open `Inputfile` to read the number of phonon modes
+  !!      which is needed to allocate variables
+  !!    * Open `input.txt` file to read temperature, `n1`, 
+  !!      `limit`, `gamma1`, `gamma2`, the energy of the laser,
+  !!      `elevel`, and `eshift_num`
+  !!    * Open `output.txt` for output
+  !! @todo Change `input.txt` to be read from input file @endtodo
+  !! @todo Change output to go to command line like QE @endtodo
+
   open(11, file=trim(Inputfile), Action='read', status='old')
-  open(12 , file='input.txt', Action='read', status='old')
   read(11,*)
   read(11,*)nmode
+
+  open(12 , file='input.txt', Action='read', status='old')
   read(12,*) dummy, dummy, dummy, dummy, dummy, dummy, dummy, dummy
   read(12,*) temperature, n1, limit, gamma1, gamma2, elaser, elevel, eshift_num
+
   open(13,file="output.txt",Action="write",status="replace")
 endif
 
@@ -118,28 +138,22 @@ endif
 call MPI_BCast( nmode, 1, MPI_Integer, 0, MPI_COMM_WORLD, ierror)
 call MPI_BCast( eshift_num, 1, MPI_Integer, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( temperature, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
+  !! * Broadcast the number of modes, `eshift_num`, and temperature to
+  !!  other processes
 
 
+beta=1/(k*temperature)
+  !! * Calculate \(\beta = \dfrac{1}{kT}\)
 
-beta=1/(temperature*1.38064852d-23)
 
-
-allocate(eshift(1:eshift_num))
-allocate(omega2(1:eshift_num))
-allocate(s1(1:eshift_num))
-allocate(s2(1:eshift_num))
-allocate(s3(1:eshift_num))
-allocate(global_sum(1:eshift_num))
-allocate(phonon(nmode,3))
-allocate(factor(1:nmode))
-allocate(factor1(1:nmode))
-allocate(T1(1:nmode))
-allocate(T3(1:nmode))
-allocate(ex1(0:n2+1))
-allocate(interval(1:2))
-allocate(count2(1:2))
+allocate(eshift(eshift_num), omega2(eshift_num), s1(eshift_num), s2(eshift_num), s3(eshift_num), global_sum(eshift_num))
+allocate(phonon(nmode,3), factor(nmode), factor1(nmode), T1(nmode), T3(nmode))
+allocate(ex1(0:n2+1), interval(2), count2(2))
+  !! * Allocate space for variables on all processes
+  !! @todo Figure out why `interval` and `count2` are allocatable @endtodo
 
 step2=tpi/float(n2)
+  !! * Calculate `step2`\(= 2\pi/n2\) where `n2=100000`
 
 do j=0,n2+1
    ex1(j)=exp(I*j*step2)

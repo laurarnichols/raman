@@ -122,7 +122,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="100.0% of total for programs.">214 statements</a>
+    title="100.0% of total for programs.">203 statements</a>
      </li> 
      
      
@@ -181,7 +181,7 @@
       
       <a class="list-group-item" href="../program/lsf.html#variable-j">j</a>
       
-      <a class="list-group-item" href="../program/lsf.html#variable-k">k</a>
+      <a class="list-group-item" href="../program/lsf.html#variable-k%7E2">k</a>
       
       <a class="list-group-item" href="../program/lsf.html#variable-l">l</a>
       
@@ -340,9 +340,48 @@
     </div>
     
 
+    <ul>
+<li>
+<p>Initialize MPI pool</p>
+</li>
+<li>
+<p>Define input file name
+ </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Make this an input variable rather than hardcode </p></div>
+<p>
+</li>
+<li>
+<p>If root process</p>
+<ul>
+<li>Open <code>Inputfile</code> to read the number of phonon modes
+  which is needed to allocate variables</li>
+<li>Open <code>input.txt</code> file to read temperature, <code>n1</code>, 
+  <code>limit</code>, <code>gamma1</code>, <code>gamma2</code>, the energy of the laser,
+  <code>elevel</code>, and <code>eshift_num</code></li>
+<li>Open <code>output.txt</code> for output
+ </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Change <code>input.txt</code> to be read from input file </p></div>
+<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Change output to go to command line like QE </p></div>
+<p></li>
+</ul>
+</li>
+<li>
+<p>Broadcast the number of modes, <code>eshift_num</code>, and temperature to
+  other processes</p>
+</li>
+<li>
+<p>Calculate <script type="math/tex">\beta = \dfrac{1}{kT}</script>
+</p>
+</li>
+<li>
+<p>Allocate space for variables on all processes
+ </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out why <code>interval</code> and <code>count2</code> are allocatable </p></div>
+<p>
+</li>
+<li>
+<p>Calculate <code>step2</code><script type="math/tex">= 2\pi/n2</script> where <code>n2=100000</code></p>
+</li>
+</ul>
     
-    
-    
+    <br>
 
      <section class="visible-xs visible-sm hidden-md">
        
@@ -372,7 +411,7 @@
       
       <a class="list-group-item" href="../program/lsf.html#variable-j">j</a>
       
-      <a class="list-group-item" href="../program/lsf.html#variable-k">k</a>
+      <a class="list-group-item" href="../program/lsf.html#variable-k%7E2">k</a>
       
       <a class="list-group-item" href="../program/lsf.html#variable-l">l</a>
       
@@ -638,7 +677,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-k"></span>integer</td>
+  <td><span class="anchor" id="variable-k%7E2"></span>integer</td>
   
   
   <td></td><td>::</td>
@@ -726,7 +765,7 @@
   
   
   <td></td><td>::</td>
-  <td><strong>nmode</strong></td><td></td><td></td><td></td>
+  <td><strong>nmode</strong></td><td></td><td></td><td><p>Number of phonon modes</p></td>
   
 </tr>
 
@@ -1160,7 +1199,7 @@
   
   
   <td></td><td>::</td>
-  <td><strong>Inputfile</strong></td><td></td><td></td><td></td>
+  <td><strong>Inputfile</strong></td><td></td><td></td><td><p>Input file name</p></td>
   
 </tr>
 
