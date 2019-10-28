@@ -19,7 +19,8 @@ end module
 program lsf
 use para
 implicit none
-include "mpif.h"
+!include "mpif.h"
+use mpi
 
 integer :: eshift_num
 integer :: ierror
