@@ -42,6 +42,7 @@ integer :: max_k
 integer :: max_l
 integer :: n1
 integer :: n2
+  !! Hardcoded to be 100000; used to generate `ex1`
 integer :: nmode
   !! Number of phonon modes
 integer :: nprocs
@@ -50,6 +51,7 @@ integer :: tmp_i
 integer :: tmp_j
 
 real(kind = dp) :: beta
+  !! \(\beta = 1/kT\)
 real(kind = dp) :: count1
 real(kind = dp) :: domega
 real(kind = dp) :: elaser
@@ -63,6 +65,7 @@ real(kind = dp) :: omega1
 real(kind = dp) :: omega_tmp
 real(kind = dp) :: step1
 real(kind = dp) :: step2
+  !! Step to go from 0 to \(\2\pi) in `n2` steps
 real(kind = dp) :: t
 real(kind = dp) :: temperature
 real(kind = dp) :: tmp_r1
@@ -89,8 +92,10 @@ real(kind = dp), allocatable :: eshift(:)
 real(kind = dp),allocatable :: factor(:)
 real(kind = dp), allocatable :: omega2(:)
 real(kind = dp),allocatable :: phonon(:,:)
+  !! 3D phonon frequency
 
 complex(kind = dp), allocatable :: ex1(:)
+  !! \(e^{i\theta}\) where \(\theta\) goes from 0 to \(2\pi\)
 complex(kind = dp), allocatable :: factor1(:)
 complex(kind = dp), allocatable :: global_sum(:)
 complex(kind = dp), allocatable :: s1(:)
@@ -129,6 +134,7 @@ if(id == 0) then
 
   open(12 , file='input.txt', Action='read', status='old')
   read(12,*) dummy, dummy, dummy, dummy, dummy, dummy, dummy, dummy
+    !! @todo Change this to `read(12,*)` @endtodo
   read(12,*) temperature, n1, limit, gamma1, gamma2, elaser, elevel, eshift_num
 
   open(13,file="output.txt",Action="write",status="replace")
@@ -143,7 +149,7 @@ call MPI_Bcast( temperature, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 
 
 beta=1/(k*temperature)
-  !! * Calculate \(\beta = \dfrac{1}{kT}\)
+  !! * Calculate \(\beta = 1/kT\)
 
 
 allocate(eshift(eshift_num), omega2(eshift_num), s1(eshift_num), s2(eshift_num), s3(eshift_num), global_sum(eshift_num))
@@ -156,10 +162,18 @@ step2=tpi/float(n2)
   !! * Calculate `step2`\(= 2\pi/n2\) where `n2=100000`
 
 do j=0,n2+1
+  !! * Calculate \(e^{i\theta}\) where \(\theta\) goes from 0 to \(2\pi\)
+
    ex1(j)=exp(I*j*step2)
 end do
 
 if(id == 0) then
+  !! * If root process
+  !!    * For each mode
+  !!       * Read index (currently not being used) and 3D phonon
+  !!         frequency (?)
+  !!       * Divide the second and third phonon frequencies by 100 (?)
+
   do imode=1,nmode
      
      read(11,*)j,phonon(imode,1),phonon(imode,2), phonon(imode, 3)

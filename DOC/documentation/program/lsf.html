@@ -349,9 +349,7 @@
  </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Make this an input variable rather than hardcode </p></div>
 <p>
 </li>
-<li>
-<p>If root process</p>
-<ul>
+<li>If root process<ul>
 <li>Open <code>Inputfile</code> to read the number of phonon modes
   which is needed to allocate variables</li>
 <li>Open <code>input.txt</code> file to read temperature, <code>n1</code>, 
@@ -363,12 +361,13 @@
 <p></li>
 </ul>
 </li>
-<li>
-<p>Broadcast the number of modes, <code>eshift_num</code>, and temperature to
+</ul>
+<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Change this to <code>read(12,*)</code> </p></div>
+<p>* Broadcast the number of modes, <code>eshift_num</code>, and temperature to
   other processes</p>
-</li>
+<ul>
 <li>
-<p>Calculate <script type="math/tex">\beta = \dfrac{1}{kT}</script>
+<p>Calculate <script type="math/tex">\beta = 1/kT</script>
 </p>
 </li>
 <li>
@@ -378,6 +377,19 @@
 </li>
 <li>
 <p>Calculate <code>step2</code><script type="math/tex">= 2\pi/n2</script> where <code>n2=100000</code></p>
+</li>
+<li>
+<p>Calculate <script type="math/tex">e^{i\theta}</script> where <script type="math/tex">\theta</script> goes from 0 to <script type="math/tex">2\pi</script>
+</p>
+</li>
+<li>
+<p>If root process</p>
+<ul>
+<li>For each mode</li>
+<li>Read index (currently not being used) and 3D phonon
+     frequency (?)</li>
+<li>Divide the second and third phonon frequencies by 100 (?)</li>
+</ul>
 </li>
 </ul>
     
@@ -751,7 +763,7 @@
   
   
   <td></td><td>::</td>
-  <td><strong>n2</strong></td><td></td><td></td><td></td>
+  <td><strong>n2</strong></td><td></td><td></td><td><p>Hardcoded to be 100000; used to generate <code>ex1</code></p></td>
   
 </tr>
 
@@ -821,7 +833,9 @@
   
   
   <td></td><td>::</td>
-  <td><strong>beta</strong></td><td></td><td></td><td></td>
+  <td><strong>beta</strong></td><td></td><td></td><td><p>
+<script type="math/tex">\beta = 1/kT</script>
+</p></td>
   
 </tr>
 
@@ -1003,7 +1017,7 @@
   
   
   <td></td><td>::</td>
-  <td><strong>step2</strong></td><td></td><td></td><td></td>
+  <td><strong>step2</strong></td><td></td><td></td><td><p>Step to go from 0 to (\2\pi) in <code>n2</code> steps</p></td>
   
 </tr>
 
@@ -1297,7 +1311,7 @@
   
   
   <td>allocatable</td><td>::</td>
-  <td><strong>phonon</strong>(:,:)</td><td></td><td></td><td></td>
+  <td><strong>phonon</strong>(:,:)</td><td></td><td></td><td><p>3D phonon frequency</p></td>
   
 </tr>
 
@@ -1311,7 +1325,9 @@
   
   
   <td>allocatable</td><td>::</td>
-  <td><strong>ex1</strong>(:)</td><td></td><td></td><td></td>
+  <td><strong>ex1</strong>(:)</td><td></td><td></td><td><p>
+<script type="math/tex">e^{i\theta}</script> where <script type="math/tex">\theta</script> goes from 0 to <script type="math/tex">2\pi</script>
+</p></td>
   
 </tr>
 
