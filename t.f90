@@ -1,33 +1,93 @@
 module para
   integer, parameter :: dp = selected_real_kind(15, 307)
   real(kind = dp), parameter :: pi  =  3.1415926535897932_dp
+    !! \(\pi\)
   real(kind = dp), parameter :: tpi  =  2.0*3.1415926535897932_dp
+    !! \(2\pi\)
   real(kind = dp), parameter :: hbar = 1.0545718d-34
+    !! \(\bar{h}\)
   real(kind = dp), parameter :: ev = 1.6021766d-19
+    !! Conversion factor from eV to J
   real(kind = dp), parameter :: mev = 1.6021766d-22
+    !! Conversion factor from meV to J
   real(kind = dp), parameter :: mevtocm = 8.0655438354 
+    !! Conversion factor from meV to cm\(^{-1}\)
   complex(kind = dp), parameter :: I = cmplx(0.0d0, 1.0d0, dp)  
+    !! \(i\)
 end module
 
 program lsf
 use para
 implicit none
 include "mpif.h"
-integer :: id, nprocs, ierror, tmp_i, tmp_j, eshift_num
-integer :: j, k,l, n1, n2, nmode, imode, interval_a, interval_b, index1
-integer :: max_k, max_l
-complex(kind = dp) ::  T2! T1,T3
-character(len = 256) :: Inputfile, dummy
-real(kind = dp) :: tmp_r1, tmp_r2, count1
-real(kind = dp) :: temperature, beta, gamma1, gamma2, limit, elaser, elevel, x, y, t
-real(kind = dp) :: omega, omega1, step1, step2, loglimit, omega_tmp, domega
-real(kind = dp), allocatable :: omega2(:)
-complex(kind = dp), allocatable :: s1(:), s2(:), s3(:), global_sum(:)
-complex(kind = dp) :: tmp, tmp1,tmp_exp, zfactor, zfactor1, zfactor2 
-complex(kind = dp), allocatable :: factor1(:), T1(:), T3(:), ex1(:)
-real(kind = dp),allocatable :: phonon(:,:), factor(:), count2(:)
+
+integer :: eshift_num
+integer :: ierror
+integer :: id
+integer :: imode
+integer :: index1
+integer :: interval_a
+integer :: interval_b
+integer :: j
+integer :: k
+integer :: l
+integer :: max_k
+integer :: max_l
+integer :: n1
+integer :: n2
+integer :: nmode
+integer :: nprocs
+integer :: tmp_i
+integer :: tmp_j
+
+real(kind = dp) :: beta
+real(kind = dp) :: count1
+real(kind = dp) :: domega
+real(kind = dp) :: elaser
+real(kind = dp) :: elevel
+real(kind = dp) :: gamma1
+real(kind = dp) :: gamma2
+real(kind = dp) :: loglimit
+real(kind = dp) :: limit
+real(kind = dp) :: omega
+real(kind = dp) :: omega1
+real(kind = dp) :: omega_tmp
+real(kind = dp) :: step1
+real(kind = dp) :: step2
+real(kind = dp) :: t
+real(kind = dp) :: temperature
+real(kind = dp) :: tmp_r1
+real(kind = dp) :: tmp_r2
+real(kind = dp) :: x
+real(kind = dp) :: y
+
+complex(kind = dp) :: T2! T1,T3
+complex(kind = dp) :: tmp
+complex(kind = dp) :: tmp1
+complex(kind = dp) :: tmp_exp
+complex(kind = dp) :: zfactor
+complex(kind = dp) :: zfactor1
+complex(kind = dp) :: zfactor2 
+
+character(len = 256) :: Inputfile
+character(len = 256) :: dummy
+
 integer,allocatable :: interval(:)
+
+real(kind = dp),allocatable :: count2(:)
 real(kind = dp), allocatable :: eshift(:)
+real(kind = dp),allocatable :: factor(:)
+real(kind = dp), allocatable :: omega2(:)
+real(kind = dp),allocatable :: phonon(:,:)
+
+complex(kind = dp), allocatable :: ex1(:)
+complex(kind = dp), allocatable :: factor1(:)
+complex(kind = dp), allocatable :: global_sum(:)
+complex(kind = dp), allocatable :: s1(:)
+complex(kind = dp), allocatable :: s2(:)
+complex(kind = dp), allocatable :: s3(:)
+complex(kind = dp), allocatable :: T1(:)
+complex(kind = dp), allocatable :: T3(:)
 
 
 
