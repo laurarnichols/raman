@@ -23,7 +23,9 @@ include "mpif.h"
 
 integer :: eshift_num
 integer :: ierror
+  !! Error for MPI
 integer :: id
+  !! MPI process id
 integer :: imode
 integer :: index1
 integer :: interval_a
@@ -37,6 +39,7 @@ integer :: n1
 integer :: n2
 integer :: nmode
 integer :: nprocs
+  !! Number of MPI processes
 integer :: tmp_i
 integer :: tmp_j
 
