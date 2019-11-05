@@ -55,7 +55,9 @@ real(kind = dp) :: beta
 real(kind = dp) :: count1
 real(kind = dp) :: domega
 real(kind = dp) :: elaser
+  !! \(E_L\)
 real(kind = dp) :: elevel
+  !! \(E_n\)
 real(kind = dp) :: gamma1
 real(kind = dp) :: gamma2
 real(kind = dp) :: loglimit
@@ -173,6 +175,9 @@ if(id == 0) then
   !!       * Read index (currently not being used) and 3D phonon
   !!         frequency (?)
   !!       * Divide the second and third phonon frequencies by 100 (?)
+  !!       * Calculate \(\text{factor}=\hbar\omega\beta\text{phonon}(2)\)
+  !!       * Calculate `factor1`\(={\sin(-i\text{factor})}{1-\cos(-i\text{factor})}\)
+  !!       * Write out the id and phonon frequencies
 
   do imode=1,nmode
      
@@ -180,6 +185,7 @@ if(id == 0) then
 
      phonon(imode,2)=phonon(imode,2)/100.0d0
      phonon(imode,3)=phonon(imode,3)/100.0d0     
+
      factor(imode)=hbar*phonon(imode,2)*omega*beta
      factor1(imode)=sin(-I*factor(imode))/(1-cos(-I*factor(imode)))
       
@@ -190,6 +196,7 @@ if(id == 0) then
      read(12,*) eshift(:)
 
 endif
+
 call MPI_Bcast( n1, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( limit, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( gamma1, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
@@ -201,20 +208,29 @@ call MPI_Bcast( phonon, 3*nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( factor, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror) 
 call MPI_Bcast( factor1, nmode, MPI_DOUBLE_COMPLEX, 0, MPI_COMM_WORLD, ierror)
 call MPI_Barrier(MPI_COMM_WORLD,ierror)
+
+!> Maybe unit conversions?
 omega1=(elaser-elevel)*ev/hbar/omega
+  !! \((E_L-E_n)/\hbar\omega\)
 omega2(:)=eshift(:)*mev/hbar/omega
 gamma1=gamma1*mev/hbar/omega
 gamma2=gamma2*mev/hbar/omega
+
+!> Set loop variables?
 step1=tpi/float(n1)
 loglimit=-log(limit)
 count1=0.0
+
 write(*,*)"id", eshift(:)
 !write(*,*),step1
+
+!> Do some sort of sum? What are gamma1 and gamma2? They come from the input file
 do j=0,int(loglimit/gamma1/step1)
    do k=0,int(loglimit/gamma1/step1-j)
       count1=count1+int((loglimit/step1-gamma1*j-gamma1*k)/gamma2)
    enddo
 end do
+
 count2(1) = float(id)/float(nprocs)*count1
 count2(2) = float(id+1)/float(nprocs)*count1
 !write(*,*)"count1",count1
@@ -225,6 +241,7 @@ do j=0,int(loglimit/gamma1/step1)
    do k=0,int(loglimit/gamma1/step1)-j
       count1=count1+int((loglimit/step1-gamma1*j-gamma1*k)/gamma2)
    enddo
+
    if(count1>=count2(index1)) then
       interval(index1)=j
       index1=index1+1
@@ -233,6 +250,7 @@ do j=0,int(loglimit/gamma1/step1)
       endif
    endif
 end do
+
 interval(2)=interval(2)-1
 !write(*,*)"interval1", id, interval(1)
 !write(*,*)"interval2", id,  interval(2)

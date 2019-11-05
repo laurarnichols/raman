@@ -389,9 +389,18 @@
 <li>Read index (currently not being used) and 3D phonon
      frequency (?)</li>
 <li>Divide the second and third phonon frequencies by 100 (?)</li>
+<li>Calculate <script type="math/tex">\text{factor}=\hbar\omega\beta\text{phonon}(2)</script>
+</li>
+<li>Calculate <code>factor1</code><script type="math/tex">={\sin(-i\text{factor})}{1-\cos(-i\text{factor})}</script>
+</li>
+<li>Write out the id and phonon frequencies</li>
 </ul>
 </li>
 </ul>
+<p>Maybe unit conversions?
+ <script type="math/tex">(E_L-E_n)/\hbar\omega</script>
+ Set loop variables?
+ Do some sort of sum? What are gamma1 and gamma2? They come from the input file</p>
     
     <br>
 
@@ -877,7 +886,9 @@
   
   
   <td></td><td>::</td>
-  <td><strong>elaser</strong></td><td></td><td></td><td></td>
+  <td><strong>elaser</strong></td><td></td><td></td><td><p>
+<script type="math/tex">E_L</script>
+</p></td>
   
 </tr>
 
@@ -891,7 +902,9 @@
   
   
   <td></td><td>::</td>
-  <td><strong>elevel</strong></td><td></td><td></td><td></td>
+  <td><strong>elevel</strong></td><td></td><td></td><td><p>
+<script type="math/tex">E_n</script>
+</p></td>
   
 </tr>
 
