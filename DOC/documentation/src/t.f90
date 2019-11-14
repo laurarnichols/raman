@@ -94,7 +94,8 @@ real(kind = dp), allocatable :: eshift(:)
 real(kind = dp),allocatable :: factor(:)
 real(kind = dp), allocatable :: omega2(:)
 real(kind = dp),allocatable :: phonon(:,:)
-  !! 3D phonon frequency
+  !! \(S_j\) and initial and final frequency
+  !! @todo Change this to be separate variables @endtodo
 
 complex(kind = dp), allocatable :: ex1(:)
   !! \(e^{i\theta}\) where \(\theta\) goes from 0 to \(2\pi\)
@@ -172,9 +173,9 @@ end do
 if(id == 0) then
   !! * If root process
   !!    * For each mode
-  !!       * Read index (currently not being used) and 3D phonon
-  !!         frequency (?)
-  !!       * Divide the second and third phonon frequencies by 100 (?)
+  !!       * Read index (currently not being used), \(S_j\),
+  !!         and initial and final phonon frequencies
+  !!       * Divide the initial and final phonon frequencies by 100
   !!       * Calculate \(\text{factor}=\hbar\omega\beta\text{phonon}(2)\)
   !!       * Calculate `factor1`\(={\sin(-i\text{factor})}{1-\cos(-i\text{factor})}\)
   !!       * Write out the id and phonon frequencies
@@ -188,6 +189,7 @@ if(id == 0) then
 
      factor(imode)=hbar*phonon(imode,2)*omega*beta
      factor1(imode)=sin(-I*factor(imode))/(1-cos(-I*factor(imode)))
+      !! @todo Figure out why set this here as it is overwritten below @endtodo
       
      write(*,*)id, phonon(imode,1),phonon(imode,2),phonon(imode,3)
 
@@ -225,6 +227,7 @@ write(*,*)"id", eshift(:)
 !write(*,*),step1
 
 !> Do some sort of sum? What are gamma1 and gamma2? They come from the input file
+!> I think this is figuring out the intervals for each node to integrate over
 do j=0,int(loglimit/gamma1/step1)
    do k=0,int(loglimit/gamma1/step1-j)
       count1=count1+int((loglimit/step1-gamma1*j-gamma1*k)/gamma2)
@@ -252,13 +255,18 @@ do j=0,int(loglimit/gamma1/step1)
 end do
 
 interval(2)=interval(2)-1
+
+
 !write(*,*)"interval1", id, interval(1)
 !write(*,*)"interval2", id,  interval(2)
 call MPI_Barrier(MPI_COMM_WORLD,ierror)
+  !! Make sure that all processes get here before
+  !! moving forward
 !max_k=floor(loglimit/gamma1/step1)
 !max_l=floor(loglimit/gamma2/step1)
 !interval_a = floor(loglimit/gamma1/step1*float(id)/float(nprocs))
 !interval_b = floor(loglimit/gamma1/step1*float(id+1)/float(nprocs))-1
+
 s3=0.0d0
 do j=interval(1),interval(2)
    if(id==0) then
@@ -271,6 +279,7 @@ do j=interval(1),interval(2)
    do imode=1,nmode
  
       omega_tmp=phonon(imode,3)
+        !! @todo Take this out of the loop @endtodo
       T1(imode)=cos(omega_tmp*x)+I*sin(omega_tmp*x)
  
    end do
@@ -284,6 +293,7 @@ do j=interval(1),interval(2)
       zfactor = 1.0
       do imode=1,nmode
          omega_tmp = phonon(imode,3)
+          !! @todo Take this out of the loop @endtodo
          domega = omega_tmp  - phonon(imode,2)
          T3(imode) = cos( omega_tmp*y ) - I * sin(omega_tmp*y)
          
@@ -291,8 +301,11 @@ do j=interval(1),interval(2)
          tmp1 = tmp + I*domega * ( x - y ) 
          
          zfactor1 = exp(0.5*tmp1) / ( exp(tmp1) - 1 )        
+          !! Calculate the first fraction in equation 42
          zfactor2 =exp(0.5*tmp) / ( exp(tmp) - 1 )
+          !! @todo Figure out where `zfactor2` comes from
          zfactor = zfactor * zfactor1 / zfactor2
+          !! @todo Since multiple them, figure out why have `exp(0.5*tmp)` as it cancels @endtodo
 
 
          tmp = domega*( x - y ) - I*tmp
@@ -349,3 +362,4 @@ call MPI_FINALIZE(ierror)
 
 end program
 
+         

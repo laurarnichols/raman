@@ -386,9 +386,9 @@
 <p>If root process</p>
 <ul>
 <li>For each mode</li>
-<li>Read index (currently not being used) and 3D phonon
-     frequency (?)</li>
-<li>Divide the second and third phonon frequencies by 100 (?)</li>
+<li>Read index (currently not being used), <script type="math/tex">S_j</script>,
+     and initial and final phonon frequencies</li>
+<li>Divide the initial and final phonon frequencies by 100</li>
 <li>Calculate <script type="math/tex">\text{factor}=\hbar\omega\beta\text{phonon}(2)</script>
 </li>
 <li>Calculate <code>factor1</code><script type="math/tex">={\sin(-i\text{factor})}{1-\cos(-i\text{factor})}</script>
@@ -397,10 +397,20 @@
 </ul>
 </li>
 </ul>
+<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out why set this here as it is overwritten below </p></div>
+<p>
 <p>Maybe unit conversions?
  <script type="math/tex">(E_L-E_n)/\hbar\omega</script>
  Set loop variables?
- Do some sort of sum? What are gamma1 and gamma2? They come from the input file</p>
+ Do some sort of sum? What are gamma1 and gamma2? They come from the input file
+ I think this is figuring out the intervals for each node to integrate over
+ Make sure that all processes get here before
+ moving forward</p>
+<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Take this out of the loop </p></div>
+<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Take this out of the loop </p></div>
+<p>Calculate the first fraction in equation 42
+ </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out where <code>zfactor2</code> comes from</p></div><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Since multiple them, figure out why have <code>exp(0.5*tmp)</code> as it cancels </p></div>
+<p>
     
     <br>
 
@@ -1324,7 +1334,10 @@
   
   
   <td>allocatable</td><td>::</td>
-  <td><strong>phonon</strong>(:,:)</td><td></td><td></td><td><p>3D phonon frequency</p></td>
+  <td><strong>phonon</strong>(:,:)</td><td></td><td></td><td><p>
+<script type="math/tex">S_j</script> and initial and final frequency
+ </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Change this to be separate variables </p></div>
+<p></td>
   
 </tr>
 
