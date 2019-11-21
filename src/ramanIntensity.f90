@@ -80,7 +80,7 @@ complex(kind = dp) :: expForFj
   !! calculate \(F_j\)
 complex(kind = dp) :: Fj
   !! Function \(F_j\) from equation 44
-complex(kind = dp) :: T2! T1,T3
+complex(kind = dp) :: T2
 complex(kind = dp) :: theta
   !! Serves as the argument for the fraction
   !! factor `FjFractionFactor`
@@ -107,14 +107,16 @@ real(kind = dp),allocatable :: phonon(:,:)
 
 complex(kind = dp), allocatable :: ex1(:)
   !! \(e^{i\theta}\) where \(\theta\) goes from 0 to \(2\pi\)
+complex(kind = dp), allocatable :: expX(:)
+  !! \(e^{i\omega x}\) used in calculating \(F_j\)
+complex(kind = dp), allocatable :: expY(:)
+  !! \(e^{-i\omega y}\) used in calculating \(F_j\)
 complex(kind = dp), allocatable :: FjFractionFactor(:)
   !! Fraction factor in front of cosine terms in \(F_j\)
 complex(kind = dp), allocatable :: global_sum(:)
 complex(kind = dp), allocatable :: s1(:)
 complex(kind = dp), allocatable :: s2(:)
 complex(kind = dp), allocatable :: s3(:)
-complex(kind = dp), allocatable :: T1(:)
-complex(kind = dp), allocatable :: T3(:)
 
 
 
@@ -165,7 +167,7 @@ beta=1/(kB*temperature)
 
 
 allocate(eshift(eshift_num), omega2(eshift_num), s1(eshift_num), s2(eshift_num), s3(eshift_num), global_sum(eshift_num))
-allocate(phonon(nmode,3), factor(nmode), FjFractionFactor(nmode), T1(nmode), T3(nmode))
+allocate(phonon(nmode,3), factor(nmode), FjFractionFactor(nmode), expX(nmode), expY(nmode))
 allocate(ex1(0:n2+1), interval(2), count2(2))
   !! * Allocate space for variables on all processes
   !! @todo Figure out why `interval` and `count2` are allocatable @endtodo
@@ -275,6 +277,8 @@ call MPI_Barrier(MPI_COMM_WORLD,ierror)
 
 s3=0.0d0
 do j=interval(1),interval(2)
+  !! Integrate over \(x\)
+
    if(id==0) then
       write(13,*)id,j
    endif
@@ -286,7 +290,7 @@ do j=interval(1),interval(2)
  
       omega_tmp=phonon(imode,3)
         !! @todo Take this out of the loop @endtodo
-      T1(imode)=cos(omega_tmp*x)+I*sin(omega_tmp*x)
+      expX(imode)=cos(omega_tmp*x)+I*sin(omega_tmp*x)
  
    end do
  
@@ -301,7 +305,7 @@ do j=interval(1),interval(2)
          omega_tmp = phonon(imode,3)
           !! @todo Take this out of the loop @endtodo
          domega = omega_tmp  - phonon(imode,2)
-         T3(imode) = cos( omega_tmp*y ) - I * sin(omega_tmp*y)
+         expY(imode) = cos( omega_tmp*y ) - I * sin(omega_tmp*y)
          
          tmp = factor(imode)  
          tmp1 = tmp + I*domega * ( x - y ) 
@@ -341,7 +345,7 @@ do j=interval(1),interval(2)
             T2=(1.0-tmp_r2)*ex1(tmp_i)+tmp_r2*ex1(tmp_i+1)
               !! Use a linear interpolation for T2
 
-            expForFj=-T2*(1-T1(imode))*(1-T3(imode))-(T1(imode)+T3(imode))
+            expForFj=-T2*(1-expX(imode))*(1-expY(imode))-(expX(imode)+expY(imode))
               !! * Calculate `expForFj`\( = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})\).
               !!   This is used as a trick to be able to calculate \(F_j\) quicker as the expontentials include both the
               !!   sines and cosines needed 
