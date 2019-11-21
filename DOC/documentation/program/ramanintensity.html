@@ -277,7 +277,7 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-ex1">ex1</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-factor1">factor1</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-fjfractionfactor">FjFractionFactor</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-global_sum">global_sum</a>
       
@@ -403,7 +403,7 @@
 <li>Divide the initial and final phonon frequencies by 100</li>
 <li>Calculate <script type="math/tex">\text{factor}=\hbar\omega\beta\text{phonon}(2)</script>
 </li>
-<li>Calculate <code>factor1</code><script type="math/tex">={\sin(-i\text{factor})}{1-\cos(-i\text{factor})}</script>
+<li>Calculate <code>FjFractionFactor</code><script type="math/tex">={\sin(-i\text{factor})}{1-\cos(-i\text{factor})}</script>
 </li>
 <li>Write out the id and phonon frequencies</li>
 </ul>
@@ -423,6 +423,7 @@
 <p>Calculate the first fraction in equation 42
  </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out where <code>zfactor2</code> comes from</p></div><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Since multiple them, figure out why have <code>exp(0.5*tmp)</code> as it cancels </p></div>
 <p>
+<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out which definition of the factor is correct, this one or the one above </p></div>
 <p>Use a linear interpolation for T2</p>
 <ul>
 <li>Calculate <code>expForFj</code><script type="math/tex"> = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})</script>.
@@ -431,7 +432,9 @@
 <li>Calculate <script type="math/tex">F_j = \text{Im}(</script>
 <code>expForFj</code><script type="math/tex">) + </script>
 <code>FjFractionFactor</code><script type="math/tex">\text{Re}(2 + </script>
-<code>expForFj</code></li>
+<code>expForFj</code><script type="math/tex">)</script>
+ </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Add detailed derivation of this in a separate page </p></div>
+<p></li>
 </ul>
     
     <br>
@@ -560,7 +563,7 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-ex1">ex1</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-factor1">factor1</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-fjfractionfactor">FjFractionFactor</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-global_sum">global_sum</a>
       
@@ -1427,11 +1430,11 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-factor1"></span>complex(kind=dp),</td>
+  <td><span class="anchor" id="variable-fjfractionfactor"></span>complex(kind=dp),</td>
   
   
   <td>allocatable</td><td>::</td>
-  <td><strong>factor1</strong>(:)</td><td></td><td></td><td></td>
+  <td><strong>FjFractionFactor</strong>(:)</td><td></td><td></td><td></td>
   
 </tr>
 
@@ -1626,7 +1629,7 @@
 
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">ex1</span><span class="p">(:)</span>
   <span class="c">!! \(e^{i\theta}\) where \(\theta\) goes from 0 to \(2\pi\)</span>
-<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">factor1</span><span class="p">(:)</span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">FjFractionFactor</span><span class="p">(:)</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">global_sum</span><span class="p">(:)</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">s1</span><span class="p">(:)</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">s2</span><span class="p">(:)</span>
@@ -1683,7 +1686,7 @@
 
 
 <span class="k">allocate</span><span class="p">(</span><span class="n">eshift</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">omega2</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s1</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s2</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s3</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">global_sum</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">))</span>
-<span class="k">allocate</span><span class="p">(</span><span class="n">phonon</span><span class="p">(</span><span class="n">nmode</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">factor</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">factor1</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">T1</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">T3</span><span class="p">(</span><span class="n">nmode</span><span class="p">))</span>
+<span class="k">allocate</span><span class="p">(</span><span class="n">phonon</span><span class="p">(</span><span class="n">nmode</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">factor</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">T1</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">T3</span><span class="p">(</span><span class="n">nmode</span><span class="p">))</span>
 <span class="k">allocate</span><span class="p">(</span><span class="n">ex1</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">count2</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
   <span class="c">!! * Allocate space for variables on all processes</span>
   <span class="c">!! @todo Figure out why `interval` and `count2` are allocatable @endtodo</span>
@@ -1704,7 +1707,7 @@
   <span class="c">!!         and initial and final phonon frequencies</span>
   <span class="c">!!       * Divide the initial and final phonon frequencies by 100</span>
   <span class="c">!!       * Calculate \(\text{factor}=\hbar\omega\beta\text{phonon}(2)\)</span>
-  <span class="c">!!       * Calculate `factor1`\(={\sin(-i\text{factor})}{1-\cos(-i\text{factor})}\)</span>
+  <span class="c">!!       * Calculate `FjFractionFactor`\(={\sin(-i\text{factor})}{1-\cos(-i\text{factor})}\)</span>
   <span class="c">!!       * Write out the id and phonon frequencies</span>
 
   <span class="k">do </span><span class="n">imode</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nmode</span>
@@ -1715,7 +1718,7 @@
      <span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="o">=</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="mf">0.0d0</span>     
 
      <span class="n">factor</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">=</span><span class="n">hbar</span><span class="o">*</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">omega</span><span class="o">*</span><span class="n">beta</span>
-     <span class="n">factor1</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">=</span><span class="nb">sin</span><span class="p">(</span><span class="o">-</span><span class="n">I</span><span class="o">*</span><span class="n">factor</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nb">cos</span><span class="p">(</span><span class="o">-</span><span class="n">I</span><span class="o">*</span><span class="n">factor</span><span class="p">(</span><span class="n">imode</span><span class="p">)))</span>
+     <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">=</span><span class="nb">sin</span><span class="p">(</span><span class="o">-</span><span class="n">I</span><span class="o">*</span><span class="n">factor</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nb">cos</span><span class="p">(</span><span class="o">-</span><span class="n">I</span><span class="o">*</span><span class="n">factor</span><span class="p">(</span><span class="n">imode</span><span class="p">)))</span>
       <span class="c">!! @todo Figure out why set this here as it is overwritten below @endtodo</span>
       
      <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">id</span><span class="p">,</span> <span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
@@ -1735,7 +1738,7 @@
 <span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">eshift</span><span class="p">,</span> <span class="n">eshift_num</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
 <span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">phonon</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
 <span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">factor</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span> 
-<span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">factor1</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE_COMPLEX</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
+<span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">FjFractionFactor</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE_COMPLEX</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
 <span class="k">call </span><span class="n">MPI_Barrier</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span><span class="n">ierror</span><span class="p">)</span>
 
 <span class="c">!&gt; Maybe unit conversions?</span>
@@ -1836,7 +1839,8 @@
 
 
          <span class="n">tmp</span> <span class="o">=</span> <span class="n">domega</span><span class="o">*</span><span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">tmp</span>
-         <span class="n">factor1</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span> <span class="o">=</span> <span class="nb">sin</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span><span class="o">/</span><span class="p">(</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">cos</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>  <span class="p">)</span>
+         <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span> <span class="o">=</span> <span class="nb">sin</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span><span class="o">/</span><span class="p">(</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">cos</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>  <span class="p">)</span>
+          <span class="c">!! @todo Figure out which definition of the factor is correct, this one or the one above @endtodo</span>
       <span class="n">enddo</span>
   
       
@@ -1864,8 +1868,9 @@
               <span class="c">!! * Calculate `expForFj`\( = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})\).</span>
               <span class="c">!!   This is used as a trick to be able to calculate \(F_j\) quicker as the expontentials include both the</span>
               <span class="c">!!   sines and cosines needed </span>
-            <span class="n">Fj</span><span class="o">=</span><span class="nb">Aimag</span><span class="p">(</span><span class="n">expForFj</span><span class="p">)</span><span class="o">+</span><span class="n">factor1</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="kt">Real</span><span class="p">(</span><span class="mf">2.0d0</span><span class="o">+</span><span class="n">expForFj</span><span class="p">)</span>           
-              <span class="c">!! * Calculate \(F_j = \text{Im}(\)`expForFj`\() + \)`FjFractionFactor`\(\text{Re}(2 + \)`expForFj`</span>
+            <span class="n">Fj</span><span class="o">=</span><span class="nb">Aimag</span><span class="p">(</span><span class="n">expForFj</span><span class="p">)</span><span class="o">+</span><span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="kt">Real</span><span class="p">(</span><span class="mf">2.0d0</span><span class="o">+</span><span class="n">expForFj</span><span class="p">)</span>           
+              <span class="c">!! * Calculate \(F_j = \text{Im}(\)`expForFj`\() + \)`FjFractionFactor`\(\text{Re}(2 + \)`expForFj`\()\)</span>
+              <span class="c">!! @todo Add detailed derivation of this in a separate page @endtodo</span>
             <span class="n">tmp_exp</span><span class="o">=</span><span class="n">tmp_exp</span><span class="o">+</span><span class="n">Fj</span><span class="o">*</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
          <span class="n">enddo</span>
 

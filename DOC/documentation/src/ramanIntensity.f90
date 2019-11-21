@@ -104,7 +104,7 @@ real(kind = dp),allocatable :: phonon(:,:)
 
 complex(kind = dp), allocatable :: ex1(:)
   !! \(e^{i\theta}\) where \(\theta\) goes from 0 to \(2\pi\)
-complex(kind = dp), allocatable :: factor1(:)
+complex(kind = dp), allocatable :: FjFractionFactor(:)
 complex(kind = dp), allocatable :: global_sum(:)
 complex(kind = dp), allocatable :: s1(:)
 complex(kind = dp), allocatable :: s2(:)
@@ -161,7 +161,7 @@ beta=1/(kB*temperature)
 
 
 allocate(eshift(eshift_num), omega2(eshift_num), s1(eshift_num), s2(eshift_num), s3(eshift_num), global_sum(eshift_num))
-allocate(phonon(nmode,3), factor(nmode), factor1(nmode), T1(nmode), T3(nmode))
+allocate(phonon(nmode,3), factor(nmode), FjFractionFactor(nmode), T1(nmode), T3(nmode))
 allocate(ex1(0:n2+1), interval(2), count2(2))
   !! * Allocate space for variables on all processes
   !! @todo Figure out why `interval` and `count2` are allocatable @endtodo
@@ -182,7 +182,7 @@ if(id == 0) then
   !!         and initial and final phonon frequencies
   !!       * Divide the initial and final phonon frequencies by 100
   !!       * Calculate \(\text{factor}=\hbar\omega\beta\text{phonon}(2)\)
-  !!       * Calculate `factor1`\(={\sin(-i\text{factor})}{1-\cos(-i\text{factor})}\)
+  !!       * Calculate `FjFractionFactor`\(={\sin(-i\text{factor})}{1-\cos(-i\text{factor})}\)
   !!       * Write out the id and phonon frequencies
 
   do imode=1,nmode
@@ -193,7 +193,7 @@ if(id == 0) then
      phonon(imode,3)=phonon(imode,3)/100.0d0     
 
      factor(imode)=hbar*phonon(imode,2)*omega*beta
-     factor1(imode)=sin(-I*factor(imode))/(1-cos(-I*factor(imode)))
+     FjFractionFactor(imode)=sin(-I*factor(imode))/(1-cos(-I*factor(imode)))
       !! @todo Figure out why set this here as it is overwritten below @endtodo
       
      write(*,*)id, phonon(imode,1),phonon(imode,2),phonon(imode,3)
@@ -213,7 +213,7 @@ call MPI_Bcast( elevel, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( eshift, eshift_num, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( phonon, 3*nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( factor, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror) 
-call MPI_Bcast( factor1, nmode, MPI_DOUBLE_COMPLEX, 0, MPI_COMM_WORLD, ierror)
+call MPI_Bcast( FjFractionFactor, nmode, MPI_DOUBLE_COMPLEX, 0, MPI_COMM_WORLD, ierror)
 call MPI_Barrier(MPI_COMM_WORLD,ierror)
 
 !> Maybe unit conversions?
@@ -314,7 +314,8 @@ do j=interval(1),interval(2)
 
 
          tmp = domega*( x - y ) - I*tmp
-         factor1(imode) = sin(tmp)/( 1 - cos(tmp)  )
+         FjFractionFactor(imode) = sin(tmp)/( 1 - cos(tmp)  )
+          !! @todo Figure out which definition of the factor is correct, this one or the one above @endtodo
       enddo
   
       
@@ -342,8 +343,9 @@ do j=interval(1),interval(2)
               !! * Calculate `expForFj`\( = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})\).
               !!   This is used as a trick to be able to calculate \(F_j\) quicker as the expontentials include both the
               !!   sines and cosines needed 
-            Fj=Aimag(expForFj)+factor1(imode)*Real(2.0d0+expForFj)           
-              !! * Calculate \(F_j = \text{Im}(\)`expForFj`\() + \)`FjFractionFactor`\(\text{Re}(2 + \)`expForFj`
+            Fj=Aimag(expForFj)+FjFractionFactor(imode)*Real(2.0d0+expForFj)           
+              !! * Calculate \(F_j = \text{Im}(\)`expForFj`\() + \)`FjFractionFactor`\(\text{Re}(2 + \)`expForFj`\()\)
+              !! @todo Add detailed derivation of this in a separate page @endtodo
             tmp_exp=tmp_exp+Fj*phonon(imode,1)
          enddo
 

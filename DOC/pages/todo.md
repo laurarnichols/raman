@@ -13,3 +13,5 @@ date: 11/21/2019
 * `../src/ramanIntensity.f90:301:` Take this out of the loop
 * `../src/ramanIntensity.f90:311:` Figure out where `zfactor2` comes from
 * `../src/ramanIntensity.f90:313:` Since multiple them, figure out why have `exp(0.5*tmp)` as it cancels
+* `../src/ramanIntensity.f90:318:` Figure out which definition of the factor is correct, this one or the one above
+* `../src/ramanIntensity.f90:348:` Add detailed derivation of this in a separate page
