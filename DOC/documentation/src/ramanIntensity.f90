@@ -343,7 +343,7 @@ do j=interval(1),interval(2)
               !!   This is used as a trick to be able to calculate \(F_j\) quicker as the expontentials include both the
               !!   sines and cosines needed 
             Fj=Aimag(expForFj)+factor1(imode)*Real(2.0d0+expForFj)           
-              !! * Calculate \(F_j = \text{Im}(\text{expForFj}) + \text{FjFractionFactor}\text{Re}(2 + \text{expForFj})\)
+              !! * Calculate \(F_j = \text{Im}(\)`expForFj`\() + \)`FjFractionFactor`\(\text{Re}(2 + \)`expForFj`
             tmp_exp=tmp_exp+Fj*phonon(imode,1)
          enddo
 

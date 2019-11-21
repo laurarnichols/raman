@@ -626,7 +626,7 @@
 <a name="ln-343"></a>              <span class="c">!!   This is used as a trick to be able to calculate \(F_j\) quicker as the expontentials include both the</span>
 <a name="ln-344"></a>              <span class="c">!!   sines and cosines needed </span>
 <a name="ln-345"></a>            <span class="n">Fj</span><span class="o">=</span><span class="nb">Aimag</span><span class="p">(</span><span class="n">expForFj</span><span class="p">)</span><span class="o">+</span><span class="n">factor1</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="kt">Real</span><span class="p">(</span><span class="mf">2.0d0</span><span class="o">+</span><span class="n">expForFj</span><span class="p">)</span>           
-<a name="ln-346"></a>              <span class="c">!! * Calculate \(F_j = \text{Im}(\text{expForFj}) + \text{FjFractionFactor}\text{Re}(2 + \text{expForFj})\)</span>
+<a name="ln-346"></a>              <span class="c">!! * Calculate \(F_j = \text{Im}(\)`expForFj`\() + \)`FjFractionFactor`\(\text{Re}(2 + \)`expForFj`</span>
 <a name="ln-347"></a>            <span class="n">tmp_exp</span><span class="o">=</span><span class="n">tmp_exp</span><span class="o">+</span><span class="n">Fj</span><span class="o">*</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 <a name="ln-348"></a>         <span class="n">enddo</span>
 <a name="ln-349"></a>

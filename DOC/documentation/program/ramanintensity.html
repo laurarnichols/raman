@@ -428,8 +428,10 @@
 <li>Calculate <code>expForFj</code><script type="math/tex"> = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})</script>.
    This is used as a trick to be able to calculate <script type="math/tex">F_j</script> quicker as the expontentials include both the
    sines and cosines needed </li>
-<li>Calculate <script type="math/tex">F_j = \text{Im}(\text{expForFj}) + \text{FjFractionFactor}\text{Re}(2 + \text{expForFj})</script>
-</li>
+<li>Calculate <script type="math/tex">F_j = \text{Im}(</script>
+<code>expForFj</code><script type="math/tex">) + </script>
+<code>FjFractionFactor</code><script type="math/tex">\text{Re}(2 + </script>
+<code>expForFj</code></li>
 </ul>
     
     <br>
@@ -1863,7 +1865,7 @@
               <span class="c">!!   This is used as a trick to be able to calculate \(F_j\) quicker as the expontentials include both the</span>
               <span class="c">!!   sines and cosines needed </span>
             <span class="n">Fj</span><span class="o">=</span><span class="nb">Aimag</span><span class="p">(</span><span class="n">expForFj</span><span class="p">)</span><span class="o">+</span><span class="n">factor1</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="kt">Real</span><span class="p">(</span><span class="mf">2.0d0</span><span class="o">+</span><span class="n">expForFj</span><span class="p">)</span>           
-              <span class="c">!! * Calculate \(F_j = \text{Im}(\text{expForFj}) + \text{FjFractionFactor}\text{Re}(2 + \text{expForFj})\)</span>
+              <span class="c">!! * Calculate \(F_j = \text{Im}(\)`expForFj`\() + \)`FjFractionFactor`\(\text{Re}(2 + \)`expForFj`</span>
             <span class="n">tmp_exp</span><span class="o">=</span><span class="n">tmp_exp</span><span class="o">+</span><span class="n">Fj</span><span class="o">*</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
          <span class="n">enddo</span>
 
