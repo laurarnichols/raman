@@ -81,6 +81,9 @@ complex(kind = dp) :: expForFj
 complex(kind = dp) :: Fj
   !! Function \(F_j\) from equation 44
 complex(kind = dp) :: T2! T1,T3
+complex(kind = dp) :: theta
+  !! Serves as the argument for the fraction
+  !! factor `FjFractionFactor`
 complex(kind = dp) :: tmp
 complex(kind = dp) :: tmp1
 complex(kind = dp) :: tmp_exp
@@ -105,6 +108,7 @@ real(kind = dp),allocatable :: phonon(:,:)
 complex(kind = dp), allocatable :: ex1(:)
   !! \(e^{i\theta}\) where \(\theta\) goes from 0 to \(2\pi\)
 complex(kind = dp), allocatable :: FjFractionFactor(:)
+  !! Fraction factor in front of cosine terms in \(F_j\)
 complex(kind = dp), allocatable :: global_sum(:)
 complex(kind = dp), allocatable :: s1(:)
 complex(kind = dp), allocatable :: s2(:)
@@ -193,8 +197,6 @@ if(id == 0) then
      phonon(imode,3)=phonon(imode,3)/100.0d0     
 
      factor(imode)=hbar*phonon(imode,2)*omega*beta
-     FjFractionFactor(imode)=sin(-I*factor(imode))/(1-cos(-I*factor(imode)))
-      !! @todo Figure out why set this here as it is overwritten below @endtodo
       
      write(*,*)id, phonon(imode,1),phonon(imode,2),phonon(imode,3)
 
@@ -213,7 +215,6 @@ call MPI_Bcast( elevel, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( eshift, eshift_num, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( phonon, 3*nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( factor, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror) 
-call MPI_Bcast( FjFractionFactor, nmode, MPI_DOUBLE_COMPLEX, 0, MPI_COMM_WORLD, ierror)
 call MPI_Barrier(MPI_COMM_WORLD,ierror)
 
 !> Maybe unit conversions?
@@ -313,9 +314,10 @@ do j=interval(1),interval(2)
           !! @todo Since multiple them, figure out why have `exp(0.5*tmp)` as it cancels @endtodo
 
 
-         tmp = domega*( x - y ) - I*tmp
-         FjFractionFactor(imode) = sin(tmp)/( 1 - cos(tmp)  )
-          !! @todo Figure out which definition of the factor is correct, this one or the one above @endtodo
+         theta = domega*( x - y ) - I*theta
+         FjFractionFactor(imode) = sin(theta)/( 1 - cos(theta)  )
+          !! * Calculate the fractional factor in front of the cosines in
+          !!   \(F_j\)
       enddo
   
       

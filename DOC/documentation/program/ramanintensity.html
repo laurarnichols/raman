@@ -122,7 +122,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="100.0% of total for programs.">205 statements</a>
+    title="100.0% of total for programs.">204 statements</a>
      </li> 
      
      
@@ -246,6 +246,8 @@
       <a class="list-group-item" href="../program/ramanintensity.html#variable-fj">Fj</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-t2">T2</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-theta">theta</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp">tmp</a>
       
@@ -409,8 +411,6 @@
 </ul>
 </li>
 </ul>
-<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out why set this here as it is overwritten below </p></div>
-<p>
 <p>Maybe unit conversions?
  <script type="math/tex">(E_L-E_n)/\hbar\omega</script>
  Set loop variables?
@@ -423,12 +423,17 @@
 <p>Calculate the first fraction in equation 42
  </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out where <code>zfactor2</code> comes from</p></div><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Since multiple them, figure out why have <code>exp(0.5*tmp)</code> as it cancels </p></div>
 <p>
-<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out which definition of the factor is correct, this one or the one above </p></div>
-<p>Use a linear interpolation for T2</p>
 <ul>
-<li>Calculate <code>expForFj</code><script type="math/tex"> = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})</script>.
+<li>
+<p>Calculate the fractional factor in front of the cosines in
+   <script type="math/tex">F_j</script>
+ Use a linear interpolation for T2</p>
+</li>
+<li>
+<p>Calculate <code>expForFj</code><script type="math/tex"> = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})</script>.
    This is used as a trick to be able to calculate <script type="math/tex">F_j</script> quicker as the expontentials include both the
-   sines and cosines needed </li>
+   sines and cosines needed </p>
+</li>
 <li>Calculate <script type="math/tex">F_j = \text{Im}(</script>
 <code>expForFj</code><script type="math/tex">) + </script>
 <code>FjFractionFactor</code><script type="math/tex">\text{Re}(2 + </script>
@@ -532,6 +537,8 @@
       <a class="list-group-item" href="../program/ramanintensity.html#variable-fj">Fj</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-t2">T2</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-theta">theta</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp">tmp</a>
       
@@ -1215,6 +1222,21 @@
   
 <tr>
   
+  <td><span class="anchor" id="variable-theta"></span>complex(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>theta</strong></td><td></td><td></td><td><p>Serves as the argument for the fraction
+ factor <code>FjFractionFactor</code></p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
   <td><span class="anchor" id="variable-tmp"></span>complex(kind=dp)</td>
   
   
@@ -1434,7 +1456,8 @@
   
   
   <td>allocatable</td><td>::</td>
-  <td><strong>FjFractionFactor</strong>(:)</td><td></td><td></td><td></td>
+  <td><strong>FjFractionFactor</strong>(:)</td><td></td><td></td><td><p>Fraction factor in front of cosine terms in <script type="math/tex">F_j</script>
+</p></td>
   
 </tr>
 
@@ -1606,6 +1629,9 @@
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">Fj</span>
   <span class="c">!! Function \(F_j\) from equation 44</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">T2</span><span class="c">! T1,T3</span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">theta</span>
+  <span class="c">!! Serves as the argument for the fraction</span>
+  <span class="c">!! factor `FjFractionFactor`</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp1</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp_exp</span>
@@ -1630,6 +1656,7 @@
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">ex1</span><span class="p">(:)</span>
   <span class="c">!! \(e^{i\theta}\) where \(\theta\) goes from 0 to \(2\pi\)</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">FjFractionFactor</span><span class="p">(:)</span>
+  <span class="c">!! Fraction factor in front of cosine terms in \(F_j\)</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">global_sum</span><span class="p">(:)</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">s1</span><span class="p">(:)</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">s2</span><span class="p">(:)</span>
@@ -1718,8 +1745,6 @@
      <span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="o">=</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="mf">0.0d0</span>     
 
      <span class="n">factor</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">=</span><span class="n">hbar</span><span class="o">*</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">omega</span><span class="o">*</span><span class="n">beta</span>
-     <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">=</span><span class="nb">sin</span><span class="p">(</span><span class="o">-</span><span class="n">I</span><span class="o">*</span><span class="n">factor</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nb">cos</span><span class="p">(</span><span class="o">-</span><span class="n">I</span><span class="o">*</span><span class="n">factor</span><span class="p">(</span><span class="n">imode</span><span class="p">)))</span>
-      <span class="c">!! @todo Figure out why set this here as it is overwritten below @endtodo</span>
       
      <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">id</span><span class="p">,</span> <span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
 
@@ -1738,7 +1763,6 @@
 <span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">eshift</span><span class="p">,</span> <span class="n">eshift_num</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
 <span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">phonon</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
 <span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">factor</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span> 
-<span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">FjFractionFactor</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE_COMPLEX</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
 <span class="k">call </span><span class="n">MPI_Barrier</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span><span class="n">ierror</span><span class="p">)</span>
 
 <span class="c">!&gt; Maybe unit conversions?</span>
@@ -1838,9 +1862,10 @@
           <span class="c">!! @todo Since multiple them, figure out why have `exp(0.5*tmp)` as it cancels @endtodo</span>
 
 
-         <span class="n">tmp</span> <span class="o">=</span> <span class="n">domega</span><span class="o">*</span><span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">tmp</span>
-         <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span> <span class="o">=</span> <span class="nb">sin</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span><span class="o">/</span><span class="p">(</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">cos</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>  <span class="p">)</span>
-          <span class="c">!! @todo Figure out which definition of the factor is correct, this one or the one above @endtodo</span>
+         <span class="n">theta</span> <span class="o">=</span> <span class="n">domega</span><span class="o">*</span><span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">theta</span>
+         <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span> <span class="o">=</span> <span class="nb">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">/</span><span class="p">(</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>  <span class="p">)</span>
+          <span class="c">!! * Calculate the fractional factor in front of the cosines in</span>
+          <span class="c">!!   \(F_j\)</span>
       <span class="n">enddo</span>
   
       
