@@ -1,0 +1,1947 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+   <meta name="description" content="This program calculates Raman intensities">
+    
+    <meta name="author" content="" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>ramanIntensity &ndash; Raman Intensities</title>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/local.css" rel="stylesheet">
+    
+    <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
+    
+    
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <script src="../js/jquery-2.1.3.min.js"></script>
+    <script src="../js/svg-pan-zoom.min.js"></script>
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">Raman Intensities </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+        
+            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
+              <a href="#" class="dropdown-toggle"
+              data-toggle="dropdown" role="button"
+              aria-haspopup="true"
+     aria-expanded="false">Contents <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          
+              
+            <li><a href="../sourcefile/ramanintensity.f90.html">Source File</a></li>
+        
+        
+        
+            <li><a href="../lists/modules.html">Modules</a></li>
+        
+            
+                                
+               
+        
+            <li><a href="../program/ramanintensity.html">Program</a></li>
+      
+            </ul>
+            </li>
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../sourcefile/ramanintensity.f90.html">Source File</a></li>
+
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
+
+
+
+                             
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../program/ramanintensity.html">Program</a></li>
+
+          </ul>
+        
+        <form action="../search.html" class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+        </div>
+<!--
+        <button type="submit" class="btn btn-default">Submit</button>
+-->
+        </form>
+        
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+    
+  
+  <div class="row">
+    <h1>ramanIntensity
+    <small>Program</small>
+    
+    </h1>
+    
+<div class="row">
+  <div class="col-lg-12">
+<div class="well well-sm">
+  <ul class="list-inline" style="margin-bottom:0px;display:inline">
+     
+     
+     
+     
+    
+    
+     <li><i class="fa fa-list-ol"></i>
+       <a data-toggle="tooltip"
+    data-placement="bottom" data-html="true"
+    title="100.0% of total for programs.">205 statements</a>
+     </li> 
+     
+     
+     
+    <li><i class="fa fa-code"></i><a href="../src/ramanIntensity.f90"> Source File</a></li>
+     
+     
+  </ul>
+  <ol class="breadcrumb in-well text-right">
+  
+    
+     <li><a href='../sourcefile/ramanintensity.f90.html'>ramanIntensity.f90</a></li>
+    
+  
+     <li class="active">ramanIntensity</li>
+  </ol>
+</div>
+</div>
+</div>
+<script>
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+    
+<div id="sidebar">
+  
+<h3>Contents</h3>
+ 
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-0">Variables</a></h3></div>
+  <div id="vars-0" class="panel-collapse collapse">
+    <div class="list-group">
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-eshift_num">eshift_num</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-ierror">ierror</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-id">id</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-imode">imode</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-index1">index1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-interval_a">interval_a</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-interval_b">interval_b</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-j">j</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-k">k</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-l">l</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-max_k">max_k</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-max_l">max_l</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-n1">n1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-n2">n2</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-nmode">nmode</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-nprocs">nprocs</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_i">tmp_i</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_j">tmp_j</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-beta">beta</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-count1">count1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-domega">domega</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-elaser">elaser</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-elevel">elevel</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-gamma1">gamma1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-gamma2">gamma2</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-loglimit">loglimit</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-limit">limit</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-omega">omega</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-omega1">omega1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-omega_tmp">omega_tmp</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-step1">step1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-step2">step2</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-t">t</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-temperature">temperature</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_r1">tmp_r1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_r2">tmp_r2</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-x">x</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-y">y</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-expforfj">expForFj</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-fj">Fj</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-t2">T2</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp">tmp</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp1">tmp1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_exp">tmp_exp</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor">zfactor</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor1">zfactor1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor2">zfactor2</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-inputfile">Inputfile</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-dummy">dummy</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-interval">interval</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-count2">count2</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-eshift">eshift</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-factor">factor</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-omega2">omega2</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-phonon">phonon</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-ex1">ex1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-factor1">factor1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-global_sum">global_sum</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-s1">s1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-s2">s2</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-s3">s3</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-t1">T1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-t3">T3</a>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../program/ramanintensity.html#src">ramanIntensity</a>
+  </div>
+</div>
+
+
+
+</div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    
+  
+    <div class="panel panel-default">
+      <div class="panel-heading">
+  <h3 class="panel-title">Uses</h3>
+      </div>
+      <ul class="list-group">
+      
+      <li class="list-group-item">
+  <ul class="list-inline">
+    
+    <li><a href='../module/para.html'>para</a></li>
+    
+    <li><a href="http://www.mpi-forum.org/docs/mpi-3.1/mpi31-report/node410.htm">mpi</a></li>
+    
+  </ul>
+      </li>
+      
+      
+      
+      </ul>
+    </div>
+    
+
+    <ul>
+<li>
+<p>Initialize MPI pool</p>
+</li>
+<li>
+<p>Define input file name
+ </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Make this an input variable rather than hardcode </p></div>
+<p>
+</li>
+<li>If root process<ul>
+<li>Open <code>Inputfile</code> to read the number of phonon modes
+  which is needed to allocate variables</li>
+<li>Open <code>input.txt</code> file to read temperature, <code>n1</code>, 
+  <code>limit</code>, <code>gamma1</code>, <code>gamma2</code>, the energy of the laser,
+  <code>elevel</code>, and <code>eshift_num</code></li>
+<li>Open <code>output.txt</code> for output
+ </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Change <code>input.txt</code> to be read from input file </p></div>
+<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Change output to go to command line like QE </p></div>
+<p></li>
+</ul>
+</li>
+</ul>
+<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Change this to <code>read(12,*)</code> </p></div>
+<p>* Broadcast the number of modes, <code>eshift_num</code>, and temperature to
+  other processes</p>
+<ul>
+<li>
+<p>Calculate <script type="math/tex">\beta = 1/k_{B}T</script>
+</p>
+</li>
+<li>
+<p>Allocate space for variables on all processes
+ </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out why <code>interval</code> and <code>count2</code> are allocatable </p></div>
+<p>
+</li>
+<li>
+<p>Calculate <code>step2</code><script type="math/tex">= 2\pi/n2</script> where <code>n2=100000</code></p>
+</li>
+<li>
+<p>Calculate <script type="math/tex">e^{i\theta}</script> where <script type="math/tex">\theta</script> goes from 0 to <script type="math/tex">2\pi</script>
+</p>
+</li>
+<li>
+<p>If root process</p>
+<ul>
+<li>For each mode</li>
+<li>Read index (currently not being used), <script type="math/tex">S_j</script>,
+     and initial and final phonon frequencies</li>
+<li>Divide the initial and final phonon frequencies by 100</li>
+<li>Calculate <script type="math/tex">\text{factor}=\hbar\omega\beta\text{phonon}(2)</script>
+</li>
+<li>Calculate <code>factor1</code><script type="math/tex">={\sin(-i\text{factor})}{1-\cos(-i\text{factor})}</script>
+</li>
+<li>Write out the id and phonon frequencies</li>
+</ul>
+</li>
+</ul>
+<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out why set this here as it is overwritten below </p></div>
+<p>
+<p>Maybe unit conversions?
+ <script type="math/tex">(E_L-E_n)/\hbar\omega</script>
+ Set loop variables?
+ Do some sort of sum? What are gamma1 and gamma2? They come from the input file
+ I think this is figuring out the intervals for each node to integrate over
+ Make sure that all processes get here before
+ moving forward</p>
+<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Take this out of the loop </p></div>
+<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Take this out of the loop </p></div>
+<p>Calculate the first fraction in equation 42
+ </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out where <code>zfactor2</code> comes from</p></div><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Since multiple them, figure out why have <code>exp(0.5*tmp)</code> as it cancels </p></div>
+<p>
+<p>Use a linear interpolation for T2</p>
+<p>Calculate <code>expForFj</code><script type="math/tex"> = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})</script>
+</p>
+    
+    <br>
+
+     <section class="visible-xs visible-sm hidden-md">
+       
+<h3>Contents</h3>
+ 
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-1">Variables</a></h3></div>
+  <div id="vars-1" class="panel-collapse collapse">
+    <div class="list-group">
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-eshift_num">eshift_num</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-ierror">ierror</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-id">id</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-imode">imode</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-index1">index1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-interval_a">interval_a</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-interval_b">interval_b</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-j">j</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-k">k</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-l">l</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-max_k">max_k</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-max_l">max_l</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-n1">n1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-n2">n2</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-nmode">nmode</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-nprocs">nprocs</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_i">tmp_i</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_j">tmp_j</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-beta">beta</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-count1">count1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-domega">domega</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-elaser">elaser</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-elevel">elevel</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-gamma1">gamma1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-gamma2">gamma2</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-loglimit">loglimit</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-limit">limit</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-omega">omega</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-omega1">omega1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-omega_tmp">omega_tmp</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-step1">step1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-step2">step2</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-t">t</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-temperature">temperature</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_r1">tmp_r1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_r2">tmp_r2</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-x">x</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-y">y</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-expforfj">expForFj</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-fj">Fj</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-t2">T2</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp">tmp</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp1">tmp1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_exp">tmp_exp</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor">zfactor</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor1">zfactor1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor2">zfactor2</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-inputfile">Inputfile</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-dummy">dummy</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-interval">interval</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-count2">count2</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-eshift">eshift</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-factor">factor</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-omega2">omega2</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-phonon">phonon</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-ex1">ex1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-factor1">factor1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-global_sum">global_sum</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-s1">s1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-s2">s2</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-s3">s3</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-t1">T1</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-t3">T3</a>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../program/ramanintensity.html#src">ramanIntensity</a>
+  </div>
+</div>
+
+
+
+     </section>
+     <br class="visible-xs visible-sm hidden-md">
+
+     
+
+    
+    <section>
+    <h2>Variables</h2>
+    
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+
+<th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-eshift_num"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>eshift_num</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-ierror"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>ierror</strong></td><td></td><td></td><td><p>Error for MPI</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-id"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>id</strong></td><td></td><td></td><td><p>MPI process id</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-imode"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>imode</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-index1"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>index1</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-interval_a"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>interval_a</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-interval_b"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>interval_b</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-j"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>j</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-k"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>k</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-l"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>l</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-max_k"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>max_k</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-max_l"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>max_l</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-n1"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>n1</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-n2"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>n2</strong></td><td></td><td></td><td><p>Hardcoded to be 100000; used to generate <code>ex1</code></p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-nmode"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>nmode</strong></td><td></td><td></td><td><p>Number of phonon modes</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-nprocs"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>nprocs</strong></td><td></td><td></td><td><p>Number of MPI processes</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-tmp_i"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>tmp_i</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-tmp_j"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>tmp_j</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-beta"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>beta</strong></td><td></td><td></td><td><p>
+<script type="math/tex">\beta = 1/k_{B}T</script>
+</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-count1"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>count1</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-domega"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>domega</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-elaser"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>elaser</strong></td><td></td><td></td><td><p>
+<script type="math/tex">E_L</script>
+</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-elevel"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>elevel</strong></td><td></td><td></td><td><p>
+<script type="math/tex">E_n</script>
+</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-gamma1"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>gamma1</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-gamma2"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>gamma2</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-loglimit"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>loglimit</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-limit"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>limit</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-omega"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>omega</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-omega1"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>omega1</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-omega_tmp"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>omega_tmp</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-step1"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>step1</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-step2"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>step2</strong></td><td></td><td></td><td><p>Step to go from 0 to (\2\pi) in <code>n2</code> steps</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-t"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>t</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-temperature"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>temperature</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-tmp_r1"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>tmp_r1</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-tmp_r2"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>tmp_r2</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-x"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>x</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-y"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>y</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-expforfj"></span>complex(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>expForFj</strong></td><td></td><td></td><td><p>An exponential form to more quickly
+ calculate <script type="math/tex">F_j</script>
+</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-fj"></span>complex(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>Fj</strong></td><td></td><td></td><td><p>Function <script type="math/tex">F_j</script> from equation 44</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-t2"></span>complex(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>T2</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-tmp"></span>complex(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>tmp</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-tmp1"></span>complex(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>tmp1</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-tmp_exp"></span>complex(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>tmp_exp</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-zfactor"></span>complex(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>zfactor</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-zfactor1"></span>complex(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>zfactor1</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-zfactor2"></span>complex(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>zfactor2</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-inputfile"></span>character(len=256)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>Inputfile</strong></td><td></td><td></td><td><p>Input file name</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-dummy"></span>character(len=256)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>dummy</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-interval"></span>integer,</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>interval</strong>(:)</td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-count2"></span>real(kind=dp),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>count2</strong>(:)</td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-eshift"></span>real(kind=dp),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>eshift</strong>(:)</td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-factor"></span>real(kind=dp),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>factor</strong>(:)</td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-omega2"></span>real(kind=dp),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>omega2</strong>(:)</td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-phonon"></span>real(kind=dp),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>phonon</strong>(:,:)</td><td></td><td></td><td><p>
+<script type="math/tex">S_j</script> and initial and final frequency
+ </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Change this to be separate variables </p></div>
+<p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-ex1"></span>complex(kind=dp),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>ex1</strong>(:)</td><td></td><td></td><td><p>
+<script type="math/tex">e^{i\theta}</script> where <script type="math/tex">\theta</script> goes from 0 to <script type="math/tex">2\pi</script>
+</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-factor1"></span>complex(kind=dp),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>factor1</strong>(:)</td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-global_sum"></span>complex(kind=dp),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>global_sum</strong>(:)</td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-s1"></span>complex(kind=dp),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>s1</strong>(:)</td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-s2"></span>complex(kind=dp),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>s2</strong>(:)</td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-s3"></span>complex(kind=dp),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>s3</strong>(:)</td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-t1"></span>complex(kind=dp),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>T1</strong>(:)</td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-t3"></span>complex(kind=dp),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>T3</strong>(:)</td><td></td><td></td><td></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+    </section>
+    <br>
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+
+
+    
+    
+    
+    <section>
+    <h2 id="src">Source Code</h2>
+    <div class="highlight"><pre><span></span><span class="k">program </span><span class="n">ramanIntensity</span>
+<span class="k">use </span><span class="n">para</span>
+<span class="k">use </span><span class="n">mpi</span>
+
+<span class="k">implicit none</span>
+
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">eshift_num</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">ierror</span>
+  <span class="c">!! Error for MPI</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">id</span>
+  <span class="c">!! MPI process id</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">imode</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">index1</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">interval_a</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">interval_b</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">j</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">k</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">l</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">max_k</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">max_l</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">n1</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">n2</span>
+  <span class="c">!! Hardcoded to be 100000; used to generate `ex1`</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">nmode</span>
+  <span class="c">!! Number of phonon modes</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">nprocs</span>
+  <span class="c">!! Number of MPI processes</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">tmp_i</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">tmp_j</span>
+
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">beta</span>
+  <span class="c">!! \(\beta = 1/k_{B}T\)</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">count1</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">domega</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">elaser</span>
+  <span class="c">!! \(E_L\)</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">elevel</span>
+  <span class="c">!! \(E_n\)</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">gamma1</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">gamma2</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">loglimit</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">limit</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">omega</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">omega1</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">omega_tmp</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">step1</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">step2</span>
+  <span class="c">!! Step to go from 0 to \(\2\pi) in `n2` steps</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">t</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">temperature</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp_r1</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp_r2</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">y</span>
+
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">expForFj</span>
+  <span class="c">!! An exponential form to more quickly</span>
+  <span class="c">!! calculate \(F_j\)</span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">Fj</span>
+  <span class="c">!! Function \(F_j\) from equation 44</span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">T2</span><span class="c">! T1,T3</span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp</span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp1</span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp_exp</span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">zfactor</span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">zfactor1</span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">zfactor2</span> 
+
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span> <span class="o">=</span> <span class="mi">256</span><span class="p">)</span> <span class="kd">::</span> <span class="n">Inputfile</span>
+  <span class="c">!! Input file name</span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span> <span class="o">=</span> <span class="mi">256</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dummy</span>
+
+<span class="kt">integer</span><span class="p">,</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">interval</span><span class="p">(:)</span>
+
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">count2</span><span class="p">(:)</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">eshift</span><span class="p">(:)</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">factor</span><span class="p">(:)</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">omega2</span><span class="p">(:)</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">phonon</span><span class="p">(:,:)</span>
+  <span class="c">!! \(S_j\) and initial and final frequency</span>
+  <span class="c">!! @todo Change this to be separate variables @endtodo</span>
+
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">ex1</span><span class="p">(:)</span>
+  <span class="c">!! \(e^{i\theta}\) where \(\theta\) goes from 0 to \(2\pi\)</span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">factor1</span><span class="p">(:)</span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">global_sum</span><span class="p">(:)</span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">s1</span><span class="p">(:)</span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">s2</span><span class="p">(:)</span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">s3</span><span class="p">(:)</span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">T1</span><span class="p">(:)</span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">T3</span><span class="p">(:)</span>
+
+
+
+<span class="k">call </span><span class="n">MPI_INIT</span><span class="p">(</span><span class="n">ierror</span><span class="p">)</span>
+<span class="k">call </span><span class="n">MPI_COMM_RANK</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">id</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
+<span class="k">call </span><span class="n">MPI_COMM_SIZE</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">nprocs</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
+  <span class="c">!! * Initialize MPI pool</span>
+
+<span class="n">Inputfile</span> <span class="o">=</span> <span class="s1">&#39;Sj.out&#39;</span>
+  <span class="c">!! * Define input file name</span>
+  <span class="c">!! @todo Make this an input variable rather than hardcode @endtodo</span>
+<span class="n">omega</span><span class="o">=</span><span class="mf">1.0d14</span>
+<span class="n">n2</span><span class="o">=</span><span class="mi">100000</span>
+
+<span class="k">if</span><span class="p">(</span><span class="n">id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
+  <span class="c">!! * If root process</span>
+  <span class="c">!!    * Open `Inputfile` to read the number of phonon modes</span>
+  <span class="c">!!      which is needed to allocate variables</span>
+  <span class="c">!!    * Open `input.txt` file to read temperature, `n1`, </span>
+  <span class="c">!!      `limit`, `gamma1`, `gamma2`, the energy of the laser,</span>
+  <span class="c">!!      `elevel`, and `eshift_num`</span>
+  <span class="c">!!    * Open `output.txt` for output</span>
+  <span class="c">!! @todo Change `input.txt` to be read from input file @endtodo</span>
+  <span class="c">!! @todo Change output to go to command line like QE @endtodo</span>
+
+  <span class="k">open</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="k">file</span><span class="o">=</span><span class="nb">trim</span><span class="p">(</span><span class="n">Inputfile</span><span class="p">),</span> <span class="n">Action</span><span class="o">=</span><span class="s1">&#39;read&#39;</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s1">&#39;old&#39;</span><span class="p">)</span>
+  <span class="k">read</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="o">*</span><span class="p">)</span>
+  <span class="k">read</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">nmode</span>
+
+  <span class="k">open</span><span class="p">(</span><span class="mi">12</span> <span class="p">,</span> <span class="k">file</span><span class="o">=</span><span class="s1">&#39;input.txt&#39;</span><span class="p">,</span> <span class="n">Action</span><span class="o">=</span><span class="s1">&#39;read&#39;</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s1">&#39;old&#39;</span><span class="p">)</span>
+  <span class="k">read</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy</span>
+    <span class="c">!! @todo Change this to `read(12,*)` @endtodo</span>
+  <span class="k">read</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">,</span> <span class="n">elaser</span><span class="p">,</span> <span class="n">elevel</span><span class="p">,</span> <span class="n">eshift_num</span>
+
+  <span class="k">open</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="k">file</span><span class="o">=</span><span class="s2">&quot;output.txt&quot;</span><span class="p">,</span><span class="n">Action</span><span class="o">=</span><span class="s2">&quot;write&quot;</span><span class="p">,</span><span class="n">status</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">)</span>
+<span class="n">endif</span>
+
+
+<span class="k">call </span><span class="n">MPI_BCast</span><span class="p">(</span> <span class="n">nmode</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_Integer</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
+<span class="k">call </span><span class="n">MPI_BCast</span><span class="p">(</span> <span class="n">eshift_num</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_Integer</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
+<span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">temperature</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
+  <span class="c">!! * Broadcast the number of modes, `eshift_num`, and temperature to</span>
+  <span class="c">!!  other processes</span>
+
+
+<span class="n">beta</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">kB</span><span class="o">*</span><span class="n">temperature</span><span class="p">)</span>
+  <span class="c">!! * Calculate \(\beta = 1/k_{B}T\)</span>
+
+
+<span class="k">allocate</span><span class="p">(</span><span class="n">eshift</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">omega2</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s1</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s2</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s3</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">global_sum</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">))</span>
+<span class="k">allocate</span><span class="p">(</span><span class="n">phonon</span><span class="p">(</span><span class="n">nmode</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">factor</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">factor1</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">T1</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">T3</span><span class="p">(</span><span class="n">nmode</span><span class="p">))</span>
+<span class="k">allocate</span><span class="p">(</span><span class="n">ex1</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">count2</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+  <span class="c">!! * Allocate space for variables on all processes</span>
+  <span class="c">!! @todo Figure out why `interval` and `count2` are allocatable @endtodo</span>
+
+<span class="n">step2</span><span class="o">=</span><span class="n">tpi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
+  <span class="c">!! * Calculate `step2`\(= 2\pi/n2\) where `n2=100000`</span>
+
+<span class="k">do </span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span>
+  <span class="c">!! * Calculate \(e^{i\theta}\) where \(\theta\) goes from 0 to \(2\pi\)</span>
+
+   <span class="n">ex1</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">=</span><span class="nb">exp</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="n">j</span><span class="o">*</span><span class="n">step2</span><span class="p">)</span>
+<span class="k">end do</span>
+
+<span class="k">if</span><span class="p">(</span><span class="n">id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
+  <span class="c">!! * If root process</span>
+  <span class="c">!!    * For each mode</span>
+  <span class="c">!!       * Read index (currently not being used), \(S_j\),</span>
+  <span class="c">!!         and initial and final phonon frequencies</span>
+  <span class="c">!!       * Divide the initial and final phonon frequencies by 100</span>
+  <span class="c">!!       * Calculate \(\text{factor}=\hbar\omega\beta\text{phonon}(2)\)</span>
+  <span class="c">!!       * Calculate `factor1`\(={\sin(-i\text{factor})}{1-\cos(-i\text{factor})}\)</span>
+  <span class="c">!!       * Write out the id and phonon frequencies</span>
+
+  <span class="k">do </span><span class="n">imode</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nmode</span>
+     
+     <span class="k">read</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">j</span><span class="p">,</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+     <span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">=</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="mf">0.0d0</span>
+     <span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="o">=</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="mf">0.0d0</span>     
+
+     <span class="n">factor</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">=</span><span class="n">hbar</span><span class="o">*</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">omega</span><span class="o">*</span><span class="n">beta</span>
+     <span class="n">factor1</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">=</span><span class="nb">sin</span><span class="p">(</span><span class="o">-</span><span class="n">I</span><span class="o">*</span><span class="n">factor</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nb">cos</span><span class="p">(</span><span class="o">-</span><span class="n">I</span><span class="o">*</span><span class="n">factor</span><span class="p">(</span><span class="n">imode</span><span class="p">)))</span>
+      <span class="c">!! @todo Figure out why set this here as it is overwritten below @endtodo</span>
+      
+     <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">id</span><span class="p">,</span> <span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+
+  <span class="k">end do</span>
+<span class="k">  </span>
+<span class="k">     read</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">eshift</span><span class="p">(:)</span>
+
+<span class="n">endif</span>
+
+<span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">n1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_INTEGER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
+<span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">limit</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
+<span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">gamma1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
+<span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">gamma2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
+<span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">elaser</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
+<span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">elevel</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
+<span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">eshift</span><span class="p">,</span> <span class="n">eshift_num</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
+<span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">phonon</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
+<span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">factor</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span> 
+<span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">factor1</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE_COMPLEX</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
+<span class="k">call </span><span class="n">MPI_Barrier</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span><span class="n">ierror</span><span class="p">)</span>
+
+<span class="c">!&gt; Maybe unit conversions?</span>
+<span class="n">omega1</span><span class="o">=</span><span class="p">(</span><span class="n">elaser</span><span class="o">-</span><span class="n">elevel</span><span class="p">)</span><span class="o">*</span><span class="n">ev</span><span class="o">/</span><span class="n">hbar</span><span class="o">/</span><span class="n">omega</span>
+  <span class="c">!! \((E_L-E_n)/\hbar\omega\)</span>
+<span class="n">omega2</span><span class="p">(:)</span><span class="o">=</span><span class="n">eshift</span><span class="p">(:)</span><span class="o">*</span><span class="n">mev</span><span class="o">/</span><span class="n">hbar</span><span class="o">/</span><span class="n">omega</span>
+<span class="n">gamma1</span><span class="o">=</span><span class="n">gamma1</span><span class="o">*</span><span class="n">mev</span><span class="o">/</span><span class="n">hbar</span><span class="o">/</span><span class="n">omega</span>
+<span class="n">gamma2</span><span class="o">=</span><span class="n">gamma2</span><span class="o">*</span><span class="n">mev</span><span class="o">/</span><span class="n">hbar</span><span class="o">/</span><span class="n">omega</span>
+
+<span class="c">!&gt; Set loop variables?</span>
+<span class="n">step1</span><span class="o">=</span><span class="n">tpi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>
+<span class="n">loglimit</span><span class="o">=-</span><span class="nb">log</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
+<span class="n">count1</span><span class="o">=</span><span class="mf">0.0</span>
+
+<span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">eshift</span><span class="p">(:)</span>
+<span class="c">!write(*,*),step1</span>
+
+<span class="c">!&gt; Do some sort of sum? What are gamma1 and gamma2? They come from the input file</span>
+<span class="c">!&gt; I think this is figuring out the intervals for each node to integrate over</span>
+<span class="k">do </span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">loglimit</span><span class="o">/</span><span class="n">gamma1</span><span class="o">/</span><span class="n">step1</span><span class="p">)</span>
+   <span class="k">do </span><span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">loglimit</span><span class="o">/</span><span class="n">gamma1</span><span class="o">/</span><span class="n">step1</span><span class="o">-</span><span class="n">j</span><span class="p">)</span>
+      <span class="n">count1</span><span class="o">=</span><span class="n">count1</span><span class="o">+</span><span class="nb">int</span><span class="p">((</span><span class="n">loglimit</span><span class="o">/</span><span class="n">step1</span><span class="o">-</span><span class="n">gamma1</span><span class="o">*</span><span class="n">j</span><span class="o">-</span><span class="n">gamma1</span><span class="o">*</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">gamma2</span><span class="p">)</span>
+   <span class="n">enddo</span>
+<span class="k">end do</span>
+
+<span class="n">count2</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">nprocs</span><span class="p">)</span><span class="o">*</span><span class="n">count1</span>
+<span class="n">count2</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">id</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">nprocs</span><span class="p">)</span><span class="o">*</span><span class="n">count1</span>
+<span class="c">!write(*,*)&quot;count1&quot;,count1</span>
+<span class="n">index1</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">count1</span><span class="o">=</span><span class="mf">0.0</span>
+<span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s2">&quot;iteration2&quot;</span>
+<span class="k">do </span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">loglimit</span><span class="o">/</span><span class="n">gamma1</span><span class="o">/</span><span class="n">step1</span><span class="p">)</span>
+   <span class="k">do </span><span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">loglimit</span><span class="o">/</span><span class="n">gamma1</span><span class="o">/</span><span class="n">step1</span><span class="p">)</span><span class="o">-</span><span class="n">j</span>
+      <span class="n">count1</span><span class="o">=</span><span class="n">count1</span><span class="o">+</span><span class="nb">int</span><span class="p">((</span><span class="n">loglimit</span><span class="o">/</span><span class="n">step1</span><span class="o">-</span><span class="n">gamma1</span><span class="o">*</span><span class="n">j</span><span class="o">-</span><span class="n">gamma1</span><span class="o">*</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">gamma2</span><span class="p">)</span>
+   <span class="n">enddo</span>
+
+   <span class="k">if</span><span class="p">(</span><span class="n">count1</span><span class="o">&gt;=</span><span class="n">count2</span><span class="p">(</span><span class="n">index1</span><span class="p">))</span> <span class="k">then</span>
+<span class="k">      </span><span class="n">interval</span><span class="p">(</span><span class="n">index1</span><span class="p">)</span><span class="o">=</span><span class="n">j</span>
+      <span class="n">index1</span><span class="o">=</span><span class="n">index1</span><span class="o">+</span><span class="mi">1</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">index1</span><span class="o">==</span><span class="mi">3</span> <span class="p">)</span> <span class="k">then</span>
+<span class="k">         exit</span>
+<span class="k">      </span><span class="n">endif</span>
+   <span class="n">endif</span>
+<span class="k">end do</span>
+
+<span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">=</span><span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+
+
+<span class="c">!write(*,*)&quot;interval1&quot;, id, interval(1)</span>
+<span class="c">!write(*,*)&quot;interval2&quot;, id,  interval(2)</span>
+<span class="k">call </span><span class="n">MPI_Barrier</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span><span class="n">ierror</span><span class="p">)</span>
+  <span class="c">!! Make sure that all processes get here before</span>
+  <span class="c">!! moving forward</span>
+<span class="c">!max_k=floor(loglimit/gamma1/step1)</span>
+<span class="c">!max_l=floor(loglimit/gamma2/step1)</span>
+<span class="c">!interval_a = floor(loglimit/gamma1/step1*float(id)/float(nprocs))</span>
+<span class="c">!interval_b = floor(loglimit/gamma1/step1*float(id+1)/float(nprocs))-1</span>
+
+<span class="n">s3</span><span class="o">=</span><span class="mf">0.0d0</span>
+<span class="k">do </span><span class="n">j</span><span class="o">=</span><span class="n">interval</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+   <span class="k">if</span><span class="p">(</span><span class="n">id</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">      write</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">id</span><span class="p">,</span><span class="n">j</span>
+   <span class="n">endif</span>
+
+   <span class="n">s2</span> <span class="o">=</span> <span class="mf">0.0d0</span>
+   <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">step1</span>
+
+   <span class="k">do </span><span class="n">imode</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nmode</span>
+ 
+      <span class="n">omega_tmp</span><span class="o">=</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+        <span class="c">!! @todo Take this out of the loop @endtodo</span>
+      <span class="n">T1</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">=</span><span class="nb">cos</span><span class="p">(</span><span class="n">omega_tmp</span><span class="o">*</span><span class="n">x</span><span class="p">)</span><span class="o">+</span><span class="n">I</span><span class="o">*</span><span class="nb">sin</span><span class="p">(</span><span class="n">omega_tmp</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+ 
+   <span class="k">end do</span>
+<span class="k"> </span>
+<span class="k">   do </span><span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">loglimit</span><span class="o">/</span><span class="n">gamma1</span><span class="o">/</span><span class="n">step1</span><span class="p">)</span><span class="o">-</span><span class="n">j</span> 
+      <span class="c">!write(*,*)id,k,int(loglimit/gamma1/step1)-j</span>
+      <span class="n">s1</span> <span class="o">=</span> <span class="mf">0.0d0</span>
+      <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">step1</span>
+
+
+      <span class="n">zfactor</span> <span class="o">=</span> <span class="mf">1.0</span>
+      <span class="k">do </span><span class="n">imode</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nmode</span>
+         <span class="n">omega_tmp</span> <span class="o">=</span> <span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+          <span class="c">!! @todo Take this out of the loop @endtodo</span>
+         <span class="n">domega</span> <span class="o">=</span> <span class="n">omega_tmp</span>  <span class="o">-</span> <span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+         <span class="n">T3</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span> <span class="o">=</span> <span class="nb">cos</span><span class="p">(</span> <span class="n">omega_tmp</span><span class="o">*</span><span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span> <span class="o">*</span> <span class="nb">sin</span><span class="p">(</span><span class="n">omega_tmp</span><span class="o">*</span><span class="n">y</span><span class="p">)</span>
+         
+         <span class="n">tmp</span> <span class="o">=</span> <span class="n">factor</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>  
+         <span class="n">tmp1</span> <span class="o">=</span> <span class="n">tmp</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="n">domega</span> <span class="o">*</span> <span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> 
+         
+         <span class="n">zfactor1</span> <span class="o">=</span> <span class="nb">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">tmp1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span> <span class="nb">exp</span><span class="p">(</span><span class="n">tmp1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>        
+          <span class="c">!! Calculate the first fraction in equation 42</span>
+         <span class="n">zfactor2</span> <span class="o">=</span><span class="nb">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">tmp</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span> <span class="nb">exp</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>
+          <span class="c">!! @todo Figure out where `zfactor2` comes from</span>
+         <span class="n">zfactor</span> <span class="o">=</span> <span class="n">zfactor</span> <span class="o">*</span> <span class="n">zfactor1</span> <span class="o">/</span> <span class="n">zfactor2</span>
+          <span class="c">!! @todo Since multiple them, figure out why have `exp(0.5*tmp)` as it cancels @endtodo</span>
+
+
+         <span class="n">tmp</span> <span class="o">=</span> <span class="n">domega</span><span class="o">*</span><span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">tmp</span>
+         <span class="n">factor1</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span> <span class="o">=</span> <span class="nb">sin</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span><span class="o">/</span><span class="p">(</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">cos</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>  <span class="p">)</span>
+      <span class="n">enddo</span>
+  
+      
+              
+      
+
+      <span class="n">interval_b</span><span class="o">=</span><span class="nb">int</span><span class="p">((</span><span class="n">loglimit</span><span class="o">/</span><span class="n">step1</span><span class="o">-</span><span class="n">gamma1</span><span class="o">*</span><span class="n">j</span><span class="o">-</span><span class="n">gamma1</span><span class="o">*</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">gamma2</span><span class="p">)</span>
+<span class="c">!      interval_a=-interval_b</span>
+
+      <span class="k">do </span><span class="n">l</span><span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">interval_b</span><span class="c">!-max_l,max_l</span>
+         <span class="n">t</span><span class="o">=</span><span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span><span class="o">*</span><span class="n">step1</span>
+         <span class="n">tmp_exp</span><span class="o">=</span><span class="mf">0.0d0</span>
+ 
+         <span class="k">do </span><span class="n">imode</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nmode</span>
+            <span class="n">omega_tmp</span> <span class="o">=</span> <span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+
+            <span class="n">tmp_r1</span><span class="o">=-</span><span class="n">omega_tmp</span><span class="o">*</span><span class="n">t</span><span class="o">/</span><span class="n">tpi</span>
+            <span class="n">tmp_r1</span><span class="o">=</span><span class="p">(</span><span class="n">tmp_r1</span><span class="o">-</span><span class="nb">floor</span><span class="p">(</span><span class="n">tmp_r1</span><span class="p">))</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
+            <span class="n">tmp_i</span><span class="o">=</span><span class="nb">floor</span><span class="p">(</span><span class="n">tmp_r1</span><span class="p">)</span>
+            <span class="n">tmp_r2</span><span class="o">=</span><span class="n">tmp_r1</span><span class="o">-</span><span class="n">tmp_i</span>
+            <span class="n">T2</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">tmp_r2</span><span class="p">)</span><span class="o">*</span><span class="n">ex1</span><span class="p">(</span><span class="n">tmp_i</span><span class="p">)</span><span class="o">+</span><span class="n">tmp_r2</span><span class="o">*</span><span class="n">ex1</span><span class="p">(</span><span class="n">tmp_i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+              <span class="c">!! Use a linear interpolation for T2</span>
+
+            <span class="n">expForFj</span><span class="o">=-</span><span class="n">T2</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">T1</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">T3</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span><span class="o">-</span><span class="p">(</span><span class="n">T1</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">+</span><span class="n">T3</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span>
+              <span class="c">!! Calculate `expForFj`\( = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})\)</span>
+            <span class="n">Fj</span><span class="o">=</span><span class="nb">Aimag</span><span class="p">(</span><span class="n">expForFj</span><span class="p">)</span><span class="o">+</span><span class="n">factor1</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="kt">Real</span><span class="p">(</span><span class="mf">2.0d0</span><span class="o">+</span><span class="n">expForFj</span><span class="p">)</span>           
+            <span class="n">tmp_exp</span><span class="o">=</span><span class="n">tmp_exp</span><span class="o">+</span><span class="n">Fj</span><span class="o">*</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+         <span class="n">enddo</span>
+
+         <span class="n">s1</span><span class="p">(:)</span><span class="o">=</span><span class="n">s1</span><span class="p">(:)</span><span class="o">+</span><span class="nb">exp</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="n">tmp_exp</span><span class="o">-</span><span class="n">I</span><span class="o">*</span><span class="n">omega2</span><span class="p">(:)</span><span class="o">*</span><span class="n">t</span><span class="o">-</span><span class="n">gamma2</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+      <span class="k">end do</span>
+
+
+<span class="k">      </span><span class="n">s2</span><span class="p">(:)</span><span class="o">=</span><span class="n">s2</span><span class="p">(:)</span><span class="o">+</span><span class="n">s1</span><span class="p">(:)</span><span class="o">*</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="n">omega1</span><span class="o">+</span><span class="n">gamma1</span><span class="p">)</span><span class="o">*</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">zfactor</span>
+   <span class="k">end do</span>
+
+
+<span class="k">   </span><span class="n">s3</span><span class="p">(:)</span><span class="o">=</span><span class="n">s3</span><span class="p">(:)</span><span class="o">+</span><span class="n">s2</span><span class="p">(:)</span><span class="o">*</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="o">-</span><span class="n">I</span><span class="o">*</span><span class="n">omega1</span><span class="o">+</span><span class="n">gamma1</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+<span class="n">enddo</span>
+
+
+<span class="k">call </span><span class="n">MPI_Barrier</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span><span class="n">ierror</span><span class="p">)</span> 
+<span class="k">call </span><span class="n">MPI_Reduce</span><span class="p">(</span> <span class="n">s3</span><span class="p">,</span> <span class="n">global_sum</span><span class="p">,</span> <span class="n">eshift_num</span><span class="p">,</span> <span class="n">MPI_DOUBLE_COMPLEX</span><span class="p">,</span> <span class="n">MPI_SUM</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
+
+
+
+<span class="k">if</span><span class="p">(</span><span class="n">id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">  write</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s2">&quot;calculation finalized&quot;</span>
+  <span class="k">do </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">eshift_num</span> 
+     <span class="k">write</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">eshift</span><span class="p">(</span><span class="n">j</span><span class="p">),</span> <span class="n">eshift</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">mevtocm</span><span class="p">,</span> <span class="n">step1</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="kt">Real</span><span class="p">(</span><span class="n">global_sum</span><span class="p">(</span><span class="n">j</span><span class="p">))</span><span class="o">*</span><span class="mf">2.0</span>
+  <span class="k">end do</span>
+<span class="n">endif</span>
+<span class="k">call </span><span class="n">MPI_FINALIZE</span><span class="p">(</span><span class="n">ierror</span><span class="p">)</span>
+
+<span class="k">end program </span><span class="n">ramanIntensity</span>
+</pre></div>
+
+    </section>
+    
+    
+    </div>
+  </div>
+
+  
+    <hr>    
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+      <div class="row">
+        <div class="col-xs-6 col-md-4"><p>&copy; 2019 
+                                          </p></div>
+        <div class="col-xs-6 col-md-4 col-md-push-4">
+          <p class="text-right">
+            Documentation generated by 
+            <a href="https://github.com/cmacmackin/ford">FORD</a>
+            
+          </p>
+        </div>
+        <div class="col-xs-12 col-md-4 col-md-pull-4"><p class="text-center"> Raman Intensities was developed by </p></div>
+      </div>
+      <br>
+      </div> <!-- /container -->    
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+-->
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../js/ie10-viewport-bug-workaround.js"></script>
+
+    <!-- MathJax JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
+        jax: ['input/TeX','input/MathML','output/HTML-CSS'],
+        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
+      });
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+    <script src="../tipuesearch/tipuesearch_content.js"></script>
+    <script src="../tipuesearch/tipuesearch_set.js"></script>
+    <script src="../tipuesearch/tipuesearch.js"></script>
+    
+    
+  </body>
+</html>

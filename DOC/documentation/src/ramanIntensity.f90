@@ -5,7 +5,7 @@ module para
     !! Conversion factor from eV to J
   real(kind = dp), parameter :: hbar = 1.0545718d-34
     !! \(\bar{h}\)
-  real(kind = dp), parameter :: k = 1.38064852d-23
+  real(kind = dp), parameter :: kB = 1.38064852d-23
     !! Boltzmann constant
   real(kind = dp), parameter :: mev = 1.6021766d-22
     !! Conversion factor from meV to J
@@ -20,11 +20,11 @@ module para
     !! \(i\)
 end module
 
-program lsf
+program ramanIntensity
 use para
-implicit none
-!include "mpif.h"
 use mpi
+
+implicit none
 
 integer :: eshift_num
 integer :: ierror
@@ -51,7 +51,7 @@ integer :: tmp_i
 integer :: tmp_j
 
 real(kind = dp) :: beta
-  !! \(\beta = 1/kT\)
+  !! \(\beta = 1/k_{B}T\)
 real(kind = dp) :: count1
 real(kind = dp) :: domega
 real(kind = dp) :: elaser
@@ -75,6 +75,11 @@ real(kind = dp) :: tmp_r2
 real(kind = dp) :: x
 real(kind = dp) :: y
 
+complex(kind = dp) :: expForFj
+  !! An exponential form to more quickly
+  !! calculate \(F_j\)
+complex(kind = dp) :: Fj
+  !! Function \(F_j\) from equation 44
 complex(kind = dp) :: T2! T1,T3
 complex(kind = dp) :: tmp
 complex(kind = dp) :: tmp1
@@ -151,8 +156,8 @@ call MPI_Bcast( temperature, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
   !!  other processes
 
 
-beta=1/(k*temperature)
-  !! * Calculate \(\beta = 1/kT\)
+beta=1/(kB*temperature)
+  !! * Calculate \(\beta = 1/k_{B}T\)
 
 
 allocate(eshift(eshift_num), omega2(eshift_num), s1(eshift_num), s2(eshift_num), s3(eshift_num), global_sum(eshift_num))
@@ -333,9 +338,10 @@ do j=interval(1),interval(2)
             T2=(1.0-tmp_r2)*ex1(tmp_i)+tmp_r2*ex1(tmp_i+1)
               !! Use a linear interpolation for T2
 
-            tmp=-T2*(1-T1(imode))*(1-T3(imode))-(T1(imode)+T3(imode))
-            tmp1=Aimag(tmp)+factor1(imode)*Real(2.0d0+tmp)           
-            tmp_exp=tmp_exp+tmp1*phonon(imode,1)
+            expForFj=-T2*(1-T1(imode))*(1-T3(imode))-(T1(imode)+T3(imode))
+              !! Calculate `expForFj`\( = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})\)
+            Fj=Aimag(expForFj)+factor1(imode)*Real(2.0d0+expForFj)           
+            tmp_exp=tmp_exp+Fj*phonon(imode,1)
          enddo
 
          s1(:)=s1(:)+exp(I*tmp_exp-I*omega2(:)*t-gamma2*abs(t))
@@ -358,11 +364,11 @@ call MPI_Reduce( s3, global_sum, eshift_num, MPI_DOUBLE_COMPLEX, MPI_SUM, 0, MPI
 if(id == 0) then
   write(13,*)"calculation finalized"
   do j = 1, eshift_num 
-     write(13,*),eshift(j), eshift(j)*mevtocm, step1**3*Real(global_sum(j))*2.0
+     write(13,*) eshift(j), eshift(j)*mevtocm, step1**3*Real(global_sum(j))*2.0
   end do
 endif
 call MPI_FINALIZE(ierror)
 
-end program
+end program ramanIntensity
 
          
