@@ -339,8 +339,11 @@ do j=interval(1),interval(2)
               !! Use a linear interpolation for T2
 
             expForFj=-T2*(1-T1(imode))*(1-T3(imode))-(T1(imode)+T3(imode))
-              !! Calculate `expForFj`\( = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})\)
+              !! * Calculate `expForFj`\( = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})\).
+              !!   This is used as a trick to be able to calculate \(F_j\) quicker as the expontentials include both the
+              !!   sines and cosines needed 
             Fj=Aimag(expForFj)+factor1(imode)*Real(2.0d0+expForFj)           
+              !! * Calculate \(F_j = \text{Im}(\text{expForFj}) + \text{FjFractionFactor}\text{Re}(2 + \text{expForFj})\)
             tmp_exp=tmp_exp+Fj*phonon(imode,1)
          enddo
 
