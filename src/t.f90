@@ -325,11 +325,14 @@ do j=interval(1),interval(2)
  
          do imode=1,nmode
             omega_tmp = phonon(imode,2)
+
             tmp_r1=-omega_tmp*t/tpi
             tmp_r1=(tmp_r1-floor(tmp_r1))*float(n2)
             tmp_i=floor(tmp_r1)
             tmp_r2=tmp_r1-tmp_i
             T2=(1.0-tmp_r2)*ex1(tmp_i)+tmp_r2*ex1(tmp_i+1)
+              !! Use a linear interpolation for T2
+
             tmp=-T2*(1-T1(imode))*(1-T3(imode))-(T1(imode)+T3(imode))
             tmp1=Aimag(tmp)+factor1(imode)*Real(2.0d0+tmp)           
             tmp_exp=tmp_exp+tmp1*phonon(imode,1)
