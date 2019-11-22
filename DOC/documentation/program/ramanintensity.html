@@ -122,7 +122,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="100.0% of total for programs.">206 statements</a>
+    title="100.0% of total for programs.">204 statements</a>
      </li> 
      
      
@@ -223,8 +223,6 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-omega1">omega1</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-omega_tmp">omega_tmp</a>
-      
       <a class="list-group-item" href="../program/ramanintensity.html#variable-step1">step1</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-step2">step2</a>
@@ -275,7 +273,9 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-omega2">omega2</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-phonon">phonon</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-omega_j">omega_j</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-omega_nj">omega_nj</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-sj">Sj</a>
       
@@ -403,7 +403,8 @@
 <ul>
 <li>For each mode</li>
 <li>Read index (currently not being used), <script type="math/tex">S_j</script>,
-     and initial and final phonon frequencies</li>
+     <script type="math/tex">\omega_j</script>, and <script type="math/tex">\omega_{nj}</script>
+</li>
 <li>Divide the initial and final phonon frequencies by 100</li>
 <li>Calculate <script type="math/tex">\text{factor}=\hbar\omega\beta\text{phonon}(2)</script>
 </li>
@@ -422,7 +423,6 @@
  moving forward</p>
 <p>Integrate over <script type="math/tex">x</script>
 </p>
-<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Take this out of the loop </p></div>
 <p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Take this out of the loop </p></div>
 <p>Calculate the first fraction in equation 42
  </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out where <code>zfactor2</code> comes from</p></div><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Since multiple them, figure out why have <code>exp(0.5*tmp)</code> as it cancels </p></div>
@@ -519,8 +519,6 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-omega1">omega1</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-omega_tmp">omega_tmp</a>
-      
       <a class="list-group-item" href="../program/ramanintensity.html#variable-step1">step1</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-step2">step2</a>
@@ -571,7 +569,9 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-omega2">omega2</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-phonon">phonon</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-omega_j">omega_j</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-omega_nj">omega_nj</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-sj">Sj</a>
       
@@ -1059,20 +1059,6 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-omega_tmp"></span>real(kind=dp)</td>
-  
-  
-  <td></td><td>::</td>
-  <td><strong>omega_tmp</strong></td><td></td><td></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
   <td><span class="anchor" id="variable-step1"></span>real(kind=dp)</td>
   
   
@@ -1428,14 +1414,29 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-phonon"></span>real(kind=dp),</td>
+  <td><span class="anchor" id="variable-omega_j"></span>real(kind=dp),</td>
   
   
   <td>allocatable</td><td>::</td>
-  <td><strong>phonon</strong>(:,:)</td><td></td><td></td><td><p>
-<script type="math/tex">S_j</script> and initial and final frequency
- </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Change this to be separate variables </p></div>
-<p></td>
+  <td><strong>omega_j</strong>(:)</td><td></td><td></td><td><p>
+<script type="math/tex">\omega_j</script>
+</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-omega_nj"></span>real(kind=dp),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>omega_nj</strong>(:)</td><td></td><td></td><td><p>
+<script type="math/tex">\omega_{nj}</script>
+</p></td>
   
 </tr>
 
@@ -1641,7 +1642,6 @@
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">limit</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">omega</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">omega1</span>
-<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">omega_tmp</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">step1</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">step2</span>
   <span class="c">!! Step to go from 0 to \(\2\pi) in `n2` steps</span>
@@ -1679,9 +1679,10 @@
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">eshift</span><span class="p">(:)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">factor</span><span class="p">(:)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">omega2</span><span class="p">(:)</span>
-<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">phonon</span><span class="p">(:,:)</span>
-  <span class="c">!! \(S_j\) and initial and final frequency</span>
-  <span class="c">!! @todo Change this to be separate variables @endtodo</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">omega_j</span><span class="p">(:)</span>
+  <span class="c">!! \(\omega_j\)</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">omega_nj</span><span class="p">(:)</span>
+  <span class="c">!! \(\omega_{nj}\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">Sj</span><span class="p">(:)</span>
   <span class="c">!! \(S_j = \dfrac{\omega_j^2}{2\hbar}\delta q_j^2\)</span>
   <span class="c">!! Taken from input file</span>
@@ -1748,7 +1749,7 @@
 
 
 <span class="k">allocate</span><span class="p">(</span><span class="n">eshift</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">omega2</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s1</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s2</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s3</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">global_sum</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">))</span>
-<span class="k">allocate</span><span class="p">(</span><span class="n">Sj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">phonon</span><span class="p">(</span><span class="n">nmode</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">factor</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expX</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expY</span><span class="p">(</span><span class="n">nmode</span><span class="p">))</span>
+<span class="k">allocate</span><span class="p">(</span><span class="n">Sj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">factor</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expX</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expY</span><span class="p">(</span><span class="n">nmode</span><span class="p">))</span>
 <span class="k">allocate</span><span class="p">(</span><span class="n">ex1</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">count2</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
   <span class="c">!! * Allocate space for variables on all processes</span>
   <span class="c">!! @todo Figure out why `interval` and `count2` are allocatable @endtodo</span>
@@ -1766,7 +1767,7 @@
   <span class="c">!! * If root process</span>
   <span class="c">!!    * For each mode</span>
   <span class="c">!!       * Read index (currently not being used), \(S_j\),</span>
-  <span class="c">!!         and initial and final phonon frequencies</span>
+  <span class="c">!!         \(\omega_j\), and \(\omega_{nj}\)</span>
   <span class="c">!!       * Divide the initial and final phonon frequencies by 100</span>
   <span class="c">!!       * Calculate \(\text{factor}=\hbar\omega\beta\text{phonon}(2)\)</span>
   <span class="c">!!       * Calculate `FjFractionFactor`\(={\sin(-i\text{factor})}{1-\cos(-i\text{factor})}\)</span>
@@ -1774,14 +1775,14 @@
 
   <span class="k">do </span><span class="n">imode</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nmode</span>
      
-     <span class="k">read</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">j</span><span class="p">,</span><span class="n">Sj</span><span class="p">(</span><span class="n">imode</span><span class="p">),</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+     <span class="k">read</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">j</span><span class="p">,</span> <span class="n">Sj</span><span class="p">(</span><span class="n">imode</span><span class="p">),</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">),</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>
 
-     <span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">=</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="mf">0.0d0</span>
-     <span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">=</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="mf">0.0d0</span>     
+     <span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">=</span><span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="mf">0.0d0</span>
+     <span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">=</span><span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="mf">0.0d0</span>     
 
-     <span class="n">factor</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">=</span><span class="n">hbar</span><span class="o">*</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">omega</span><span class="o">*</span><span class="n">beta</span>
+     <span class="n">factor</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">=</span><span class="n">hbar</span><span class="o">*</span><span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">omega</span><span class="o">*</span><span class="n">beta</span>
       
-     <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">id</span><span class="p">,</span> <span class="n">Sj</span><span class="p">(</span><span class="n">imode</span><span class="p">),</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+     <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">id</span><span class="p">,</span> <span class="n">Sj</span><span class="p">(</span><span class="n">imode</span><span class="p">),</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">),</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>
 
   <span class="k">end do</span>
 <span class="k">  </span>
@@ -1797,7 +1798,8 @@
 <span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">elevel</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
 <span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">eshift</span><span class="p">,</span> <span class="n">eshift_num</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
 <span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">Sj</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
-<span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">phonon</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
+<span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">omega_j</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
+<span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">omega_nj</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
 <span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">factor</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span> 
 <span class="k">call </span><span class="n">MPI_Barrier</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span><span class="n">ierror</span><span class="p">)</span>
 
@@ -1870,9 +1872,7 @@
 
    <span class="k">do </span><span class="n">imode</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nmode</span>
  
-      <span class="n">omega_tmp</span><span class="o">=</span><span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-        <span class="c">!! @todo Take this out of the loop @endtodo</span>
-      <span class="n">expX</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">=</span><span class="nb">cos</span><span class="p">(</span><span class="n">omega_tmp</span><span class="o">*</span><span class="n">x</span><span class="p">)</span><span class="o">+</span><span class="n">I</span><span class="o">*</span><span class="nb">sin</span><span class="p">(</span><span class="n">omega_tmp</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+      <span class="n">expX</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">=</span><span class="nb">cos</span><span class="p">(</span><span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="p">)</span><span class="o">+</span><span class="n">I</span><span class="o">*</span><span class="nb">sin</span><span class="p">(</span><span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
  
    <span class="k">end do</span>
 <span class="k"> </span>
@@ -1884,10 +1884,9 @@
 
       <span class="n">zfactor</span> <span class="o">=</span> <span class="mf">1.0</span>
       <span class="k">do </span><span class="n">imode</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nmode</span>
-         <span class="n">omega_tmp</span> <span class="o">=</span> <span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
           <span class="c">!! @todo Take this out of the loop @endtodo</span>
-         <span class="n">domega</span> <span class="o">=</span> <span class="n">omega_tmp</span>  <span class="o">-</span> <span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-         <span class="n">expY</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span> <span class="o">=</span> <span class="nb">cos</span><span class="p">(</span> <span class="n">omega_tmp</span><span class="o">*</span><span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span> <span class="o">*</span> <span class="nb">sin</span><span class="p">(</span><span class="n">omega_tmp</span><span class="o">*</span><span class="n">y</span><span class="p">)</span>
+         <span class="n">domega</span> <span class="o">=</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>  <span class="o">-</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>
+         <span class="n">expY</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span> <span class="o">=</span> <span class="nb">cos</span><span class="p">(</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span> <span class="o">*</span> <span class="nb">sin</span><span class="p">(</span><span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">y</span><span class="p">)</span>
          
          <span class="n">tmp</span> <span class="o">=</span> <span class="n">factor</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>  
          <span class="n">tmp1</span> <span class="o">=</span> <span class="n">tmp</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="n">domega</span> <span class="o">*</span> <span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> 
@@ -1918,9 +1917,8 @@
          <span class="n">tmp_exp</span><span class="o">=</span><span class="mf">0.0d0</span>
  
          <span class="k">do </span><span class="n">imode</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nmode</span>
-            <span class="n">omega_tmp</span> <span class="o">=</span> <span class="n">phonon</span><span class="p">(</span><span class="n">imode</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 
-            <span class="n">tmp_r1</span><span class="o">=-</span><span class="n">omega_tmp</span><span class="o">*</span><span class="n">t</span><span class="o">/</span><span class="n">tpi</span>
+            <span class="n">tmp_r1</span><span class="o">=-</span><span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="o">/</span><span class="n">tpi</span>
             <span class="n">tmp_r1</span><span class="o">=</span><span class="p">(</span><span class="n">tmp_r1</span><span class="o">-</span><span class="nb">floor</span><span class="p">(</span><span class="n">tmp_r1</span><span class="p">))</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
             <span class="n">tmp_i</span><span class="o">=</span><span class="nb">floor</span><span class="p">(</span><span class="n">tmp_r1</span><span class="p">)</span>
             <span class="n">tmp_r2</span><span class="o">=</span><span class="n">tmp_r1</span><span class="o">-</span><span class="n">tmp_i</span>

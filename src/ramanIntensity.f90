@@ -64,7 +64,6 @@ real(kind = dp) :: loglimit
 real(kind = dp) :: limit
 real(kind = dp) :: omega
 real(kind = dp) :: omega1
-real(kind = dp) :: omega_tmp
 real(kind = dp) :: step1
 real(kind = dp) :: step2
   !! Step to go from 0 to \(\2\pi) in `n2` steps
@@ -102,9 +101,10 @@ real(kind = dp),allocatable :: count2(:)
 real(kind = dp), allocatable :: eshift(:)
 real(kind = dp),allocatable :: factor(:)
 real(kind = dp), allocatable :: omega2(:)
-real(kind = dp),allocatable :: phonon(:,:)
-  !! \(S_j\) and initial and final frequency
-  !! @todo Change this to be separate variables @endtodo
+real(kind = dp), allocatable :: omega_j(:)
+  !! \(\omega_j\)
+real(kind = dp), allocatable :: omega_nj(:)
+  !! \(\omega_{nj}\)
 real(kind = dp), allocatable :: Sj(:)
   !! \(S_j = \dfrac{\omega_j^2}{2\hbar}\delta q_j^2\)
   !! Taken from input file
@@ -171,7 +171,7 @@ beta=1/(kB*temperature)
 
 
 allocate(eshift(eshift_num), omega2(eshift_num), s1(eshift_num), s2(eshift_num), s3(eshift_num), global_sum(eshift_num))
-allocate(Sj(nmode), phonon(nmode,2), factor(nmode), FjFractionFactor(nmode), expX(nmode), expY(nmode))
+allocate(Sj(nmode), omega_j(nmode), omega_nj(nmode), factor(nmode), FjFractionFactor(nmode), expX(nmode), expY(nmode))
 allocate(ex1(0:n2+1), interval(2), count2(2))
   !! * Allocate space for variables on all processes
   !! @todo Figure out why `interval` and `count2` are allocatable @endtodo
@@ -189,7 +189,7 @@ if(id == 0) then
   !! * If root process
   !!    * For each mode
   !!       * Read index (currently not being used), \(S_j\),
-  !!         and initial and final phonon frequencies
+  !!         \(\omega_j\), and \(\omega_{nj}\)
   !!       * Divide the initial and final phonon frequencies by 100
   !!       * Calculate \(\text{factor}=\hbar\omega\beta\text{phonon}(2)\)
   !!       * Calculate `FjFractionFactor`\(={\sin(-i\text{factor})}{1-\cos(-i\text{factor})}\)
@@ -197,14 +197,14 @@ if(id == 0) then
 
   do imode=1,nmode
      
-     read(11,*)j,Sj(imode),phonon(imode,1), phonon(imode, 2)
+     read(11,*) j, Sj(imode), omega_j(imode), omega_nj(imode)
 
-     phonon(imode,1)=phonon(imode,1)/100.0d0
-     phonon(imode,2)=phonon(imode,2)/100.0d0     
+     omega_j(imode)=omega_j(imode)/100.0d0
+     omega_nj(imode)=omega_nj(imode)/100.0d0     
 
-     factor(imode)=hbar*phonon(imode,1)*omega*beta
+     factor(imode)=hbar*omega_j(imode)*omega*beta
       
-     write(*,*)id, Sj(imode),phonon(imode,1),phonon(imode,2)
+     write(*,*)id, Sj(imode), omega_j(imode), omega_nj(imode)
 
   end do
   
@@ -220,7 +220,8 @@ call MPI_Bcast( elaser, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( elevel, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( eshift, eshift_num, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( Sj, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
-call MPI_Bcast( phonon, 2*nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
+call MPI_Bcast( omega_j, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
+call MPI_Bcast( omega_nj, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( factor, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror) 
 call MPI_Barrier(MPI_COMM_WORLD,ierror)
 
@@ -293,9 +294,7 @@ do j=interval(1),interval(2)
 
    do imode=1,nmode
  
-      omega_tmp=phonon(imode,2)
-        !! @todo Take this out of the loop @endtodo
-      expX(imode)=cos(omega_tmp*x)+I*sin(omega_tmp*x)
+      expX(imode)=cos(omega_nj(imode)*x)+I*sin(omega_nj(imode)*x)
  
    end do
  
@@ -307,10 +306,9 @@ do j=interval(1),interval(2)
 
       zfactor = 1.0
       do imode=1,nmode
-         omega_tmp = phonon(imode,2)
           !! @todo Take this out of the loop @endtodo
-         domega = omega_tmp  - phonon(imode,1)
-         expY(imode) = cos( omega_tmp*y ) - I * sin(omega_tmp*y)
+         domega = omega_nj(imode)  - omega_j(imode)
+         expY(imode) = cos( omega_nj(imode)*y ) - I * sin(omega_nj(imode)*y)
          
          tmp = factor(imode)  
          tmp1 = tmp + I*domega * ( x - y ) 
@@ -341,9 +339,8 @@ do j=interval(1),interval(2)
          tmp_exp=0.0d0
  
          do imode=1,nmode
-            omega_tmp = phonon(imode,1)
 
-            tmp_r1=-omega_tmp*t/tpi
+            tmp_r1=-omega_j(imode)*t/tpi
             tmp_r1=(tmp_r1-floor(tmp_r1))*float(n2)
             tmp_i=floor(tmp_r1)
             tmp_r2=tmp_r1-tmp_i
