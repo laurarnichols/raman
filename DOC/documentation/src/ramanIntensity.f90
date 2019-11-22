@@ -78,9 +78,10 @@ real(kind = dp) :: y
 complex(kind = dp) :: expForFj
   !! An exponential form to more quickly
   !! calculate \(F_j\)
+complex(kind = dp) :: expT
+  !! \(e^{i\omega t}\) used in calculating \(F_j\)
 complex(kind = dp) :: Fj
   !! Function \(F_j\) from equation 44
-complex(kind = dp) :: T2
 complex(kind = dp) :: theta
   !! Serves as the argument for the fraction
   !! factor `FjFractionFactor`
@@ -104,6 +105,9 @@ real(kind = dp), allocatable :: omega2(:)
 real(kind = dp),allocatable :: phonon(:,:)
   !! \(S_j\) and initial and final frequency
   !! @todo Change this to be separate variables @endtodo
+real(kind = dp), allocatable :: Sj(:)
+  !! \(S_j = \dfrac{\omega_j^2}{2\hbar}\delta q_j^2\)
+  !! Taken from input file
 
 complex(kind = dp), allocatable :: ex1(:)
   !! \(e^{i\theta}\) where \(\theta\) goes from 0 to \(2\pi\)
@@ -167,7 +171,7 @@ beta=1/(kB*temperature)
 
 
 allocate(eshift(eshift_num), omega2(eshift_num), s1(eshift_num), s2(eshift_num), s3(eshift_num), global_sum(eshift_num))
-allocate(phonon(nmode,3), factor(nmode), FjFractionFactor(nmode), expX(nmode), expY(nmode))
+allocate(Sj(nmode), phonon(nmode,2), factor(nmode), FjFractionFactor(nmode), expX(nmode), expY(nmode))
 allocate(ex1(0:n2+1), interval(2), count2(2))
   !! * Allocate space for variables on all processes
   !! @todo Figure out why `interval` and `count2` are allocatable @endtodo
@@ -193,14 +197,14 @@ if(id == 0) then
 
   do imode=1,nmode
      
-     read(11,*)j,phonon(imode,1),phonon(imode,2), phonon(imode, 3)
+     read(11,*)j,Sj(imode),phonon(imode,1), phonon(imode, 2)
 
-     phonon(imode,2)=phonon(imode,2)/100.0d0
-     phonon(imode,3)=phonon(imode,3)/100.0d0     
+     phonon(imode,1)=phonon(imode,1)/100.0d0
+     phonon(imode,2)=phonon(imode,2)/100.0d0     
 
-     factor(imode)=hbar*phonon(imode,2)*omega*beta
+     factor(imode)=hbar*phonon(imode,1)*omega*beta
       
-     write(*,*)id, phonon(imode,1),phonon(imode,2),phonon(imode,3)
+     write(*,*)id, Sj(imode),phonon(imode,1),phonon(imode,2)
 
   end do
   
@@ -215,7 +219,8 @@ call MPI_Bcast( gamma2, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( elaser, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( elevel, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( eshift, eshift_num, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
-call MPI_Bcast( phonon, 3*nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
+call MPI_Bcast( Sj, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
+call MPI_Bcast( phonon, 2*nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( factor, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror) 
 call MPI_Barrier(MPI_COMM_WORLD,ierror)
 
@@ -288,7 +293,7 @@ do j=interval(1),interval(2)
 
    do imode=1,nmode
  
-      omega_tmp=phonon(imode,3)
+      omega_tmp=phonon(imode,2)
         !! @todo Take this out of the loop @endtodo
       expX(imode)=cos(omega_tmp*x)+I*sin(omega_tmp*x)
  
@@ -302,9 +307,9 @@ do j=interval(1),interval(2)
 
       zfactor = 1.0
       do imode=1,nmode
-         omega_tmp = phonon(imode,3)
+         omega_tmp = phonon(imode,2)
           !! @todo Take this out of the loop @endtodo
-         domega = omega_tmp  - phonon(imode,2)
+         domega = omega_tmp  - phonon(imode,1)
          expY(imode) = cos( omega_tmp*y ) - I * sin(omega_tmp*y)
          
          tmp = factor(imode)  
@@ -336,23 +341,23 @@ do j=interval(1),interval(2)
          tmp_exp=0.0d0
  
          do imode=1,nmode
-            omega_tmp = phonon(imode,2)
+            omega_tmp = phonon(imode,1)
 
             tmp_r1=-omega_tmp*t/tpi
             tmp_r1=(tmp_r1-floor(tmp_r1))*float(n2)
             tmp_i=floor(tmp_r1)
             tmp_r2=tmp_r1-tmp_i
-            T2=(1.0-tmp_r2)*ex1(tmp_i)+tmp_r2*ex1(tmp_i+1)
-              !! Use a linear interpolation for T2
+            expT=(1.0-tmp_r2)*ex1(tmp_i)+tmp_r2*ex1(tmp_i+1)
+              !! Use a linear interpolation for \(e^{i\omega t}\)
 
-            expForFj=-T2*(1-expX(imode))*(1-expY(imode))-(expX(imode)+expY(imode))
+            expForFj=-expT*(1-expX(imode))*(1-expY(imode))-(expX(imode)+expY(imode))
               !! * Calculate `expForFj`\( = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})\).
               !!   This is used as a trick to be able to calculate \(F_j\) quicker as the expontentials include both the
               !!   sines and cosines needed 
             Fj=Aimag(expForFj)+FjFractionFactor(imode)*Real(2.0d0+expForFj)           
               !! * Calculate \(F_j = \text{Im}(\)`expForFj`\() + \)`FjFractionFactor`\(\text{Re}(2 + \)`expForFj`\()\)
               !! @todo Add detailed derivation of this in a separate page @endtodo
-            tmp_exp=tmp_exp+Fj*phonon(imode,1)
+            tmp_exp=tmp_exp+Fj*Sj(imode)
          enddo
 
          s1(:)=s1(:)+exp(I*tmp_exp-I*omega2(:)*t-gamma2*abs(t))
