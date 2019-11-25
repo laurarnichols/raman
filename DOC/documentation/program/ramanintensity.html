@@ -245,9 +245,9 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-fj">Fj</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-theta">theta</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-hbaromegabeta_tmp">hbarOmegaBeta_tmp</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp">tmp</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-theta">theta</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp1">tmp1</a>
       
@@ -267,9 +267,9 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-count2">count2</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-eshift">eshift</a>
-      
       <a class="list-group-item" href="../program/ramanintensity.html#variable-hbaromegabeta">hbarOmegaBeta</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-eshift">eshift</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-omega2">omega2</a>
       
@@ -425,6 +425,8 @@
  moving forward</p>
 <p>Integrate over <script type="math/tex">x</script>
 </p>
+<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out exponentials for <script type="math/tex">F_j</script> use <script type="math/tex">\omega_{nj}</script> </p></div>
+<p>
 <p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Take this out of the loop </p></div>
 <p>Calculate the first fraction in equation 42
  </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out where <code>zfactor2</code> comes from</p></div><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Since multiple them, figure out why have <code>exp(0.5*tmp)</code> as it cancels </p></div>
@@ -543,9 +545,9 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-fj">Fj</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-theta">theta</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-hbaromegabeta_tmp">hbarOmegaBeta_tmp</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp">tmp</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-theta">theta</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp1">tmp1</a>
       
@@ -565,9 +567,9 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-count2">count2</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-eshift">eshift</a>
-      
       <a class="list-group-item" href="../program/ramanintensity.html#variable-hbaromegabeta">hbarOmegaBeta</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-eshift">eshift</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-omega2">omega2</a>
       
@@ -1219,12 +1221,11 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-theta"></span>complex(kind=dp)</td>
+  <td><span class="anchor" id="variable-hbaromegabeta_tmp"></span>complex(kind=dp)</td>
   
   
   <td></td><td>::</td>
-  <td><strong>theta</strong></td><td></td><td></td><td><p>Serves as the argument for the fraction
- factor <code>FjFractionFactor</code></p></td>
+  <td><strong>hbarOmegaBeta_tmp</strong></td><td></td><td></td><td><p>Temporary hbarOmegaBeta argument</p></td>
   
 </tr>
 
@@ -1234,11 +1235,12 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-tmp"></span>complex(kind=dp)</td>
+  <td><span class="anchor" id="variable-theta"></span>complex(kind=dp)</td>
   
   
   <td></td><td>::</td>
-  <td><strong>tmp</strong></td><td></td><td></td><td></td>
+  <td><strong>theta</strong></td><td></td><td></td><td><p>Serves as the argument for the fraction
+ factor <code>FjFractionFactor</code></p></td>
   
 </tr>
 
@@ -1374,11 +1376,11 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-eshift"></span>real(kind=dp),</td>
+  <td><span class="anchor" id="variable-hbaromegabeta"></span>real(kind=dp),</td>
   
   
   <td>allocatable</td><td>::</td>
-  <td><strong>eshift</strong>(:)</td><td></td><td></td><td></td>
+  <td><strong>hbarOmegaBeta</strong>(:)</td><td></td><td></td><td></td>
   
 </tr>
 
@@ -1388,11 +1390,11 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-hbaromegabeta"></span>real(kind=dp),</td>
+  <td><span class="anchor" id="variable-eshift"></span>real(kind=dp),</td>
   
   
   <td>allocatable</td><td>::</td>
-  <td><strong>hbarOmegaBeta</strong>(:)</td><td></td><td></td><td></td>
+  <td><strong>eshift</strong>(:)</td><td></td><td></td><td></td>
   
 </tr>
 
@@ -1661,10 +1663,11 @@
   <span class="c">!! \(e^{i\omega t}\) used in calculating \(F_j\)</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">Fj</span>
   <span class="c">!! Function \(F_j\) from equation 44</span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">hbarOmegaBeta_tmp</span>
+  <span class="c">!! Temporary hbarOmegaBeta argument</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">theta</span>
   <span class="c">!! Serves as the argument for the fraction</span>
   <span class="c">!! factor `FjFractionFactor`</span>
-<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp1</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp_exp</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">zfactor</span>
@@ -1678,8 +1681,8 @@
 <span class="kt">integer</span><span class="p">,</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">interval</span><span class="p">(:)</span>
 
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">count2</span><span class="p">(:)</span>
-<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">eshift</span><span class="p">(:)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">hbarOmegaBeta</span><span class="p">(:)</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">eshift</span><span class="p">(:)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">omega2</span><span class="p">(:)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">omega_j</span><span class="p">(:)</span>
   <span class="c">!! \(\omega_j\)</span>
@@ -1877,6 +1880,7 @@
    <span class="k">do </span><span class="n">imode</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nmode</span>
  
       <span class="n">expX</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">=</span><span class="nb">cos</span><span class="p">(</span><span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="p">)</span><span class="o">+</span><span class="n">I</span><span class="o">*</span><span class="nb">sin</span><span class="p">(</span><span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+        <span class="c">!! @todo Figure out exponentials for \(F_j\) use \(\omega_{nj}\) @endtodo</span>
  
    <span class="k">end do</span>
 <span class="k"> </span>
@@ -1892,12 +1896,12 @@
          <span class="n">domega</span> <span class="o">=</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>  <span class="o">-</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>
          <span class="n">expY</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span> <span class="o">=</span> <span class="nb">cos</span><span class="p">(</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span> <span class="o">*</span> <span class="nb">sin</span><span class="p">(</span><span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">y</span><span class="p">)</span>
          
-         <span class="n">tmp</span> <span class="o">=</span> <span class="n">hbarOmegaBeta</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>  
-         <span class="n">tmp1</span> <span class="o">=</span> <span class="n">tmp</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="n">domega</span> <span class="o">*</span> <span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> 
+         <span class="n">hbarOmegaBeta_tmp</span> <span class="o">=</span> <span class="n">hbarOmegaBeta</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>  
+         <span class="n">tmp1</span> <span class="o">=</span> <span class="n">hbarOmegaBeta_tmp</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="n">domega</span> <span class="o">*</span> <span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> 
          
          <span class="n">zfactor1</span> <span class="o">=</span> <span class="nb">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">tmp1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span> <span class="nb">exp</span><span class="p">(</span><span class="n">tmp1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>        
           <span class="c">!! Calculate the first fraction in equation 42</span>
-         <span class="n">zfactor2</span> <span class="o">=</span><span class="nb">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">tmp</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span> <span class="nb">exp</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>
+         <span class="n">zfactor2</span> <span class="o">=</span><span class="nb">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">hbarOmegaBeta_tmp</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span> <span class="nb">exp</span><span class="p">(</span><span class="n">hbarOmegaBeta_tmp</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>
           <span class="c">!! @todo Figure out where `zfactor2` comes from</span>
          <span class="n">zfactor</span> <span class="o">=</span> <span class="n">zfactor</span> <span class="o">*</span> <span class="n">zfactor1</span> <span class="o">/</span> <span class="n">zfactor2</span>
           <span class="c">!! @todo Since multiple them, figure out why have `exp(0.5*tmp)` as it cancels @endtodo</span>

@@ -81,10 +81,11 @@ complex(kind = dp) :: expT
   !! \(e^{i\omega t}\) used in calculating \(F_j\)
 complex(kind = dp) :: Fj
   !! Function \(F_j\) from equation 44
+complex(kind = dp) :: hbarOmegaBeta_tmp
+  !! Temporary hbarOmegaBeta argument
 complex(kind = dp) :: theta
   !! Serves as the argument for the fraction
   !! factor `FjFractionFactor`
-complex(kind = dp) :: tmp
 complex(kind = dp) :: tmp1
 complex(kind = dp) :: tmp_exp
 complex(kind = dp) :: zfactor
@@ -98,8 +99,8 @@ character(len = 256) :: dummy
 integer,allocatable :: interval(:)
 
 real(kind = dp),allocatable :: count2(:)
-real(kind = dp), allocatable :: eshift(:)
 real(kind = dp),allocatable :: hbarOmegaBeta(:)
+real(kind = dp), allocatable :: eshift(:)
 real(kind = dp), allocatable :: omega2(:)
 real(kind = dp), allocatable :: omega_j(:)
   !! \(\omega_j\)
@@ -297,6 +298,7 @@ do j=interval(1),interval(2)
    do imode=1,nmode
  
       expX(imode)=cos(omega_nj(imode)*x)+I*sin(omega_nj(imode)*x)
+        !! @todo Figure out exponentials for \(F_j\) use \(\omega_{nj}\) @endtodo
  
    end do
  
@@ -312,12 +314,12 @@ do j=interval(1),interval(2)
          domega = omega_nj(imode)  - omega_j(imode)
          expY(imode) = cos( omega_nj(imode)*y ) - I * sin(omega_nj(imode)*y)
          
-         tmp = hbarOmegaBeta(imode)  
-         tmp1 = tmp + I*domega * ( x - y ) 
+         hbarOmegaBeta_tmp = hbarOmegaBeta(imode)  
+         tmp1 = hbarOmegaBeta_tmp + I*domega * ( x - y ) 
          
          zfactor1 = exp(0.5*tmp1) / ( exp(tmp1) - 1 )        
           !! Calculate the first fraction in equation 42
-         zfactor2 =exp(0.5*tmp) / ( exp(tmp) - 1 )
+         zfactor2 =exp(0.5*hbarOmegaBeta_tmp) / ( exp(hbarOmegaBeta_tmp) - 1 )
           !! @todo Figure out where `zfactor2` comes from
          zfactor = zfactor * zfactor1 / zfactor2
           !! @todo Since multiple them, figure out why have `exp(0.5*tmp)` as it cancels @endtodo
