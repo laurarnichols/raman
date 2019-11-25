@@ -89,7 +89,6 @@ complex(kind = dp) :: tmp1
 complex(kind = dp) :: tmp_exp
 complex(kind = dp) :: zfactor
 complex(kind = dp) :: zfactor1
-complex(kind = dp) :: zfactor2 
 
 character(len = 256) :: Inputfile
   !! Input file name
@@ -123,6 +122,7 @@ complex(kind = dp), allocatable :: global_sum(:)
 complex(kind = dp), allocatable :: s1(:)
 complex(kind = dp), allocatable :: s2(:)
 complex(kind = dp), allocatable :: s3(:)
+complex(kind = dp), allocatable :: zfactor2(:)
 
 
 
@@ -174,7 +174,7 @@ beta=1/(kB*temperature)
 
 allocate(eshift(eshift_num), omega2(eshift_num), s1(eshift_num), s2(eshift_num), s3(eshift_num), global_sum(eshift_num))
 allocate(Sj(nmode), omega_j(nmode), omega_nj(nmode), hbarOmegaBeta(nmode), FjFractionFactor(nmode), expX(nmode), expY(nmode))
-allocate(domega(nmode), ex1(0:n2+1), interval(2), count2(2))
+allocate(domega(nmode), zfactor2(nmode), ex1(0:n2+1), interval(2), count2(2))
   !! * Allocate space for variables on all processes
 
 step2=tpi/float(n2)
@@ -319,11 +319,11 @@ do j=interval(1),interval(2)
           !! Calculate the first fraction in equation 42
           !! @todo Make `zfactor1` an array @endtodo
           !! @todo Move this out of the loop @endtodo
-         zfactor2 =exp(0.5*hbarOmegaBeta_tmp) / ( exp(hbarOmegaBeta_tmp) - 1 )
-          !! @todo Figure out where `zfactor2` comes from
+         zfactor2(imode) =exp(0.5*hbarOmegaBeta_tmp) / ( exp(hbarOmegaBeta_tmp) - 1 )
+          !! @todo Figure out where `zfactor2` comes from @endtodo
           !! @todo Make `zfactor2` an array @endtodo
           !! @todo Move this out of the loop @endtodo
-         zfactor = zfactor * zfactor1 / zfactor2
+         zfactor = zfactor * zfactor1 / zfactor2(imode)
           !! @todo Since multiple them, figure out why have `exp(0.5*tmp)` as it cancels @endtodo
 
 
