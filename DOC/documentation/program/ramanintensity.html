@@ -427,15 +427,23 @@
 </p>
 <p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out exponentials for <script type="math/tex">F_j</script> use <script type="math/tex">\omega_{nj}</script> </p></div>
 <p>
+<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Make <code>domega</code> an array </p></div>
 <p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Take this out of the loop </p></div>
+<p>
 <p>Calculate the first fraction in equation 42
- </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out where <code>zfactor2</code> comes from</p></div><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Since multiple them, figure out why have <code>exp(0.5*tmp)</code> as it cancels </p></div>
+ </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Make <code>zfactor1</code> an array </p></div>
+<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Move this out of the loop </p></div>
+<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out where <code>zfactor2</code> comes from</p></div><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Make <code>zfactor2</code> an array </p></div>
+<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Move this out of the loop </p></div>
+<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Since multiple them, figure out why have <code>exp(0.5*tmp)</code> as it cancels </p></div>
 <p>
 <ul>
 <li>
 <p>Calculate the fractional factor in front of the cosines in
    <script type="math/tex">F_j</script>
- Use a linear interpolation for <script type="math/tex">e^{i\omega t}</script>
+ </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Make theta an array </p></div>
+<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Move this out of the loop </p></div>
+<p>Use a linear interpolation for <script type="math/tex">e^{i\omega t}</script>
 </p>
 </li>
 <li>
@@ -1885,29 +1893,36 @@
       <span class="c">!write(*,*)id,k,int(loglimit/gamma1/step1)-j</span>
       <span class="n">s1</span> <span class="o">=</span> <span class="mf">0.0d0</span>
       <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">step1</span>
-
+      
+      <span class="n">expY</span><span class="p">(:)</span> <span class="o">=</span> <span class="nb">cos</span><span class="p">(</span> <span class="n">omega_nj</span><span class="p">(:)</span><span class="o">*</span><span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span> <span class="o">*</span> <span class="nb">sin</span><span class="p">(</span><span class="n">omega_nj</span><span class="p">(:)</span><span class="o">*</span><span class="n">y</span><span class="p">)</span>
 
       <span class="n">zfactor</span> <span class="o">=</span> <span class="mf">1.0</span>
       <span class="k">do </span><span class="n">imode</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nmode</span>
-          <span class="c">!! @todo Take this out of the loop @endtodo</span>
          <span class="n">domega</span> <span class="o">=</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>  <span class="o">-</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>
-         <span class="n">expY</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span> <span class="o">=</span> <span class="nb">cos</span><span class="p">(</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span> <span class="o">*</span> <span class="nb">sin</span><span class="p">(</span><span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">y</span><span class="p">)</span>
+          <span class="c">!! @todo Make `domega` an array @endtodo</span>
+          <span class="c">!! @todo Take this out of the loop @endtodo</span>
          
          <span class="n">hbarOmegaBeta_tmp</span> <span class="o">=</span> <span class="n">hbarOmegaBeta</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>  
          <span class="n">tmp1</span> <span class="o">=</span> <span class="n">hbarOmegaBeta_tmp</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="n">domega</span> <span class="o">*</span> <span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> 
          
          <span class="n">zfactor1</span> <span class="o">=</span> <span class="nb">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">tmp1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span> <span class="nb">exp</span><span class="p">(</span><span class="n">tmp1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>        
           <span class="c">!! Calculate the first fraction in equation 42</span>
+          <span class="c">!! @todo Make `zfactor1` an array @endtodo</span>
+          <span class="c">!! @todo Move this out of the loop @endtodo</span>
          <span class="n">zfactor2</span> <span class="o">=</span><span class="nb">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">hbarOmegaBeta_tmp</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span> <span class="nb">exp</span><span class="p">(</span><span class="n">hbarOmegaBeta_tmp</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>
           <span class="c">!! @todo Figure out where `zfactor2` comes from</span>
+          <span class="c">!! @todo Make `zfactor2` an array @endtodo</span>
+          <span class="c">!! @todo Move this out of the loop @endtodo</span>
          <span class="n">zfactor</span> <span class="o">=</span> <span class="n">zfactor</span> <span class="o">*</span> <span class="n">zfactor1</span> <span class="o">/</span> <span class="n">zfactor2</span>
           <span class="c">!! @todo Since multiple them, figure out why have `exp(0.5*tmp)` as it cancels @endtodo</span>
 
 
-         <span class="n">theta</span> <span class="o">=</span> <span class="n">domega</span><span class="o">*</span><span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">theta</span>
+         <span class="n">theta</span> <span class="o">=</span> <span class="n">domega</span><span class="o">*</span><span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">hbarOmegaBeta_tmp</span>
          <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span> <span class="o">=</span> <span class="nb">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">/</span><span class="p">(</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>  <span class="p">)</span>
           <span class="c">!! * Calculate the fractional factor in front of the cosines in</span>
           <span class="c">!!   \(F_j\)</span>
+          <span class="c">!! @todo Make theta an array @endtodo</span>
+          <span class="c">!! @todo Move this out of the loop @endtodo</span>
       <span class="n">enddo</span>
   
       

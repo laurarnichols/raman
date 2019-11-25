@@ -303,29 +303,36 @@ do j=interval(1),interval(2)
       !write(*,*)id,k,int(loglimit/gamma1/step1)-j
       s1 = 0.0d0
       y = (k+0.5) * step1
-
+      
+      expY(:) = cos( omega_nj(:)*y ) - I * sin(omega_nj(:)*y)
 
       zfactor = 1.0
       do imode=1,nmode
-          !! @todo Take this out of the loop @endtodo
          domega = omega_nj(imode)  - omega_j(imode)
-         expY(imode) = cos( omega_nj(imode)*y ) - I * sin(omega_nj(imode)*y)
+          !! @todo Make `domega` an array @endtodo
+          !! @todo Take this out of the loop @endtodo
          
          hbarOmegaBeta_tmp = hbarOmegaBeta(imode)  
          tmp1 = hbarOmegaBeta_tmp + I*domega * ( x - y ) 
          
          zfactor1 = exp(0.5*tmp1) / ( exp(tmp1) - 1 )        
           !! Calculate the first fraction in equation 42
+          !! @todo Make `zfactor1` an array @endtodo
+          !! @todo Move this out of the loop @endtodo
          zfactor2 =exp(0.5*hbarOmegaBeta_tmp) / ( exp(hbarOmegaBeta_tmp) - 1 )
           !! @todo Figure out where `zfactor2` comes from
+          !! @todo Make `zfactor2` an array @endtodo
+          !! @todo Move this out of the loop @endtodo
          zfactor = zfactor * zfactor1 / zfactor2
           !! @todo Since multiple them, figure out why have `exp(0.5*tmp)` as it cancels @endtodo
 
 
-         theta = domega*( x - y ) - I*theta
+         theta = domega*( x - y ) - I*hbarOmegaBeta_tmp
          FjFractionFactor(imode) = sin(theta)/( 1 - cos(theta)  )
           !! * Calculate the fractional factor in front of the cosines in
           !!   \(F_j\)
+          !! @todo Make theta an array @endtodo
+          !! @todo Move this out of the loop @endtodo
       enddo
   
       
