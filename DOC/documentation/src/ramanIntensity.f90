@@ -53,7 +53,6 @@ integer :: tmp_j
 real(kind = dp) :: beta
   !! \(\beta = 1/k_{B}T\)
 real(kind = dp) :: count1
-real(kind = dp) :: domega
 real(kind = dp) :: elaser
   !! \(E_L\)
 real(kind = dp) :: elevel
@@ -98,8 +97,10 @@ character(len = 256) :: dummy
 
 integer,allocatable :: interval(:)
 
-real(kind = dp),allocatable :: count2(:)
-real(kind = dp),allocatable :: hbarOmegaBeta(:)
+real(kind = dp), allocatable :: count2(:)
+real(kind = dp), allocatable :: hbarOmegaBeta(:)
+real(kind = dp), allocatable :: domega(:)
+  !! \(\delta\omega_{nj} = \omega_{nj} - \omega_j\)
 real(kind = dp), allocatable :: eshift(:)
 real(kind = dp), allocatable :: omega2(:)
 real(kind = dp), allocatable :: omega_j(:)
@@ -173,7 +174,7 @@ beta=1/(kB*temperature)
 
 allocate(eshift(eshift_num), omega2(eshift_num), s1(eshift_num), s2(eshift_num), s3(eshift_num), global_sum(eshift_num))
 allocate(Sj(nmode), omega_j(nmode), omega_nj(nmode), hbarOmegaBeta(nmode), FjFractionFactor(nmode), expX(nmode), expY(nmode))
-allocate(ex1(0:n2+1), interval(2), count2(2))
+allocate(domega(nmode), ex1(0:n2+1), interval(2), count2(2))
   !! * Allocate space for variables on all processes
 
 step2=tpi/float(n2)
@@ -308,12 +309,12 @@ do j=interval(1),interval(2)
 
       zfactor = 1.0
       do imode=1,nmode
-         domega = omega_nj(imode)  - omega_j(imode)
+         domega(:) = omega_nj(imode)  - omega_j(imode)
           !! @todo Make `domega` an array @endtodo
           !! @todo Take this out of the loop @endtodo
          
          hbarOmegaBeta_tmp = hbarOmegaBeta(imode)  
-         tmp1 = hbarOmegaBeta_tmp + I*domega * ( x - y ) 
+         tmp1 = hbarOmegaBeta_tmp + I*domega(imode) * ( x - y ) 
          
          zfactor1 = exp(0.5*tmp1) / ( exp(tmp1) - 1 )        
           !! Calculate the first fraction in equation 42
@@ -327,7 +328,7 @@ do j=interval(1),interval(2)
           !! @todo Since multiple them, figure out why have `exp(0.5*tmp)` as it cancels @endtodo
 
 
-         theta = domega*( x - y ) - I*hbarOmegaBeta_tmp
+         theta = domega(imode)*( x - y ) - I*hbarOmegaBeta_tmp
          FjFractionFactor(imode) = sin(theta)/( 1 - cos(theta)  )
           !! * Calculate the fractional factor in front of the cosines in
           !!   \(F_j\)

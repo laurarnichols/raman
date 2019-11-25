@@ -205,8 +205,6 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-count1">count1</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-domega">domega</a>
-      
       <a class="list-group-item" href="../program/ramanintensity.html#variable-elaser">elaser</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-elevel">elevel</a>
@@ -268,6 +266,8 @@
       <a class="list-group-item" href="../program/ramanintensity.html#variable-count2">count2</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-hbaromegabeta">hbarOmegaBeta</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-domega">domega</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-eshift">eshift</a>
       
@@ -513,8 +513,6 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-count1">count1</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-domega">domega</a>
-      
       <a class="list-group-item" href="../program/ramanintensity.html#variable-elaser">elaser</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-elevel">elevel</a>
@@ -576,6 +574,8 @@
       <a class="list-group-item" href="../program/ramanintensity.html#variable-count2">count2</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-hbaromegabeta">hbarOmegaBeta</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-domega">domega</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-eshift">eshift</a>
       
@@ -932,20 +932,6 @@
   
   <td></td><td>::</td>
   <td><strong>count1</strong></td><td></td><td></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-domega"></span>real(kind=dp)</td>
-  
-  
-  <td></td><td>::</td>
-  <td><strong>domega</strong></td><td></td><td></td><td></td>
   
 </tr>
 
@@ -1398,6 +1384,22 @@
   
 <tr>
   
+  <td><span class="anchor" id="variable-domega"></span>real(kind=dp),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>domega</strong>(:)</td><td></td><td></td><td><p>
+<script type="math/tex">\delta\omega_{nj} = \omega_{nj} - \omega_j</script>
+</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
   <td><span class="anchor" id="variable-eshift"></span>real(kind=dp),</td>
   
   
@@ -1643,7 +1645,6 @@
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">beta</span>
   <span class="c">!! \(\beta = 1/k_{B}T\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">count1</span>
-<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">domega</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">elaser</span>
   <span class="c">!! \(E_L\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">elevel</span>
@@ -1688,8 +1689,10 @@
 
 <span class="kt">integer</span><span class="p">,</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">interval</span><span class="p">(:)</span>
 
-<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">count2</span><span class="p">(:)</span>
-<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">hbarOmegaBeta</span><span class="p">(:)</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">count2</span><span class="p">(:)</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">hbarOmegaBeta</span><span class="p">(:)</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">domega</span><span class="p">(:)</span>
+  <span class="c">!! \(\delta\omega_{nj} = \omega_{nj} - \omega_j\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">eshift</span><span class="p">(:)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">omega2</span><span class="p">(:)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">omega_j</span><span class="p">(:)</span>
@@ -1763,7 +1766,7 @@
 
 <span class="k">allocate</span><span class="p">(</span><span class="n">eshift</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">omega2</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s1</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s2</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s3</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">global_sum</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">))</span>
 <span class="k">allocate</span><span class="p">(</span><span class="n">Sj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">hbarOmegaBeta</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expX</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expY</span><span class="p">(</span><span class="n">nmode</span><span class="p">))</span>
-<span class="k">allocate</span><span class="p">(</span><span class="n">ex1</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">count2</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="k">allocate</span><span class="p">(</span><span class="n">domega</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">ex1</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">count2</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
   <span class="c">!! * Allocate space for variables on all processes</span>
 
 <span class="n">step2</span><span class="o">=</span><span class="n">tpi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
@@ -1898,12 +1901,12 @@
 
       <span class="n">zfactor</span> <span class="o">=</span> <span class="mf">1.0</span>
       <span class="k">do </span><span class="n">imode</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nmode</span>
-         <span class="n">domega</span> <span class="o">=</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>  <span class="o">-</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>
+         <span class="n">domega</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>  <span class="o">-</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>
           <span class="c">!! @todo Make `domega` an array @endtodo</span>
           <span class="c">!! @todo Take this out of the loop @endtodo</span>
          
          <span class="n">hbarOmegaBeta_tmp</span> <span class="o">=</span> <span class="n">hbarOmegaBeta</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>  
-         <span class="n">tmp1</span> <span class="o">=</span> <span class="n">hbarOmegaBeta_tmp</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="n">domega</span> <span class="o">*</span> <span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> 
+         <span class="n">tmp1</span> <span class="o">=</span> <span class="n">hbarOmegaBeta_tmp</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="n">domega</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> 
          
          <span class="n">zfactor1</span> <span class="o">=</span> <span class="nb">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">tmp1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span> <span class="nb">exp</span><span class="p">(</span><span class="n">tmp1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>        
           <span class="c">!! Calculate the first fraction in equation 42</span>
@@ -1917,7 +1920,7 @@
           <span class="c">!! @todo Since multiple them, figure out why have `exp(0.5*tmp)` as it cancels @endtodo</span>
 
 
-         <span class="n">theta</span> <span class="o">=</span> <span class="n">domega</span><span class="o">*</span><span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">hbarOmegaBeta_tmp</span>
+         <span class="n">theta</span> <span class="o">=</span> <span class="n">domega</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">hbarOmegaBeta_tmp</span>
          <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span> <span class="o">=</span> <span class="nb">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">/</span><span class="p">(</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>  <span class="p">)</span>
           <span class="c">!! * Calculate the fractional factor in front of the cosines in</span>
           <span class="c">!!   \(F_j\)</span>
