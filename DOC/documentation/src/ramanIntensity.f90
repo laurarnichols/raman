@@ -307,11 +307,10 @@ do j=interval(1),interval(2)
       
       expY(:) = cos( omega_nj(:)*y ) - I * sin(omega_nj(:)*y)
 
+      domega(:) = omega_nj(:)  - omega_j(:)
+
       zfactor = 1.0
       do imode=1,nmode
-         domega(:) = omega_nj(imode)  - omega_j(imode)
-          !! @todo Make `domega` an array @endtodo
-          !! @todo Take this out of the loop @endtodo
          
          hbarOmegaBeta_tmp = hbarOmegaBeta(imode)  
          tmp1 = hbarOmegaBeta_tmp + I*domega(imode) * ( x - y ) 

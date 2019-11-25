@@ -427,9 +427,6 @@
 </p>
 <p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out exponentials for <script type="math/tex">F_j</script> use <script type="math/tex">\omega_{nj}</script> </p></div>
 <p>
-<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Make <code>domega</code> an array </p></div>
-<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Take this out of the loop </p></div>
-<p>
 <p>Calculate the first fraction in equation 42
  </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Make <code>zfactor1</code> an array </p></div>
 <p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Move this out of the loop </p></div>
@@ -1899,11 +1896,10 @@
       
       <span class="n">expY</span><span class="p">(:)</span> <span class="o">=</span> <span class="nb">cos</span><span class="p">(</span> <span class="n">omega_nj</span><span class="p">(:)</span><span class="o">*</span><span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span> <span class="o">*</span> <span class="nb">sin</span><span class="p">(</span><span class="n">omega_nj</span><span class="p">(:)</span><span class="o">*</span><span class="n">y</span><span class="p">)</span>
 
+      <span class="n">domega</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">omega_nj</span><span class="p">(:)</span>  <span class="o">-</span> <span class="n">omega_j</span><span class="p">(:)</span>
+
       <span class="n">zfactor</span> <span class="o">=</span> <span class="mf">1.0</span>
       <span class="k">do </span><span class="n">imode</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nmode</span>
-         <span class="n">domega</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>  <span class="o">-</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>
-          <span class="c">!! @todo Make `domega` an array @endtodo</span>
-          <span class="c">!! @todo Take this out of the loop @endtodo</span>
          
          <span class="n">hbarOmegaBeta_tmp</span> <span class="o">=</span> <span class="n">hbarOmegaBeta</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>  
          <span class="n">tmp1</span> <span class="o">=</span> <span class="n">hbarOmegaBeta_tmp</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="n">domega</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> 
