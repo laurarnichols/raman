@@ -148,11 +148,10 @@ if(id == 0) then
 
   open(11, file=trim(Inputfile), Action='read', status='old')
   read(11,*)
-  read(11,*)nmode
+  read(11,*) nmode
 
   open(12 , file='input.txt', Action='read', status='old')
-  read(12,*) dummy, dummy, dummy, dummy, dummy, dummy, dummy, dummy
-    !! @todo Change this to `read(12,*)` @endtodo
+  read(12,*) 
   read(12,*) temperature, n1, limit, gamma1, gamma2, elaser, elevel, eshift_num
 
   open(13,file="output.txt",Action="write",status="replace")

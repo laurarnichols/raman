@@ -365,7 +365,9 @@
  </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Make this an input variable rather than hardcode </p></div>
 <p>
 </li>
-<li>If root process<ul>
+<li>
+<p>If root process</p>
+<ul>
 <li>Open <code>Inputfile</code> to read the number of phonon modes
   which is needed to allocate variables</li>
 <li>Open <code>input.txt</code> file to read temperature, <code>n1</code>, 
@@ -377,11 +379,10 @@
 <p></li>
 </ul>
 </li>
-</ul>
-<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Change this to <code>read(12,*)</code> </p></div>
-<p>* Broadcast the number of modes, <code>eshift_num</code>, and temperature to
+<li>
+<p>Broadcast the number of modes, <code>eshift_num</code>, and temperature to
   other processes</p>
-<ul>
+</li>
 <li>
 <p>Calculate <script type="math/tex">\beta = 1/k_{B}T</script>
 </p>
@@ -1726,11 +1727,10 @@
 
   <span class="k">open</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="k">file</span><span class="o">=</span><span class="nb">trim</span><span class="p">(</span><span class="n">Inputfile</span><span class="p">),</span> <span class="n">Action</span><span class="o">=</span><span class="s1">&#39;read&#39;</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s1">&#39;old&#39;</span><span class="p">)</span>
   <span class="k">read</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="o">*</span><span class="p">)</span>
-  <span class="k">read</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">nmode</span>
+  <span class="k">read</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">nmode</span>
 
   <span class="k">open</span><span class="p">(</span><span class="mi">12</span> <span class="p">,</span> <span class="k">file</span><span class="o">=</span><span class="s1">&#39;input.txt&#39;</span><span class="p">,</span> <span class="n">Action</span><span class="o">=</span><span class="s1">&#39;read&#39;</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s1">&#39;old&#39;</span><span class="p">)</span>
-  <span class="k">read</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy</span><span class="p">,</span> <span class="n">dummy</span>
-    <span class="c">!! @todo Change this to `read(12,*)` @endtodo</span>
+  <span class="k">read</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> 
   <span class="k">read</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">,</span> <span class="n">gamma2</span><span class="p">,</span> <span class="n">elaser</span><span class="p">,</span> <span class="n">elevel</span><span class="p">,</span> <span class="n">eshift_num</span>
 
   <span class="k">open</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="k">file</span><span class="o">=</span><span class="s2">&quot;output.txt&quot;</span><span class="p">,</span><span class="n">Action</span><span class="o">=</span><span class="s2">&quot;write&quot;</span><span class="p">,</span><span class="n">status</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">)</span>
