@@ -80,9 +80,6 @@ complex(kind = dp) :: expT
   !! \(e^{i\omega t}\) used in calculating \(F_j\)
 complex(kind = dp) :: Fj
   !! Function \(F_j\) from equation 44
-complex(kind = dp) :: hbarOmegaBeta_tmp
-  !! Temporary hbarOmegaBeta argument
-complex(kind = dp) :: tmp1
 complex(kind = dp) :: tmp_exp
 complex(kind = dp) :: zfactor
 
