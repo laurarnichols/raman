@@ -122,7 +122,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="100.0% of total for programs.">204 statements</a>
+    title="100.0% of total for programs.">203 statements</a>
      </li> 
      
      
@@ -1780,21 +1780,22 @@
   <span class="c">!!       * Write out the id and phonon frequencies</span>
   <span class="c">!!    * Read in the energy shifts</span>
 
-  <span class="n">omega_j</span> <span class="o">=</span> <span class="n">omega_j</span><span class="o">/</span><span class="mi">10</span><span class="mf">0.0d0</span>
-  <span class="n">omega_nj</span> <span class="o">=</span> <span class="n">omega_nj</span><span class="o">/</span><span class="mi">10</span><span class="mf">0.0d0</span>     
+  <span class="n">omega_j</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">omega_j</span><span class="p">(:)</span><span class="o">/</span><span class="mi">10</span><span class="mf">0.0d0</span>
+  <span class="n">omega_nj</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">omega_nj</span><span class="p">(:)</span><span class="o">/</span><span class="mi">10</span><span class="mf">0.0d0</span>     
   
 
   <span class="k">do </span><span class="n">imode</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nmode</span>
      
      <span class="k">read</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">j</span><span class="p">,</span> <span class="n">Sj</span><span class="p">(</span><span class="n">imode</span><span class="p">),</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">),</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>
 
-     <span class="n">hbarOmegaBeta</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">=</span><span class="n">hbar</span><span class="o">*</span><span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">omega</span><span class="o">*</span><span class="n">beta</span>
       
-     <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">id</span><span class="p">,</span> <span class="n">Sj</span><span class="p">(</span><span class="n">imode</span><span class="p">),</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">),</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>
+     <span class="c">!write(*,*) id, Sj(imode), omega_j(imode), omega_nj(imode)</span>
 
   <span class="k">end do</span>
-<span class="k">  </span>
-<span class="k">     read</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">eshift</span><span class="p">(:)</span>
+
+<span class="k">     </span><span class="n">hbarOmegaBeta</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">hbar</span><span class="o">*</span><span class="n">omega_j</span><span class="p">(:)</span><span class="o">*</span><span class="n">omega</span><span class="o">*</span><span class="n">beta</span>
+  
+     <span class="k">read</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">eshift</span><span class="p">(:)</span>
 
 <span class="n">endif</span>
 
