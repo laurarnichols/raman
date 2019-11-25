@@ -205,7 +205,6 @@ if(id == 0) then
   do imode=1,nmode
      
      read(11,*) j, Sj(imode), omega_j(imode), omega_nj(imode)
-
       
      !write(*,*) id, Sj(imode), omega_j(imode), omega_nj(imode)
 
@@ -297,12 +296,8 @@ do j=interval(1),interval(2)
    s2 = 0.0d0
    x = (j+0.5) * step1
 
-   do imode=1,nmode
- 
-      expX(imode)=cos(omega_nj(imode)*x)+I*sin(omega_nj(imode)*x)
-        !! @todo Figure out exponentials for \(F_j\) use \(\omega_{nj}\) @endtodo
- 
-   end do
+   expX(:)=cos(omega_nj(:)*x)+I*sin(omega_nj(:)*x)
+    !! @todo Figure out exponentials for \(F_j\) use \(\omega_{nj}\) @endtodo
  
    do k=0,int(loglimit/gamma1/step1)-j 
       !write(*,*)id,k,int(loglimit/gamma1/step1)-j
