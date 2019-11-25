@@ -7,8 +7,8 @@ date: 11/25/2019
 * `../src/ramanIntensity.f90:148:` Change `input.txt` to be read from input file
 * `../src/ramanIntensity.f90:149:` Change output to go to command line like QE
 * `../src/ramanIntensity.f90:184:` Figure out what this is used for
-* `../src/ramanIntensity.f90:301:` Figure out exponentials for \(F_j\) use \(\omega_{nj}\)
-* `../src/ramanIntensity.f90:313:` Take this out of the loop
-* `../src/ramanIntensity.f90:323:` Figure out where `zfactor2` comes from
-* `../src/ramanIntensity.f90:325:` Since multiple them, figure out why have `exp(0.5*tmp)` as it cancels
-* `../src/ramanIntensity.f90:360:` Add detailed derivation of this in a separate page
+* `../src/ramanIntensity.f90:302:` Figure out exponentials for \(F_j\) use \(\omega_{nj}\)
+* `../src/ramanIntensity.f90:314:` Take this out of the loop
+* `../src/ramanIntensity.f90:324:` Figure out where `zfactor2` comes from
+* `../src/ramanIntensity.f90:326:` Since multiple them, figure out why have `exp(0.5*tmp)` as it cancels
+* `../src/ramanIntensity.f90:361:` Add detailed derivation of this in a separate page

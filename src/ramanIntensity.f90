@@ -198,12 +198,13 @@ if(id == 0) then
   !!       * Write out the id and phonon frequencies
   !!    * Read in the energy shifts
 
+  omega_j = omega_j/100.0d0
+  omega_nj = omega_nj/100.0d0     
+  
+
   do imode=1,nmode
      
      read(11,*) j, Sj(imode), omega_j(imode), omega_nj(imode)
-
-     omega_j(imode)=omega_j(imode)/100.0d0
-     omega_nj(imode)=omega_nj(imode)/100.0d0     
 
      hbarOmegaBeta(imode)=hbar*omega_j(imode)*omega*beta
       
