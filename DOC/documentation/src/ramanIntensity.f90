@@ -99,7 +99,7 @@ integer,allocatable :: interval(:)
 
 real(kind = dp),allocatable :: count2(:)
 real(kind = dp), allocatable :: eshift(:)
-real(kind = dp),allocatable :: factor(:)
+real(kind = dp),allocatable :: hbarOmegaBeta(:)
 real(kind = dp), allocatable :: omega2(:)
 real(kind = dp), allocatable :: omega_j(:)
   !! \(\omega_j\)
@@ -134,6 +134,7 @@ Inputfile = 'Sj.out'
   !! @todo Make this an input variable rather than hardcode @endtodo
 omega=1.0d14
 n2=100000
+  !! @todo Figure out the purpose of these variables @endtodo
 
 if(id == 0) then
   !! * If root process
@@ -170,18 +171,19 @@ beta=1/(kB*temperature)
 
 
 allocate(eshift(eshift_num), omega2(eshift_num), s1(eshift_num), s2(eshift_num), s3(eshift_num), global_sum(eshift_num))
-allocate(Sj(nmode), omega_j(nmode), omega_nj(nmode), factor(nmode), FjFractionFactor(nmode), expX(nmode), expY(nmode))
+allocate(Sj(nmode), omega_j(nmode), omega_nj(nmode), hbarOmegaBeta(nmode), FjFractionFactor(nmode), expX(nmode), expY(nmode))
 allocate(ex1(0:n2+1), interval(2), count2(2))
   !! * Allocate space for variables on all processes
-  !! @todo Figure out why `interval` and `count2` are allocatable @endtodo
 
 step2=tpi/float(n2)
   !! * Calculate `step2`\(= 2\pi/n2\) where `n2=100000`
 
 do j=0,n2+1
   !! * Calculate \(e^{i\theta}\) where \(\theta\) goes from 0 to \(2\pi\)
+  !! @todo Figure out what this is used for @endtodo
 
    ex1(j)=exp(I*j*step2)
+
 end do
 
 if(id == 0) then
@@ -190,9 +192,10 @@ if(id == 0) then
   !!       * Read index (currently not being used), \(S_j\),
   !!         \(\omega_j\), and \(\omega_{nj}\)
   !!       * Divide the initial and final phonon frequencies by 100
-  !!       * Calculate \(\text{factor}=\hbar\omega\beta\text{phonon}(2)\)
-  !!       * Calculate `FjFractionFactor`\(={\sin(-i\text{factor})}{1-\cos(-i\text{factor})}\)
+  !!       * Calculate \(\text{hbarOmegaBeta}=\hbar\omega\beta\omega_j\) 
+  !!       * Calculate `FjFractionFactor`\(={\sin(-i\hbar\omega\beta)}{1-\cos(-i\hbar\omega\beta)}\)
   !!       * Write out the id and phonon frequencies
+  !!    * Read in the energy shifts
 
   do imode=1,nmode
      
@@ -201,9 +204,9 @@ if(id == 0) then
      omega_j(imode)=omega_j(imode)/100.0d0
      omega_nj(imode)=omega_nj(imode)/100.0d0     
 
-     factor(imode)=hbar*omega_j(imode)*omega*beta
+     hbarOmegaBeta(imode)=hbar*omega_j(imode)*omega*beta
       
-     write(*,*)id, Sj(imode), omega_j(imode), omega_nj(imode)
+     write(*,*) id, Sj(imode), omega_j(imode), omega_nj(imode)
 
   end do
   
@@ -221,7 +224,7 @@ call MPI_Bcast( eshift, eshift_num, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( Sj, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( omega_j, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( omega_nj, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
-call MPI_Bcast( factor, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror) 
+call MPI_Bcast( hbarOmegaBeta, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror) 
 call MPI_Barrier(MPI_COMM_WORLD,ierror)
 
 !> Maybe unit conversions?
@@ -309,7 +312,7 @@ do j=interval(1),interval(2)
          domega = omega_nj(imode)  - omega_j(imode)
          expY(imode) = cos( omega_nj(imode)*y ) - I * sin(omega_nj(imode)*y)
          
-         tmp = factor(imode)  
+         tmp = hbarOmegaBeta(imode)  
          tmp1 = tmp + I*domega * ( x - y ) 
          
          zfactor1 = exp(0.5*tmp1) / ( exp(tmp1) - 1 )        

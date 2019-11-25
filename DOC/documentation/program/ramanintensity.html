@@ -269,7 +269,7 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-eshift">eshift</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-factor">factor</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-hbaromegabeta">hbarOmegaBeta</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-omega2">omega2</a>
       
@@ -363,6 +363,7 @@
 <li>
 <p>Define input file name
  </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Make this an input variable rather than hardcode </p></div>
+<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out the purpose of these variables </p></div>
 <p>
 </li>
 <li>
@@ -388,16 +389,15 @@
 </p>
 </li>
 <li>
-<p>Allocate space for variables on all processes
- </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out why <code>interval</code> and <code>count2</code> are allocatable </p></div>
-<p>
+<p>Allocate space for variables on all processes</p>
 </li>
 <li>
 <p>Calculate <code>step2</code><script type="math/tex">= 2\pi/n2</script> where <code>n2=100000</code></p>
 </li>
 <li>
 <p>Calculate <script type="math/tex">e^{i\theta}</script> where <script type="math/tex">\theta</script> goes from 0 to <script type="math/tex">2\pi</script>
-</p>
+ </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out what this is used for </p></div>
+<p>
 </li>
 <li>
 <p>If root process</p>
@@ -407,11 +407,12 @@
      <script type="math/tex">\omega_j</script>, and <script type="math/tex">\omega_{nj}</script>
 </li>
 <li>Divide the initial and final phonon frequencies by 100</li>
-<li>Calculate <script type="math/tex">\text{factor}=\hbar\omega\beta\text{phonon}(2)</script>
+<li>Calculate <script type="math/tex">\text{hbarOmegaBeta}=\hbar\omega\beta\omega_j</script>
 </li>
-<li>Calculate <code>FjFractionFactor</code><script type="math/tex">={\sin(-i\text{factor})}{1-\cos(-i\text{factor})}</script>
+<li>Calculate <code>FjFractionFactor</code><script type="math/tex">={\sin(-i\hbar\omega\beta)}{1-\cos(-i\hbar\omega\beta)}</script>
 </li>
 <li>Write out the id and phonon frequencies</li>
+<li>Read in the energy shifts</li>
 </ul>
 </li>
 </ul>
@@ -566,7 +567,7 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-eshift">eshift</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-factor">factor</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-hbaromegabeta">hbarOmegaBeta</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-omega2">omega2</a>
       
@@ -1387,11 +1388,11 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-factor"></span>real(kind=dp),</td>
+  <td><span class="anchor" id="variable-hbaromegabeta"></span>real(kind=dp),</td>
   
   
   <td>allocatable</td><td>::</td>
-  <td><strong>factor</strong>(:)</td><td></td><td></td><td></td>
+  <td><strong>hbarOmegaBeta</strong>(:)</td><td></td><td></td><td></td>
   
 </tr>
 
@@ -1678,7 +1679,7 @@
 
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">count2</span><span class="p">(:)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">eshift</span><span class="p">(:)</span>
-<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">factor</span><span class="p">(:)</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">hbarOmegaBeta</span><span class="p">(:)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">omega2</span><span class="p">(:)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">omega_j</span><span class="p">(:)</span>
   <span class="c">!! \(\omega_j\)</span>
@@ -1713,6 +1714,7 @@
   <span class="c">!! @todo Make this an input variable rather than hardcode @endtodo</span>
 <span class="n">omega</span><span class="o">=</span><span class="mf">1.0d14</span>
 <span class="n">n2</span><span class="o">=</span><span class="mi">100000</span>
+  <span class="c">!! @todo Figure out the purpose of these variables @endtodo</span>
 
 <span class="k">if</span><span class="p">(</span><span class="n">id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
   <span class="c">!! * If root process</span>
@@ -1749,18 +1751,19 @@
 
 
 <span class="k">allocate</span><span class="p">(</span><span class="n">eshift</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">omega2</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s1</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s2</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s3</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">global_sum</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">))</span>
-<span class="k">allocate</span><span class="p">(</span><span class="n">Sj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">factor</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expX</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expY</span><span class="p">(</span><span class="n">nmode</span><span class="p">))</span>
+<span class="k">allocate</span><span class="p">(</span><span class="n">Sj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">hbarOmegaBeta</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expX</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expY</span><span class="p">(</span><span class="n">nmode</span><span class="p">))</span>
 <span class="k">allocate</span><span class="p">(</span><span class="n">ex1</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">count2</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
   <span class="c">!! * Allocate space for variables on all processes</span>
-  <span class="c">!! @todo Figure out why `interval` and `count2` are allocatable @endtodo</span>
 
 <span class="n">step2</span><span class="o">=</span><span class="n">tpi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
   <span class="c">!! * Calculate `step2`\(= 2\pi/n2\) where `n2=100000`</span>
 
 <span class="k">do </span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span>
   <span class="c">!! * Calculate \(e^{i\theta}\) where \(\theta\) goes from 0 to \(2\pi\)</span>
+  <span class="c">!! @todo Figure out what this is used for @endtodo</span>
 
    <span class="n">ex1</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">=</span><span class="nb">exp</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="n">j</span><span class="o">*</span><span class="n">step2</span><span class="p">)</span>
+
 <span class="k">end do</span>
 
 <span class="k">if</span><span class="p">(</span><span class="n">id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
@@ -1769,9 +1772,10 @@
   <span class="c">!!       * Read index (currently not being used), \(S_j\),</span>
   <span class="c">!!         \(\omega_j\), and \(\omega_{nj}\)</span>
   <span class="c">!!       * Divide the initial and final phonon frequencies by 100</span>
-  <span class="c">!!       * Calculate \(\text{factor}=\hbar\omega\beta\text{phonon}(2)\)</span>
-  <span class="c">!!       * Calculate `FjFractionFactor`\(={\sin(-i\text{factor})}{1-\cos(-i\text{factor})}\)</span>
+  <span class="c">!!       * Calculate \(\text{hbarOmegaBeta}=\hbar\omega\beta\omega_j\) </span>
+  <span class="c">!!       * Calculate `FjFractionFactor`\(={\sin(-i\hbar\omega\beta)}{1-\cos(-i\hbar\omega\beta)}\)</span>
   <span class="c">!!       * Write out the id and phonon frequencies</span>
+  <span class="c">!!    * Read in the energy shifts</span>
 
   <span class="k">do </span><span class="n">imode</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nmode</span>
      
@@ -1780,9 +1784,9 @@
      <span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">=</span><span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="mf">0.0d0</span>
      <span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">=</span><span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="mf">0.0d0</span>     
 
-     <span class="n">factor</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">=</span><span class="n">hbar</span><span class="o">*</span><span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">omega</span><span class="o">*</span><span class="n">beta</span>
+     <span class="n">hbarOmegaBeta</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">=</span><span class="n">hbar</span><span class="o">*</span><span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">omega</span><span class="o">*</span><span class="n">beta</span>
       
-     <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">id</span><span class="p">,</span> <span class="n">Sj</span><span class="p">(</span><span class="n">imode</span><span class="p">),</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">),</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>
+     <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">id</span><span class="p">,</span> <span class="n">Sj</span><span class="p">(</span><span class="n">imode</span><span class="p">),</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">),</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>
 
   <span class="k">end do</span>
 <span class="k">  </span>
@@ -1800,7 +1804,7 @@
 <span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">Sj</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
 <span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">omega_j</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
 <span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">omega_nj</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
-<span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">factor</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span> 
+<span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">hbarOmegaBeta</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span> 
 <span class="k">call </span><span class="n">MPI_Barrier</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span><span class="n">ierror</span><span class="p">)</span>
 
 <span class="c">!&gt; Maybe unit conversions?</span>
@@ -1888,7 +1892,7 @@
          <span class="n">domega</span> <span class="o">=</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>  <span class="o">-</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>
          <span class="n">expY</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span> <span class="o">=</span> <span class="nb">cos</span><span class="p">(</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span> <span class="o">*</span> <span class="nb">sin</span><span class="p">(</span><span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">y</span><span class="p">)</span>
          
-         <span class="n">tmp</span> <span class="o">=</span> <span class="n">factor</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>  
+         <span class="n">tmp</span> <span class="o">=</span> <span class="n">hbarOmegaBeta</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>  
          <span class="n">tmp1</span> <span class="o">=</span> <span class="n">tmp</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="n">domega</span> <span class="o">*</span> <span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> 
          
          <span class="n">zfactor1</span> <span class="o">=</span> <span class="nb">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">tmp1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span> <span class="nb">exp</span><span class="p">(</span><span class="n">tmp1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>        
