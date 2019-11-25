@@ -194,6 +194,7 @@ if(id == 0) then
   !!       * Divide the initial and final phonon frequencies by 100
   !!       * Calculate \(\text{hbarOmegaBeta}=\hbar\omega\beta\omega_j\) 
   !!       * Calculate `FjFractionFactor`\(={\sin(-i\hbar\omega\beta)}{1-\cos(-i\hbar\omega\beta)}\)
+  !!       * Calculate \(\delta\omega_{nj} = \omega_{nj} - \omega_j\)
   !!       * Write out the id and phonon frequencies
   !!    * Read in the energy shifts
 
@@ -210,6 +211,8 @@ if(id == 0) then
   end do
 
      hbarOmegaBeta(:) = hbar*omega_j(:)*omega*beta
+     
+     domega(:) = omega_nj(:)  - omega_j(:)
   
      read(12,*) eshift(:)
 
@@ -226,6 +229,7 @@ call MPI_Bcast( Sj, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( omega_j, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( omega_nj, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( hbarOmegaBeta, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror) 
+call MPI_Bcast( domega, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror) 
 call MPI_Barrier(MPI_COMM_WORLD,ierror)
 
 !> Maybe unit conversions?
@@ -304,8 +308,6 @@ do j=interval(1),interval(2)
       y = (k+0.5) * step1
       
       expY(:) = cos( omega_nj(:)*y ) - I * sin(omega_nj(:)*y)
-
-      domega(:) = omega_nj(:)  - omega_j(:)
 
       theta(:) = domega(:)*( x - y ) - I*hbarOmegaBeta(:)
       FjFractionFactor(:) = sin(theta(:))/( 1 - cos(theta(:))  )

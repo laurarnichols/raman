@@ -122,7 +122,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="100.0% of total for programs.">195 statements</a>
+    title="100.0% of total for programs.">196 statements</a>
      </li> 
      
      
@@ -406,6 +406,8 @@
 <li>Calculate <script type="math/tex">\text{hbarOmegaBeta}=\hbar\omega\beta\omega_j</script>
 </li>
 <li>Calculate <code>FjFractionFactor</code><script type="math/tex">={\sin(-i\hbar\omega\beta)}{1-\cos(-i\hbar\omega\beta)}</script>
+</li>
+<li>Calculate <script type="math/tex">\delta\omega_{nj} = \omega_{nj} - \omega_j</script>
 </li>
 <li>Write out the id and phonon frequencies</li>
 <li>Read in the energy shifts</li>
@@ -1740,6 +1742,7 @@
   <span class="c">!!       * Divide the initial and final phonon frequencies by 100</span>
   <span class="c">!!       * Calculate \(\text{hbarOmegaBeta}=\hbar\omega\beta\omega_j\) </span>
   <span class="c">!!       * Calculate `FjFractionFactor`\(={\sin(-i\hbar\omega\beta)}{1-\cos(-i\hbar\omega\beta)}\)</span>
+  <span class="c">!!       * Calculate \(\delta\omega_{nj} = \omega_{nj} - \omega_j\)</span>
   <span class="c">!!       * Write out the id and phonon frequencies</span>
   <span class="c">!!    * Read in the energy shifts</span>
 
@@ -1756,6 +1759,8 @@
   <span class="k">end do</span>
 
 <span class="k">     </span><span class="n">hbarOmegaBeta</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">hbar</span><span class="o">*</span><span class="n">omega_j</span><span class="p">(:)</span><span class="o">*</span><span class="n">omega</span><span class="o">*</span><span class="n">beta</span>
+     
+     <span class="n">domega</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">omega_nj</span><span class="p">(:)</span>  <span class="o">-</span> <span class="n">omega_j</span><span class="p">(:)</span>
   
      <span class="k">read</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">eshift</span><span class="p">(:)</span>
 
@@ -1772,6 +1777,7 @@
 <span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">omega_j</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
 <span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">omega_nj</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
 <span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">hbarOmegaBeta</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span> 
+<span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">domega</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span> 
 <span class="k">call </span><span class="n">MPI_Barrier</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span><span class="n">ierror</span><span class="p">)</span>
 
 <span class="c">!&gt; Maybe unit conversions?</span>
@@ -1850,8 +1856,6 @@
       <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">step1</span>
       
       <span class="n">expY</span><span class="p">(:)</span> <span class="o">=</span> <span class="nb">cos</span><span class="p">(</span> <span class="n">omega_nj</span><span class="p">(:)</span><span class="o">*</span><span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span> <span class="o">*</span> <span class="nb">sin</span><span class="p">(</span><span class="n">omega_nj</span><span class="p">(:)</span><span class="o">*</span><span class="n">y</span><span class="p">)</span>
-
-      <span class="n">domega</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">omega_nj</span><span class="p">(:)</span>  <span class="o">-</span> <span class="n">omega_j</span><span class="p">(:)</span>
 
       <span class="n">theta</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">domega</span><span class="p">(:)</span><span class="o">*</span><span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">hbarOmegaBeta</span><span class="p">(:)</span>
       <span class="n">FjFractionFactor</span><span class="p">(:)</span> <span class="o">=</span> <span class="nb">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">(:))</span><span class="o">/</span><span class="p">(</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">(:))</span>  <span class="p">)</span>
