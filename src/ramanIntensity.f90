@@ -82,9 +82,6 @@ complex(kind = dp) :: Fj
   !! Function \(F_j\) from equation 44
 complex(kind = dp) :: hbarOmegaBeta_tmp
   !! Temporary hbarOmegaBeta argument
-complex(kind = dp) :: theta
-  !! Serves as the argument for the fraction
-  !! factor `FjFractionFactor`
 complex(kind = dp) :: tmp1
 complex(kind = dp) :: tmp_exp
 complex(kind = dp) :: zfactor
@@ -122,6 +119,10 @@ complex(kind = dp), allocatable :: global_sum(:)
 complex(kind = dp), allocatable :: s1(:)
 complex(kind = dp), allocatable :: s2(:)
 complex(kind = dp), allocatable :: s3(:)
+complex(kind = dp), allocatable :: theta(:)
+  !! Serves as the argument for the sines in the fraction
+  !! factor `FjFractionFactor` and the exponentials in
+  !! `zfactor1` 
 complex(kind = dp), allocatable :: zfactor2(:)
 
 
@@ -174,7 +175,7 @@ beta=1/(kB*temperature)
 
 allocate(eshift(eshift_num), omega2(eshift_num), s1(eshift_num), s2(eshift_num), s3(eshift_num), global_sum(eshift_num))
 allocate(Sj(nmode), omega_j(nmode), omega_nj(nmode), hbarOmegaBeta(nmode), FjFractionFactor(nmode), expX(nmode), expY(nmode))
-allocate(domega(nmode), zfactor2(nmode), ex1(0:n2+1), interval(2), count2(2))
+allocate(domega(nmode), theta(nmode), zfactor2(nmode), ex1(0:n2+1), interval(2), count2(2))
   !! * Allocate space for variables on all processes
 
 step2=tpi/float(n2)
@@ -309,30 +310,27 @@ do j=interval(1),interval(2)
 
       domega(:) = omega_nj(:)  - omega_j(:)
 
+      theta(:) = domega(:)*( x - y ) - I*hbarOmegaBeta(:)
+      FjFractionFactor(:) = sin(theta(:))/( 1 - cos(theta(:))  )
+       !! * Calculate the fractional factor in front of the cosines in
+       !!   \(F_j\)
+      
+      theta(:) = hbarOmegaBeta(:) + I*domega(:) * ( x - y ) 
+      zfactor2(:) =exp(0.5*hbarOmegaBeta(:)) / ( exp(hbarOmegaBeta(:)) - 1 )
+       !! @todo Figure out where `zfactor2` comes from @endtodo
+
+
       zfactor = 1.0
       do imode=1,nmode
          
-         hbarOmegaBeta_tmp = hbarOmegaBeta(imode)  
-         tmp1 = hbarOmegaBeta_tmp + I*domega(imode) * ( x - y ) 
-         
-         zfactor1 = exp(0.5*tmp1) / ( exp(tmp1) - 1 )        
+         zfactor1 = exp(0.5*theta(imode)) / ( exp(theta(imode)) - 1 )        
           !! Calculate the first fraction in equation 42
           !! @todo Make `zfactor1` an array @endtodo
-          !! @todo Move this out of the loop @endtodo
-         zfactor2(imode) =exp(0.5*hbarOmegaBeta_tmp) / ( exp(hbarOmegaBeta_tmp) - 1 )
-          !! @todo Figure out where `zfactor2` comes from @endtodo
-          !! @todo Make `zfactor2` an array @endtodo
           !! @todo Move this out of the loop @endtodo
          zfactor = zfactor * zfactor1 / zfactor2(imode)
           !! @todo Since multiple them, figure out why have `exp(0.5*tmp)` as it cancels @endtodo
 
 
-         theta = domega(imode)*( x - y ) - I*hbarOmegaBeta_tmp
-         FjFractionFactor(imode) = sin(theta)/( 1 - cos(theta)  )
-          !! * Calculate the fractional factor in front of the cosines in
-          !!   \(F_j\)
-          !! @todo Make theta an array @endtodo
-          !! @todo Move this out of the loop @endtodo
       enddo
   
       
