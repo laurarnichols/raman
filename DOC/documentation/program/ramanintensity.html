@@ -122,7 +122,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="100.0% of total for programs.">200 statements</a>
+    title="100.0% of total for programs.">197 statements</a>
      </li> 
      
      
@@ -251,8 +251,6 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor">zfactor</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor1">zfactor1</a>
-      
       <a class="list-group-item" href="../program/ramanintensity.html#variable-inputfile">Inputfile</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-dummy">dummy</a>
@@ -292,6 +290,8 @@
       <a class="list-group-item" href="../program/ramanintensity.html#variable-s3">s3</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-theta">theta</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor1">zfactor1</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor2">zfactor2</a>
       
@@ -432,13 +432,8 @@
    <script type="math/tex">F_j</script>
 </li>
 </ul>
-<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out where <code>zfactor2</code> comes from </p></div>
-<p>
 <p>Calculate the first fraction in equation 42
- </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Make <code>zfactor1</code> an array </p></div>
-<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Move this out of the loop </p></div>
-<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Since multiple them, figure out why have <code>exp(0.5*tmp)</code> as it cancels </p></div>
-<p>
+ </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out where <code>zfactor2</code> comes from </p></div>
 <p>Use a linear interpolation for <script type="math/tex">e^{i\omega t}</script>
 </p>
 <ul>
@@ -553,8 +548,6 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor">zfactor</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor1">zfactor1</a>
-      
       <a class="list-group-item" href="../program/ramanintensity.html#variable-inputfile">Inputfile</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-dummy">dummy</a>
@@ -594,6 +587,8 @@
       <a class="list-group-item" href="../program/ramanintensity.html#variable-s3">s3</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-theta">theta</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor1">zfactor1</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor2">zfactor2</a>
       
@@ -1265,20 +1260,6 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-zfactor1"></span>complex(kind=dp)</td>
-  
-  
-  <td></td><td>::</td>
-  <td><strong>zfactor1</strong></td><td></td><td></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
   <td><span class="anchor" id="variable-inputfile"></span>character(len=256)</td>
   
   
@@ -1576,6 +1557,20 @@
   
 <tr>
   
+  <td><span class="anchor" id="variable-zfactor1"></span>complex(kind=dp),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>zfactor1</strong>(:)</td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
   <td><span class="anchor" id="variable-zfactor2"></span>complex(kind=dp),</td>
   
   
@@ -1672,7 +1667,6 @@
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp1</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp_exp</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">zfactor</span>
-<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">zfactor1</span>
 
 <span class="kt">character</span><span class="p">(</span><span class="nb">len</span> <span class="o">=</span> <span class="mi">256</span><span class="p">)</span> <span class="kd">::</span> <span class="n">Inputfile</span>
   <span class="c">!! Input file name</span>
@@ -1710,6 +1704,7 @@
   <span class="c">!! Serves as the argument for the sines in the fraction</span>
   <span class="c">!! factor `FjFractionFactor` and the exponentials in</span>
   <span class="c">!! `zfactor1` </span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">zfactor1</span><span class="p">(:)</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">zfactor2</span><span class="p">(:)</span>
 
 
@@ -1762,7 +1757,7 @@
 
 <span class="k">allocate</span><span class="p">(</span><span class="n">eshift</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">omega2</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s1</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s2</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s3</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">global_sum</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">))</span>
 <span class="k">allocate</span><span class="p">(</span><span class="n">Sj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">hbarOmegaBeta</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expX</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expY</span><span class="p">(</span><span class="n">nmode</span><span class="p">))</span>
-<span class="k">allocate</span><span class="p">(</span><span class="n">domega</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">theta</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">zfactor2</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">ex1</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">count2</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="k">allocate</span><span class="p">(</span><span class="n">domega</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">theta</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">zfactor1</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">zfactor2</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">ex1</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">count2</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
   <span class="c">!! * Allocate space for variables on all processes</span>
 
 <span class="n">step2</span><span class="o">=</span><span class="n">tpi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
@@ -1903,26 +1898,12 @@
        <span class="c">!!   \(F_j\)</span>
       
       <span class="n">theta</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">hbarOmegaBeta</span><span class="p">(:)</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="n">domega</span><span class="p">(:)</span> <span class="o">*</span> <span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> 
+      <span class="n">zfactor1</span><span class="p">(:)</span> <span class="o">=</span> <span class="nb">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">theta</span><span class="p">(:))</span> <span class="o">/</span> <span class="p">(</span> <span class="nb">exp</span><span class="p">(</span><span class="n">theta</span><span class="p">(:))</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>        
+       <span class="c">!! Calculate the first fraction in equation 42</span>
       <span class="n">zfactor2</span><span class="p">(:)</span> <span class="o">=</span><span class="nb">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">hbarOmegaBeta</span><span class="p">(:))</span> <span class="o">/</span> <span class="p">(</span> <span class="nb">exp</span><span class="p">(</span><span class="n">hbarOmegaBeta</span><span class="p">(:))</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>
        <span class="c">!! @todo Figure out where `zfactor2` comes from @endtodo</span>
+      <span class="n">zfactor</span> <span class="o">=</span> <span class="nb">product</span><span class="p">(</span><span class="n">zfactor1</span><span class="p">(:)</span><span class="o">/</span><span class="n">zfactor2</span><span class="p">(:))</span>
 
-
-      <span class="n">zfactor</span> <span class="o">=</span> <span class="mf">1.0</span>
-      <span class="k">do </span><span class="n">imode</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nmode</span>
-         
-         <span class="n">zfactor1</span> <span class="o">=</span> <span class="nb">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">theta</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span> <span class="nb">exp</span><span class="p">(</span><span class="n">theta</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>        
-          <span class="c">!! Calculate the first fraction in equation 42</span>
-          <span class="c">!! @todo Make `zfactor1` an array @endtodo</span>
-          <span class="c">!! @todo Move this out of the loop @endtodo</span>
-         <span class="n">zfactor</span> <span class="o">=</span> <span class="n">zfactor</span> <span class="o">*</span> <span class="n">zfactor1</span> <span class="o">/</span> <span class="n">zfactor2</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>
-          <span class="c">!! @todo Since multiple them, figure out why have `exp(0.5*tmp)` as it cancels @endtodo</span>
-
-
-      <span class="n">enddo</span>
-  
-      
-              
-      
 
       <span class="n">interval_b</span><span class="o">=</span><span class="nb">int</span><span class="p">((</span><span class="n">loglimit</span><span class="o">/</span><span class="n">step1</span><span class="o">-</span><span class="n">gamma1</span><span class="o">*</span><span class="n">j</span><span class="o">-</span><span class="n">gamma1</span><span class="o">*</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">gamma2</span><span class="p">)</span>
 <span class="c">!      interval_a=-interval_b</span>
