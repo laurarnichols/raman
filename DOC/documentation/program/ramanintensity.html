@@ -124,7 +124,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="100.0% of total for programs.">203 statements</a>
+    title="100.0% of total for programs.">202 statements</a>
      </li> 
      
      
@@ -225,9 +225,7 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-temperature">temperature</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_r1">tmp_r1</a>
-      
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_r2">tmp_r2</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_r">tmp_r</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-x">x</a>
       
@@ -515,9 +513,7 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-temperature">temperature</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_r1">tmp_r1</a>
-      
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_r2">tmp_r2</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_r">tmp_r</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-x">x</a>
       
@@ -1047,25 +1043,12 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-tmp_r1"></span>real(kind=dp)</td>
+  <td><span class="anchor" id="variable-tmp_r"></span>real(kind=dp)</td>
   
   
   <td></td><td>::</td>
-  <td><strong>tmp_r1</strong></td><td></td><td></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-tmp_r2"></span>real(kind=dp)</td>
-  
-  
-  <td></td><td>::</td>
-  <td><strong>tmp_r2</strong></td><td></td><td></td><td></td>
+  <td><strong>tmp_r</strong></td><td></td><td></td><td><p>Temporary variable used in linear 
+ interpolation of <script type="math/tex">t</script> exponential</p></td>
   
 </tr>
 
@@ -1595,8 +1578,9 @@
   <span class="c">!! Step to go from 0 to \(\2\pi) in `n2` steps</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">t</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">temperature</span>
-<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp_r1</span>
-<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp_r2</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp_r</span>
+  <span class="c">!! Temporary variable used in linear </span>
+  <span class="c">!! interpolation of \(t\) exponential</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">y</span>
 
@@ -1849,11 +1833,11 @@
  
          <span class="k">do </span><span class="n">imode</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nmode</span>
 
-            <span class="n">tmp_r1</span><span class="o">=-</span><span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="o">/</span><span class="n">tpi</span>
-            <span class="n">tmp_r1</span><span class="o">=</span><span class="p">(</span><span class="n">tmp_r1</span><span class="o">-</span><span class="nb">floor</span><span class="p">(</span><span class="n">tmp_r1</span><span class="p">))</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
-            <span class="n">tmp_i</span><span class="o">=</span><span class="nb">floor</span><span class="p">(</span><span class="n">tmp_r1</span><span class="p">)</span>
-            <span class="n">tmp_r2</span><span class="o">=</span><span class="n">tmp_r1</span><span class="o">-</span><span class="n">tmp_i</span>
-            <span class="n">expT</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">tmp_r2</span><span class="p">)</span><span class="o">*</span><span class="n">ex1</span><span class="p">(</span><span class="n">tmp_i</span><span class="p">)</span><span class="o">+</span><span class="n">tmp_r2</span><span class="o">*</span><span class="n">ex1</span><span class="p">(</span><span class="n">tmp_i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">tmp_r</span><span class="o">=-</span><span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="o">/</span><span class="n">tpi</span>
+            <span class="n">tmp_r</span><span class="o">=</span><span class="p">(</span><span class="n">tmp_r</span><span class="o">-</span><span class="nb">floor</span><span class="p">(</span><span class="n">tmp_r</span><span class="p">))</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
+            <span class="n">tmp_i</span><span class="o">=</span><span class="nb">floor</span><span class="p">(</span><span class="n">tmp_r</span><span class="p">)</span>
+            <span class="n">tmp_r</span><span class="o">=</span><span class="n">tmp_r</span><span class="o">-</span><span class="n">tmp_i</span>
+            <span class="n">expT</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">tmp_r</span><span class="p">)</span><span class="o">*</span><span class="n">ex1</span><span class="p">(</span><span class="n">tmp_i</span><span class="p">)</span><span class="o">+</span><span class="n">tmp_r</span><span class="o">*</span><span class="n">ex1</span><span class="p">(</span><span class="n">tmp_i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
               <span class="c">!! Use a linear interpolation for \(e^{i\omega t}\)</span>
 
             <span class="n">expForFj</span><span class="o">=-</span><span class="n">expT</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">expX</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">expY</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span><span class="o">-</span><span class="p">(</span><span class="n">expX</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">+</span><span class="n">expY</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span>

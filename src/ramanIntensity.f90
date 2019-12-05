@@ -66,8 +66,9 @@ real(kind = dp) :: dstep
   !! Step to go from 0 to \(\2\pi) in `n2` steps
 real(kind = dp) :: t
 real(kind = dp) :: temperature
-real(kind = dp) :: tmp_r1
-real(kind = dp) :: tmp_r2
+real(kind = dp) :: tmp_r
+  !! Temporary variable used in linear 
+  !! interpolation of \(t\) exponential
 real(kind = dp) :: x
 real(kind = dp) :: y
 
@@ -320,11 +321,11 @@ do j=interval(1),interval(2)
  
          do imode=1,nmode
 
-            tmp_r1=-omega_j(imode)*t/tpi
-            tmp_r1=(tmp_r1-floor(tmp_r1))*float(n2)
-            tmp_i=floor(tmp_r1)
-            tmp_r2=tmp_r1-tmp_i
-            expT=(1.0-tmp_r2)*ex1(tmp_i)+tmp_r2*ex1(tmp_i+1)
+            tmp_r=-omega_j(imode)*t/tpi
+            tmp_r=(tmp_r-floor(tmp_r))*float(n2)
+            tmp_i=floor(tmp_r)
+            tmp_r=tmp_r-tmp_i
+            expT=(1.0-tmp_r)*ex1(tmp_i)+tmp_r*ex1(tmp_i+1)
               !! Use a linear interpolation for \(e^{i\omega t}\)
 
             expForFj=-expT*(1-expX(imode))*(1-expY(imode))-(expX(imode)+expY(imode))
