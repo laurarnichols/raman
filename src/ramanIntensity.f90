@@ -94,7 +94,7 @@ real(kind = dp), allocatable :: domega(:)
 real(kind = dp), allocatable :: elaser(:)
   !! Laser energies \(E_L\)
 real(kind = dp), allocatable :: eshift(:)
-real(kind = dp), allocatable :: omega2(:)
+real(kind = dp), allocatable :: omega_s(:)
 real(kind = dp), allocatable :: omega_j(:)
   !! \(\omega_j\)
 real(kind = dp), allocatable :: omega_l(:)
@@ -172,7 +172,7 @@ beta=1/(kB*temperature)
   !! * Calculate \(\beta = 1/k_{B}T\)
 
 
-allocate(eshift(eshift_num), elaser(elaser_num), omega2(eshift_num), omega_l(elaser_num))
+allocate(eshift(eshift_num), elaser(elaser_num), omega_s(eshift_num), omega_l(elaser_num))
 allocate(s1(eshift_num), s2(eshift_num,elaser_num), s3(eshift_num,elaser_num), global_sum(eshift_num,elaser_num))
 allocate(Sj(nmode), omega_j(nmode), omega_nj(nmode), hbarOmegaBeta(nmode), FjFractionFactor(nmode), expX(nmode), expY(nmode))
 allocate(domega(nmode), theta(nmode), zfactor1(nmode), zfactor2(nmode), ex1(0:n2+1), interval(2), count2(2))
@@ -239,7 +239,7 @@ call MPI_Barrier(MPI_COMM_WORLD,ierror)
 !> Maybe unit conversions?
 omega_l(:)=(elaser(:)-elevel)*ev/hbar/omega
   !! \((E_L-E_n)/\hbar\omega\)
-omega2(:)=eshift(:)*mev/hbar/omega
+omega_s(:)=eshift(:)*mev/hbar/omega
 gamma_p=gamma_p*mev/hbar/omega
 alpha=alpha*mev/hbar/omega
 
@@ -344,7 +344,7 @@ do j=interval(1),interval(2)
             tmp_exp=tmp_exp+Fj*Sj(imode)
          enddo
 
-         s1(:)=s1(:)+exp(I*tmp_exp-I*omega2(:)*t-alpha*abs(t))
+         s1(:)=s1(:)+exp(I*tmp_exp-I*omega_s(:)*t-alpha*abs(t))
       end do
 
       do ilaserE = 1, elaser_num
