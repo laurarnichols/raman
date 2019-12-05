@@ -124,7 +124,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="100.0% of total for programs.">196 statements</a>
+    title="100.0% of total for programs.">195 statements</a>
      </li> 
      
      
@@ -179,7 +179,7 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-interval_a">interval_a</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-interval_b">interval_b</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-interval_t">interval_t</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-j">j</a>
       
@@ -200,8 +200,6 @@
       <a class="list-group-item" href="../program/ramanintensity.html#variable-nprocs">nprocs</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_i">tmp_i</a>
-      
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_j">tmp_j</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-beta">beta</a>
       
@@ -474,7 +472,7 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-interval_a">interval_a</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-interval_b">interval_b</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-interval_t">interval_t</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-j">j</a>
       
@@ -495,8 +493,6 @@
       <a class="list-group-item" href="../program/ramanintensity.html#variable-nprocs">nprocs</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_i">tmp_i</a>
-      
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_j">tmp_j</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-beta">beta</a>
       
@@ -728,11 +724,11 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-interval_b"></span>integer</td>
+  <td><span class="anchor" id="variable-interval_t"></span>integer</td>
   
   
   <td></td><td>::</td>
-  <td><strong>interval_b</strong></td><td></td><td></td><td></td>
+  <td><strong>interval_t</strong></td><td></td><td></td><td></td>
   
 </tr>
 
@@ -873,20 +869,6 @@
   
   <td></td><td>::</td>
   <td><strong>tmp_i</strong></td><td></td><td></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-tmp_j"></span>integer</td>
-  
-  
-  <td></td><td>::</td>
-  <td><strong>tmp_j</strong></td><td></td><td></td><td></td>
   
 </tr>
 
@@ -1584,7 +1566,7 @@
 <span class="kt">integer</span> <span class="kd">::</span> <span class="n">imode</span>
 <span class="kt">integer</span> <span class="kd">::</span> <span class="n">index1</span>
 <span class="kt">integer</span> <span class="kd">::</span> <span class="n">interval_a</span>
-<span class="kt">integer</span> <span class="kd">::</span> <span class="n">interval_b</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">interval_t</span>
 <span class="kt">integer</span> <span class="kd">::</span> <span class="n">j</span>
 <span class="kt">integer</span> <span class="kd">::</span> <span class="n">k</span>
 <span class="kt">integer</span> <span class="kd">::</span> <span class="n">l</span>
@@ -1598,8 +1580,6 @@
 <span class="kt">integer</span> <span class="kd">::</span> <span class="n">nprocs</span>
   <span class="c">!! Number of MPI processes</span>
 <span class="kt">integer</span> <span class="kd">::</span> <span class="n">tmp_i</span>
-<span class="kt">integer</span> <span class="kd">::</span> <span class="n">tmp_j</span>
-
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">beta</span>
   <span class="c">!! \(\beta = 1/k_{B}T\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">count1</span>
@@ -1828,15 +1808,9 @@
 <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">=</span><span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
 
 
-<span class="c">!write(*,*)&quot;interval1&quot;, id, interval(1)</span>
-<span class="c">!write(*,*)&quot;interval2&quot;, id,  interval(2)</span>
 <span class="k">call </span><span class="n">MPI_Barrier</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span><span class="n">ierror</span><span class="p">)</span>
   <span class="c">!! Make sure that all processes get here before</span>
   <span class="c">!! moving forward</span>
-<span class="c">!max_k=floor(loglimit/gamma1/step1)</span>
-<span class="c">!max_l=floor(loglimit/gamma2/step1)</span>
-<span class="c">!interval_a = floor(loglimit/gamma1/step1*float(id)/float(nprocs))</span>
-<span class="c">!interval_b = floor(loglimit/gamma1/step1*float(id+1)/float(nprocs))-1</span>
 
 <span class="n">s3</span><span class="o">=</span><span class="mf">0.0d0</span>
 <span class="k">do </span><span class="n">j</span><span class="o">=</span><span class="n">interval</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -1853,7 +1827,6 @@
     <span class="c">!! @todo Figure out exponentials for \(F_j\) use \(\omega_{nj}\) @endtodo</span>
  
    <span class="k">do </span><span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">loglimit</span><span class="o">/</span><span class="n">gamma1</span><span class="o">/</span><span class="n">step1</span><span class="p">)</span><span class="o">-</span><span class="n">j</span> 
-      <span class="c">!write(*,*)id,k,int(loglimit/gamma1/step1)-j</span>
       <span class="n">s1</span> <span class="o">=</span> <span class="mf">0.0d0</span>
       <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">step1</span>
       
@@ -1872,10 +1845,9 @@
       <span class="n">zfactor</span> <span class="o">=</span> <span class="nb">product</span><span class="p">(</span><span class="n">zfactor1</span><span class="p">(:)</span><span class="o">/</span><span class="n">zfactor2</span><span class="p">(:))</span>
 
 
-      <span class="n">interval_b</span><span class="o">=</span><span class="nb">int</span><span class="p">((</span><span class="n">loglimit</span><span class="o">/</span><span class="n">step1</span><span class="o">-</span><span class="n">gamma1</span><span class="o">*</span><span class="n">j</span><span class="o">-</span><span class="n">gamma1</span><span class="o">*</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">gamma2</span><span class="p">)</span>
-<span class="c">!      interval_a=-interval_b</span>
+      <span class="n">interval_t</span><span class="o">=</span><span class="nb">int</span><span class="p">((</span><span class="n">loglimit</span><span class="o">/</span><span class="n">step1</span><span class="o">-</span><span class="n">gamma1</span><span class="o">*</span><span class="n">j</span><span class="o">-</span><span class="n">gamma1</span><span class="o">*</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">gamma2</span><span class="p">)</span>
 
-      <span class="k">do </span><span class="n">l</span><span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">interval_b</span><span class="c">!-max_l,max_l</span>
+      <span class="k">do </span><span class="n">l</span><span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">interval_t</span>
          <span class="n">t</span><span class="o">=</span><span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span><span class="o">*</span><span class="n">step1</span>
          <span class="n">tmp_exp</span><span class="o">=</span><span class="mf">0.0d0</span>
  

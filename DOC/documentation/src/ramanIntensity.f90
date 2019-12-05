@@ -15,7 +15,6 @@ module para
     !! \(\pi\)
   real(kind = dp), parameter :: tpi  =  2.0*3.1415926535897932_dp
     !! \(2\pi\)
-
   complex(kind = dp), parameter :: I = cmplx(0.0d0, 1.0d0, dp)  
     !! \(i\)
 end module
@@ -34,7 +33,7 @@ integer :: id
 integer :: imode
 integer :: index1
 integer :: interval_a
-integer :: interval_b
+integer :: interval_t
 integer :: j
 integer :: k
 integer :: l
@@ -48,8 +47,6 @@ integer :: nmode
 integer :: nprocs
   !! Number of MPI processes
 integer :: tmp_i
-integer :: tmp_j
-
 real(kind = dp) :: beta
   !! \(\beta = 1/k_{B}T\)
 real(kind = dp) :: count1
@@ -278,15 +275,9 @@ end do
 interval(2)=interval(2)-1
 
 
-!write(*,*)"interval1", id, interval(1)
-!write(*,*)"interval2", id,  interval(2)
 call MPI_Barrier(MPI_COMM_WORLD,ierror)
   !! Make sure that all processes get here before
   !! moving forward
-!max_k=floor(loglimit/gamma1/step1)
-!max_l=floor(loglimit/gamma2/step1)
-!interval_a = floor(loglimit/gamma1/step1*float(id)/float(nprocs))
-!interval_b = floor(loglimit/gamma1/step1*float(id+1)/float(nprocs))-1
 
 s3=0.0d0
 do j=interval(1),interval(2)
@@ -303,7 +294,6 @@ do j=interval(1),interval(2)
     !! @todo Figure out exponentials for \(F_j\) use \(\omega_{nj}\) @endtodo
  
    do k=0,int(loglimit/gamma1/step1)-j 
-      !write(*,*)id,k,int(loglimit/gamma1/step1)-j
       s1 = 0.0d0
       y = (k+0.5) * step1
       
@@ -322,10 +312,9 @@ do j=interval(1),interval(2)
       zfactor = product(zfactor1(:)/zfactor2(:))
 
 
-      interval_b=int((loglimit/step1-gamma1*j-gamma1*k)/gamma2)
-!      interval_a=-interval_b
+      interval_t=int((loglimit/step1-gamma1*j-gamma1*k)/gamma2)
 
-      do l= 0, interval_b!-max_l,max_l
+      do l= 0, interval_t
          t=(l+0.5)*step1
          tmp_exp=0.0d0
  
