@@ -61,7 +61,7 @@ real(kind = dp) :: alpha
 real(kind = dp) :: loglimit
 real(kind = dp) :: limit
 real(kind = dp) :: omega
-real(kind = dp) :: step1
+real(kind = dp) :: step
 real(kind = dp) :: step2
   !! Step to go from 0 to \(\2\pi) in `n2` steps
 real(kind = dp) :: t
@@ -244,18 +244,18 @@ gamma_p=gamma_p*mev/hbar/omega
 alpha=alpha*mev/hbar/omega
 
 !> Set loop variables?
-step1=tpi/float(n1)
+step=tpi/float(n1)
 loglimit=-log(limit)
 count1=0.0
 
 write(*,*)"id", eshift(:)
-!write(*,*),step1
+!write(*,*),step
 
 !> Do some sort of sum? What are `gamma_p` and `alpha`? They come from the input file
 !> I think this is figuring out the intervals for each node to integrate over
-do j=0,int(loglimit/gamma_p/step1)
-   do k=0,int(loglimit/gamma_p/step1-j)
-      count1=count1+int((loglimit/step1-gamma_p*j-gamma_p*k)/alpha)
+do j=0,int(loglimit/gamma_p/step)
+   do k=0,int(loglimit/gamma_p/step-j)
+      count1=count1+int((loglimit/step-gamma_p*j-gamma_p*k)/alpha)
    enddo
 end do
 
@@ -265,9 +265,9 @@ count2(2) = float(id+1)/float(nprocs)*count1
 index1=1
 count1=0.0
 write(*,*)"iteration2"
-do j=0,int(loglimit/gamma_p/step1)
-   do k=0,int(loglimit/gamma_p/step1)-j
-      count1=count1+int((loglimit/step1-gamma_p*j-gamma_p*k)/alpha)
+do j=0,int(loglimit/gamma_p/step)
+   do k=0,int(loglimit/gamma_p/step)-j
+      count1=count1+int((loglimit/step-gamma_p*j-gamma_p*k)/alpha)
    enddo
 
    if(count1>=count2(index1)) then
@@ -295,14 +295,14 @@ do j=interval(1),interval(2)
    endif
 
    s2 = 0.0d0
-   x = (j+0.5) * step1
+   x = (j+0.5) * step
 
    expX(:)=cos(omega_nj(:)*x)+I*sin(omega_nj(:)*x)
     !! @todo Figure out exponentials for \(F_j\) use \(\omega_{nj}\) @endtodo
  
-   do k=0,int(loglimit/gamma_p/step1)-j 
+   do k=0,int(loglimit/gamma_p/step)-j 
       s1 = 0.0d0
-      y = (k+0.5) * step1
+      y = (k+0.5) * step
       
       expY(:) = cos( omega_nj(:)*y ) - I * sin(omega_nj(:)*y)
 
@@ -319,10 +319,10 @@ do j=interval(1),interval(2)
       zfactor = product(zfactor1(:)/zfactor2(:))
 
 
-      interval_t=int((loglimit/step1-gamma_p*j-gamma_p*k)/alpha)
+      interval_t=int((loglimit/step-gamma_p*j-gamma_p*k)/alpha)
 
       do l= 0, interval_t
-         t=(l+0.5)*step1
+         t=(l+0.5)*step
          tmp_exp=0.0d0
  
          do imode=1,nmode
@@ -371,7 +371,7 @@ if(id == 0) then
     write(13,*) "Laser energy: ", elaser(ilaserE)
     
     do j = 1, eshift_num 
-      write(13,*) eshift(j), eshift(j)*mevtocm, step1**3*Real(global_sum(j,ilaserE))*2.0
+      write(13,*) eshift(j), eshift(j)*mevtocm, step**3*Real(global_sum(j,ilaserE))*2.0
     enddo
 
   enddo
