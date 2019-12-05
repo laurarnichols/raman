@@ -43,8 +43,6 @@ integer :: interval_t
 integer :: j
 integer :: k
 integer :: l
-integer :: max_k
-integer :: max_l
 integer :: n1
 integer :: n2
   !! Hardcoded to be 100000; used to generate `ex1`
