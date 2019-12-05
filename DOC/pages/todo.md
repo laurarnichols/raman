@@ -7,6 +7,6 @@ date: 12/05/2019
 * `../src/ramanIntensity.f90:148:` Change `input.txt` to be read from input file
 * `../src/ramanIntensity.f90:149:` Change output to go to command line like QE
 * `../src/ramanIntensity.f90:186:` Figure out what this is used for
-* `../src/ramanIntensity.f90:301:` Figure out exponentials for \(F_j\) use \(\omega_{nj}\)
-* `../src/ramanIntensity.f90:318:` Figure out where `zfactor2` comes from
-* `../src/ramanIntensity.f90:343:` Add detailed derivation of this in a separate page
+* `../src/ramanIntensity.f90:295:` Figure out exponentials for \(F_j\) use \(\omega_{nj}\)
+* `../src/ramanIntensity.f90:312:` Figure out where `zfactor2` comes from
+* `../src/ramanIntensity.f90:337:` Add detailed derivation of this in a separate page

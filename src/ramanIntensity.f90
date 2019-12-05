@@ -208,8 +208,6 @@ if(id == 0) then
   do imode=1,nmode
      
      read(11,*) j, Sj(imode), omega_j(imode), omega_nj(imode)
-      
-     !write(*,*) id, Sj(imode), omega_j(imode), omega_nj(imode)
 
   end do
 
@@ -248,9 +246,6 @@ step=tpi/float(n1)
 loglimit=-log(limit)
 count1=0.0
 
-write(*,*)"id", eshift(:)
-!write(*,*),step
-
 !> Do some sort of sum? What are `gamma_p` and `alpha`? They come from the input file
 !> I think this is figuring out the intervals for each node to integrate over
 do j=0,int(loglimit/gamma_p/step)
@@ -261,10 +256,9 @@ end do
 
 count2(1) = float(id)/float(nprocs)*count1
 count2(2) = float(id+1)/float(nprocs)*count1
-!write(*,*)"count1",count1
 index1=1
 count1=0.0
-write(*,*)"iteration2"
+
 do j=0,int(loglimit/gamma_p/step)
    do k=0,int(loglimit/gamma_p/step)-j
       count1=count1+int((loglimit/step-gamma_p*j-gamma_p*k)/alpha)
