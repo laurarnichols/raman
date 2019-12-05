@@ -62,7 +62,7 @@ real(kind = dp) :: loglimit
 real(kind = dp) :: limit
 real(kind = dp) :: omega
 real(kind = dp) :: step
-real(kind = dp) :: step2
+real(kind = dp) :: dstep
   !! Step to go from 0 to \(\2\pi) in `n2` steps
 real(kind = dp) :: t
 real(kind = dp) :: temperature
@@ -178,14 +178,14 @@ allocate(Sj(nmode), omega_j(nmode), omega_nj(nmode), hbarOmegaBeta(nmode), FjFra
 allocate(domega(nmode), theta(nmode), zfactor1(nmode), zfactor2(nmode), ex1(0:n2+1), interval(2), count2(2))
   !! * Allocate space for variables on all processes
 
-step2=tpi/float(n2)
-  !! * Calculate `step2`\(= 2\pi/n2\) where `n2=100000`
+dstep=tpi/float(n2)
+  !! * Calculate `dstep`\(= 2\pi/n2\) where `n2=100000`
 
 do j=0,n2+1
   !! * Calculate \(e^{i\theta}\) where \(\theta\) goes from 0 to \(2\pi\)
   !! @todo Figure out what this is used for @endtodo
 
-   ex1(j)=exp(I*j*step2)
+   ex1(j)=exp(I*j*dstep)
 
 end do
 

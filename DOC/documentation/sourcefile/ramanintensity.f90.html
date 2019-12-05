@@ -347,7 +347,7 @@
 <a name="ln-62"></a><span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">limit</span>
 <a name="ln-63"></a><span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">omega</span>
 <a name="ln-64"></a><span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">step</span>
-<a name="ln-65"></a><span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">step2</span>
+<a name="ln-65"></a><span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dstep</span>
 <a name="ln-66"></a>  <span class="c">!! Step to go from 0 to \(\2\pi) in `n2` steps</span>
 <a name="ln-67"></a><span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">t</span>
 <a name="ln-68"></a><span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">temperature</span>
@@ -463,14 +463,14 @@
 <a name="ln-178"></a><span class="k">allocate</span><span class="p">(</span><span class="n">domega</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">theta</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">zfactor1</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">zfactor2</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">ex1</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">count2</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
 <a name="ln-179"></a>  <span class="c">!! * Allocate space for variables on all processes</span>
 <a name="ln-180"></a>
-<a name="ln-181"></a><span class="n">step2</span><span class="o">=</span><span class="n">tpi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
-<a name="ln-182"></a>  <span class="c">!! * Calculate `step2`\(= 2\pi/n2\) where `n2=100000`</span>
+<a name="ln-181"></a><span class="n">dstep</span><span class="o">=</span><span class="n">tpi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
+<a name="ln-182"></a>  <span class="c">!! * Calculate `dstep`\(= 2\pi/n2\) where `n2=100000`</span>
 <a name="ln-183"></a>
 <a name="ln-184"></a><span class="k">do </span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span>
 <a name="ln-185"></a>  <span class="c">!! * Calculate \(e^{i\theta}\) where \(\theta\) goes from 0 to \(2\pi\)</span>
 <a name="ln-186"></a>  <span class="c">!! @todo Figure out what this is used for @endtodo</span>
 <a name="ln-187"></a>
-<a name="ln-188"></a>   <span class="n">ex1</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">=</span><span class="nb">exp</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="n">j</span><span class="o">*</span><span class="n">step2</span><span class="p">)</span>
+<a name="ln-188"></a>   <span class="n">ex1</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">=</span><span class="nb">exp</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="n">j</span><span class="o">*</span><span class="n">dstep</span><span class="p">)</span>
 <a name="ln-189"></a>
 <a name="ln-190"></a><span class="k">end do</span>
 <a name="ln-191"></a>

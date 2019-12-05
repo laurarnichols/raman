@@ -219,7 +219,7 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-step">step</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-step2">step2</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-dstep">dstep</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-t">t</a>
       
@@ -388,7 +388,7 @@
 <p>Allocate space for variables on all processes</p>
 </li>
 <li>
-<p>Calculate <code>step2</code><script type="math/tex">= 2\pi/n2</script> where <code>n2=100000</code></p>
+<p>Calculate <code>dstep</code><script type="math/tex">= 2\pi/n2</script> where <code>n2=100000</code></p>
 </li>
 <li>
 <p>Calculate <script type="math/tex">e^{i\theta}</script> where <script type="math/tex">\theta</script> goes from 0 to <script type="math/tex">2\pi</script>
@@ -512,7 +512,7 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-step">step</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-step2">step2</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-dstep">dstep</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-t">t</a>
       
@@ -1008,11 +1008,11 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-step2"></span>real(kind=dp)</td>
+  <td><span class="anchor" id="variable-dstep"></span>real(kind=dp)</td>
   
   
   <td></td><td>::</td>
-  <td><strong>step2</strong></td><td></td><td></td><td><p>Step to go from 0 to (\2\pi) in <code>n2</code> steps</p></td>
+  <td><strong>dstep</strong></td><td></td><td></td><td><p>Step to go from 0 to (\2\pi) in <code>n2</code> steps</p></td>
   
 </tr>
 
@@ -1594,7 +1594,7 @@
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">limit</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">omega</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">step</span>
-<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">step2</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dstep</span>
   <span class="c">!! Step to go from 0 to \(\2\pi) in `n2` steps</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">t</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">temperature</span>
@@ -1710,14 +1710,14 @@
 <span class="k">allocate</span><span class="p">(</span><span class="n">domega</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">theta</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">zfactor1</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">zfactor2</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">ex1</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">count2</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
   <span class="c">!! * Allocate space for variables on all processes</span>
 
-<span class="n">step2</span><span class="o">=</span><span class="n">tpi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
-  <span class="c">!! * Calculate `step2`\(= 2\pi/n2\) where `n2=100000`</span>
+<span class="n">dstep</span><span class="o">=</span><span class="n">tpi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
+  <span class="c">!! * Calculate `dstep`\(= 2\pi/n2\) where `n2=100000`</span>
 
 <span class="k">do </span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span>
   <span class="c">!! * Calculate \(e^{i\theta}\) where \(\theta\) goes from 0 to \(2\pi\)</span>
   <span class="c">!! @todo Figure out what this is used for @endtodo</span>
 
-   <span class="n">ex1</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">=</span><span class="nb">exp</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="n">j</span><span class="o">*</span><span class="n">step2</span><span class="p">)</span>
+   <span class="n">ex1</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">=</span><span class="nb">exp</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="n">j</span><span class="o">*</span><span class="n">dstep</span><span class="p">)</span>
 
 <span class="k">end do</span>
 
