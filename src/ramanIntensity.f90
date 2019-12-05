@@ -292,18 +292,12 @@ do j=interval(1),interval(2)
    x = (j+0.5) * step
 
    expX(:)=cos(omega_nj(:)*x)+I*sin(omega_nj(:)*x)
-    !! @todo Figure out exponentials for \(F_j\) use \(\omega_{nj}\) @endtodo
  
    do k=0,int(loglimit/gamma_p/step)-j 
       s1 = 0.0d0
       y = (k+0.5) * step
       
       expY(:) = cos( omega_nj(:)*y ) - I * sin(omega_nj(:)*y)
-
-      theta(:) = domega(:)*( x - y ) - I*hbarOmegaBeta(:)
-      FjFractionFactor(:) = sin(theta(:))/( 1 - cos(theta(:))  )
-       !! * Calculate the fractional factor in front of the cosines in
-       !!   \(F_j\)
       
       theta(:) = hbarOmegaBeta(:) + I*domega(:) * ( x - y ) 
       zfactor1(:) = exp(0.5*theta(:)) / ( exp(theta(:)) - 1 )        
@@ -311,7 +305,12 @@ do j=interval(1),interval(2)
       zfactor2(:) =exp(0.5*hbarOmegaBeta(:)) / ( exp(hbarOmegaBeta(:)) - 1 )
        !! @todo Figure out where `zfactor2` comes from @endtodo
       zfactor = product(zfactor1(:)/zfactor2(:))
+      !zfactor = product(exp( 0.5*I*domega(:)*(x-y) ) * ( exp( hbarOmegaBeta(:) ) - 1 ) / ( exp( theta(:) ) - 1 ))
 
+      theta(:) = domega(:)*( x - y ) - I*hbarOmegaBeta(:)
+      FjFractionFactor(:) = sin(theta(:))/( 1 - cos(theta(:))  )
+       !! * Calculate the fractional factor in front of the cosines in
+       !!   \(F_j\)
 
       interval_t=int((loglimit/step-gamma_p*j-gamma_p*k)/alpha)
 
@@ -339,6 +338,7 @@ do j=interval(1),interval(2)
          enddo
 
          s1(:)=s1(:)+exp(I*tmp_exp-I*omega_s(:)*t-alpha*abs(t))
+          !! @todo Figure out why `abs(t)` here when `t` is positive in the loop? Is `t` positive in the loop? @endtodo
       end do
 
       do ilaserE = 1, elaser_num
@@ -361,6 +361,7 @@ call MPI_Reduce( s3, global_sum, eshift_num*elaser_num, MPI_DOUBLE_COMPLEX, MPI_
 
 if(id == 0) then
   write(13,*)"calculation finalized"
+
   do ilaserE = 1, elaser_num
     write(13,*) "Laser energy: ", elaser(ilaserE)
     

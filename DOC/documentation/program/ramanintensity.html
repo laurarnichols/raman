@@ -423,15 +423,11 @@
  moving forward</p>
 <p>Integrate over <script type="math/tex">x</script>
 </p>
-<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out exponentials for <script type="math/tex">F_j</script> use <script type="math/tex">\omega_{nj}</script> </p></div>
-<p>
-<ul>
-<li>Calculate the fractional factor in front of the cosines in
-   <script type="math/tex">F_j</script>
-</li>
-</ul>
 <p>Calculate the first fraction in equation 42
  </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out where <code>zfactor2</code> comes from </p></div>
+<p>* Calculate the fractional factor in front of the cosines in
+   <script type="math/tex">F_j</script>
+</p>
 <p>Use a linear interpolation for <script type="math/tex">e^{i\omega t}</script>
 </p>
 <ul>
@@ -443,6 +439,7 @@
 <code>FjFractionFactor</code><script type="math/tex">\text{Re}(2 + </script>
 <code>expForFj</code><script type="math/tex">)</script>
  </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Add detailed derivation of this in a separate page </p></div>
+<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out why <code>abs(t)</code> here when <code>t</code> is positive in the loop? Is <code>t</code> positive in the loop? </p></div>
 <p></li>
 </ul>
     
@@ -1824,18 +1821,12 @@
    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">step</span>
 
    <span class="n">expX</span><span class="p">(:)</span><span class="o">=</span><span class="nb">cos</span><span class="p">(</span><span class="n">omega_nj</span><span class="p">(:)</span><span class="o">*</span><span class="n">x</span><span class="p">)</span><span class="o">+</span><span class="n">I</span><span class="o">*</span><span class="nb">sin</span><span class="p">(</span><span class="n">omega_nj</span><span class="p">(:)</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
-    <span class="c">!! @todo Figure out exponentials for \(F_j\) use \(\omega_{nj}\) @endtodo</span>
  
    <span class="k">do </span><span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">loglimit</span><span class="o">/</span><span class="n">gamma_p</span><span class="o">/</span><span class="n">step</span><span class="p">)</span><span class="o">-</span><span class="n">j</span> 
       <span class="n">s1</span> <span class="o">=</span> <span class="mf">0.0d0</span>
       <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">step</span>
       
       <span class="n">expY</span><span class="p">(:)</span> <span class="o">=</span> <span class="nb">cos</span><span class="p">(</span> <span class="n">omega_nj</span><span class="p">(:)</span><span class="o">*</span><span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span> <span class="o">*</span> <span class="nb">sin</span><span class="p">(</span><span class="n">omega_nj</span><span class="p">(:)</span><span class="o">*</span><span class="n">y</span><span class="p">)</span>
-
-      <span class="n">theta</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">domega</span><span class="p">(:)</span><span class="o">*</span><span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">hbarOmegaBeta</span><span class="p">(:)</span>
-      <span class="n">FjFractionFactor</span><span class="p">(:)</span> <span class="o">=</span> <span class="nb">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">(:))</span><span class="o">/</span><span class="p">(</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">(:))</span>  <span class="p">)</span>
-       <span class="c">!! * Calculate the fractional factor in front of the cosines in</span>
-       <span class="c">!!   \(F_j\)</span>
       
       <span class="n">theta</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">hbarOmegaBeta</span><span class="p">(:)</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="n">domega</span><span class="p">(:)</span> <span class="o">*</span> <span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> 
       <span class="n">zfactor1</span><span class="p">(:)</span> <span class="o">=</span> <span class="nb">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">theta</span><span class="p">(:))</span> <span class="o">/</span> <span class="p">(</span> <span class="nb">exp</span><span class="p">(</span><span class="n">theta</span><span class="p">(:))</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>        
@@ -1843,7 +1834,12 @@
       <span class="n">zfactor2</span><span class="p">(:)</span> <span class="o">=</span><span class="nb">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">hbarOmegaBeta</span><span class="p">(:))</span> <span class="o">/</span> <span class="p">(</span> <span class="nb">exp</span><span class="p">(</span><span class="n">hbarOmegaBeta</span><span class="p">(:))</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>
        <span class="c">!! @todo Figure out where `zfactor2` comes from @endtodo</span>
       <span class="n">zfactor</span> <span class="o">=</span> <span class="nb">product</span><span class="p">(</span><span class="n">zfactor1</span><span class="p">(:)</span><span class="o">/</span><span class="n">zfactor2</span><span class="p">(:))</span>
+      <span class="c">!zfactor = product(exp( 0.5*I*domega(:)*(x-y) ) * ( exp( hbarOmegaBeta(:) ) - 1 ) / ( exp( theta(:) ) - 1 ))</span>
 
+      <span class="n">theta</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">domega</span><span class="p">(:)</span><span class="o">*</span><span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">hbarOmegaBeta</span><span class="p">(:)</span>
+      <span class="n">FjFractionFactor</span><span class="p">(:)</span> <span class="o">=</span> <span class="nb">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">(:))</span><span class="o">/</span><span class="p">(</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">(:))</span>  <span class="p">)</span>
+       <span class="c">!! * Calculate the fractional factor in front of the cosines in</span>
+       <span class="c">!!   \(F_j\)</span>
 
       <span class="n">interval_t</span><span class="o">=</span><span class="nb">int</span><span class="p">((</span><span class="n">loglimit</span><span class="o">/</span><span class="n">step</span><span class="o">-</span><span class="n">gamma_p</span><span class="o">*</span><span class="n">j</span><span class="o">-</span><span class="n">gamma_p</span><span class="o">*</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">alpha</span><span class="p">)</span>
 
@@ -1871,6 +1867,7 @@
          <span class="n">enddo</span>
 
          <span class="n">s1</span><span class="p">(:)</span><span class="o">=</span><span class="n">s1</span><span class="p">(:)</span><span class="o">+</span><span class="nb">exp</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="n">tmp_exp</span><span class="o">-</span><span class="n">I</span><span class="o">*</span><span class="n">omega_s</span><span class="p">(:)</span><span class="o">*</span><span class="n">t</span><span class="o">-</span><span class="n">alpha</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+          <span class="c">!! @todo Figure out why `abs(t)` here when `t` is positive in the loop? Is `t` positive in the loop? @endtodo</span>
       <span class="k">end do</span>
 
 <span class="k">      do </span><span class="n">ilaserE</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">elaser_num</span>
@@ -1893,6 +1890,7 @@
 
 <span class="k">if</span><span class="p">(</span><span class="n">id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
 <span class="k">  write</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s2">&quot;calculation finalized&quot;</span>
+
   <span class="k">do </span><span class="n">ilaserE</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">elaser_num</span>
     <span class="k">write</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="s2">&quot;Laser energy: &quot;</span><span class="p">,</span> <span class="n">elaser</span><span class="p">(</span><span class="n">ilaserE</span><span class="p">)</span>
     
