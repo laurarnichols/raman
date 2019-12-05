@@ -58,8 +58,8 @@ real(kind = dp) :: beta
 real(kind = dp) :: count1
 real(kind = dp) :: elevel
   !! \(E_n\)
-real(kind = dp) :: gamma1
-real(kind = dp) :: gamma2
+real(kind = dp) :: gamma_p
+real(kind = dp) :: alpha
 real(kind = dp) :: loglimit
 real(kind = dp) :: limit
 real(kind = dp) :: omega
@@ -144,7 +144,7 @@ if(id == 0) then
   !!    * Open `Inputfile` to read the number of phonon modes
   !!      which is needed to allocate variables
   !!    * Open `input.txt` file to read temperature, `n1`, 
-  !!      `limit`, `gamma1`, `gamma2`, the energy of the laser,
+  !!      `limit`, `gamma_p`, `alpha`, the energy of the laser,
   !!      `elevel`, and `eshift_num`
   !!    * Open `output.txt` for output
   !! @todo Change `input.txt` to be read from input file @endtodo
@@ -156,7 +156,7 @@ if(id == 0) then
 
   open(12 , file='input.txt', Action='read', status='old')
   read(12,*) 
-  read(12,*) temperature, n1, limit, gamma1, gamma2, elevel, elaser_num, eshift_num
+  read(12,*) temperature, n1, limit, gamma_p, alpha, elevel, elaser_num, eshift_num
 
   open(13,file="output.txt",Action="write",status="replace")
 endif
@@ -226,8 +226,8 @@ endif
 
 call MPI_Bcast( n1, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( limit, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
-call MPI_Bcast( gamma1, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
-call MPI_Bcast( gamma2, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
+call MPI_Bcast( gamma_p, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
+call MPI_Bcast( alpha, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( elaser, elaser_num, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( elevel, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( eshift, eshift_num, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
@@ -242,8 +242,8 @@ call MPI_Barrier(MPI_COMM_WORLD,ierror)
 omega_l(:)=(elaser(:)-elevel)*ev/hbar/omega
   !! \((E_L-E_n)/\hbar\omega\)
 omega2(:)=eshift(:)*mev/hbar/omega
-gamma1=gamma1*mev/hbar/omega
-gamma2=gamma2*mev/hbar/omega
+gamma_p=gamma_p*mev/hbar/omega
+alpha=alpha*mev/hbar/omega
 
 !> Set loop variables?
 step1=tpi/float(n1)
@@ -253,11 +253,11 @@ count1=0.0
 write(*,*)"id", eshift(:)
 !write(*,*),step1
 
-!> Do some sort of sum? What are gamma1 and gamma2? They come from the input file
+!> Do some sort of sum? What are `gamma_p` and `alpha`? They come from the input file
 !> I think this is figuring out the intervals for each node to integrate over
-do j=0,int(loglimit/gamma1/step1)
-   do k=0,int(loglimit/gamma1/step1-j)
-      count1=count1+int((loglimit/step1-gamma1*j-gamma1*k)/gamma2)
+do j=0,int(loglimit/gamma_p/step1)
+   do k=0,int(loglimit/gamma_p/step1-j)
+      count1=count1+int((loglimit/step1-gamma_p*j-gamma_p*k)/alpha)
    enddo
 end do
 
@@ -267,9 +267,9 @@ count2(2) = float(id+1)/float(nprocs)*count1
 index1=1
 count1=0.0
 write(*,*)"iteration2"
-do j=0,int(loglimit/gamma1/step1)
-   do k=0,int(loglimit/gamma1/step1)-j
-      count1=count1+int((loglimit/step1-gamma1*j-gamma1*k)/gamma2)
+do j=0,int(loglimit/gamma_p/step1)
+   do k=0,int(loglimit/gamma_p/step1)-j
+      count1=count1+int((loglimit/step1-gamma_p*j-gamma_p*k)/alpha)
    enddo
 
    if(count1>=count2(index1)) then
@@ -302,7 +302,7 @@ do j=interval(1),interval(2)
    expX(:)=cos(omega_nj(:)*x)+I*sin(omega_nj(:)*x)
     !! @todo Figure out exponentials for \(F_j\) use \(\omega_{nj}\) @endtodo
  
-   do k=0,int(loglimit/gamma1/step1)-j 
+   do k=0,int(loglimit/gamma_p/step1)-j 
       s1 = 0.0d0
       y = (k+0.5) * step1
       
@@ -321,7 +321,7 @@ do j=interval(1),interval(2)
       zfactor = product(zfactor1(:)/zfactor2(:))
 
 
-      interval_t=int((loglimit/step1-gamma1*j-gamma1*k)/gamma2)
+      interval_t=int((loglimit/step1-gamma_p*j-gamma_p*k)/alpha)
 
       do l= 0, interval_t
          t=(l+0.5)*step1
@@ -346,18 +346,18 @@ do j=interval(1),interval(2)
             tmp_exp=tmp_exp+Fj*Sj(imode)
          enddo
 
-         s1(:)=s1(:)+exp(I*tmp_exp-I*omega2(:)*t-gamma2*abs(t))
+         s1(:)=s1(:)+exp(I*tmp_exp-I*omega2(:)*t-alpha*abs(t))
       end do
 
       do ilaserE = 1, elaser_num
 
-        s2(:,ilaserE)=s2(:,ilaserE)+s1(:)*exp(-(I*omega_l(ilaserE)+gamma1)*y) * zfactor
+        s2(:,ilaserE)=s2(:,ilaserE)+s1(:)*exp(-(I*omega_l(ilaserE)+gamma_p)*y) * zfactor
 
       enddo
    end do
 
    do ilaserE = 1, elaser_num
-     s3(:,ilaserE)=s3(:,ilaserE)+s2(:,ilaserE)*exp(-(-I*omega_l(ilaserE)+gamma1)*x)
+     s3(:,ilaserE)=s3(:,ilaserE)+s2(:,ilaserE)*exp(-(-I*omega_l(ilaserE)+gamma_p)*x)
    enddo
 enddo
 
