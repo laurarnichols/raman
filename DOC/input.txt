@@ -1,4 +1,17 @@
-temperature n1 limit gamma1 gamma2 Elaser Elevel Eshift_num
-100 500 0.0001 5.00 0.1 1.70 1.5979 4
+&ramanInput
+ temperature = 300
+ n1 = 500
+ limit = 0.0001
+ gamma_p = 5.00
+ alpha = 0.1
+ elevel = 1.5979
+ elaser_num = 1
+ eshift_num = 4
+ SjInputFile = 'Sj.out'
+/
+
+ESHIFT
 44.5 48.3 50.9 52.2 
 
+ELASER
+1.70

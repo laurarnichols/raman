@@ -38,7 +38,6 @@ integer :: ilaserE
 integer :: imode
   !! Loop index over phonon modes
 integer :: index1
-integer :: interval_a
 integer :: interval_t
 integer :: j
 integer :: k
@@ -82,7 +81,7 @@ complex(kind = dp) :: Fj
 complex(kind = dp) :: tmp_exp
 complex(kind = dp) :: zfactor
 
-character(len = 256) :: Inputfile
+character(len = 256) :: SjOutputFile
   !! Input file name
 character(len = 256) :: dummy
 
@@ -124,6 +123,8 @@ complex(kind = dp), allocatable :: theta(:)
 complex(kind = dp), allocatable :: zfactor1(:)
 complex(kind = dp), allocatable :: zfactor2(:)
 
+namelist /ramanInput/ temperature, n1, limit, gamma_p, alpha, elevel &
+                      elaser_num, eshift_num, SjOutputFile
 
 
 call MPI_INIT(ierror)
@@ -131,47 +132,38 @@ call MPI_COMM_RANK(MPI_COMM_WORLD, id, ierror)
 call MPI_COMM_SIZE(MPI_COMM_WORLD, nprocs, ierror)
   !! * Initialize MPI pool
 
-Inputfile = 'Sj.out'
-  !! * Define input file name
-  !! @todo Make this an input variable rather than hardcode @endtodo
 omega=1.0d14
+  !! * Define a number to scale all inputs down by. This is currently 
+  !!   set to 2 orders of magnitude larger than the phonon frequency
+  !!   scale so that the time step is small enough to get reasonable 
+  !!   results.
 n2=100000
-  !! @todo Figure out the purpose of these variables @endtodo
+  !! * Define the number of exponentials to pre-calculate in order
+  !!   to do the linear interpolation of \(e^(i\omega_j t)\)
 
 if(id == 0) then
   !! * If root process
-  !!    * Open `Inputfile` to read the number of phonon modes
+  !!    * Read temperature, `n1`, `limit`, `gamma_p`, `alpha`, 
+  !!      `elevel`, `elaser_num`, `eshift_num`, and `SjOutputFile`
+  !!    * Open `SjOutputFile` to read the number of phonon modes
   !!      which is needed to allocate variables
-  !!    * Open `input.txt` file to read temperature, `n1`, 
-  !!      `limit`, `gamma_p`, `alpha`, the energy of the laser,
-  !!      `elevel`, and `eshift_num`
-  !!    * Open `output.txt` for output
-  !! @todo Change `input.txt` to be read from input file @endtodo
-  !! @todo Change output to go to command line like QE @endtodo
+  !!    * Calculate \(\beta = 1/k_{B}T\)
 
-  open(11, file=trim(Inputfile), Action='read', status='old')
+  read(5, ramanInput) 
+  read(5,*)
+    ! Read the `ramanInput` namelist then skip the next blank line
+
+  open(11, file=trim(SjOutputFile), Action='read', status='old')
   read(11,*)
   read(11,*) nmode
 
-  open(12 , file='input.txt', Action='read', status='old')
-  read(12,*) 
-  read(12,*) temperature, n1, limit, gamma_p, alpha, elevel, elaser_num, eshift_num
-
-  open(13,file="output.txt",Action="write",status="replace")
+  beta=1/(kB*temperature)
 endif
-
 
 call MPI_BCast( nmode, 1, MPI_Integer, 0, MPI_COMM_WORLD, ierror)
 call MPI_BCast( eshift_num, 1, MPI_Integer, 0, MPI_COMM_WORLD, ierror)
 call MPI_BCast( elaser_num, 1, MPI_Integer, 0, MPI_COMM_WORLD, ierror)
-call MPI_Bcast( temperature, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
-  !! * Broadcast the number of modes, `eshift_num`, and temperature to
-  !!  other processes
-
-
-beta=1/(kB*temperature)
-  !! * Calculate \(\beta = 1/k_{B}T\)
-
+  !! * Broadcast array sizes to other modes for allocation
 
 allocate(eshift(eshift_num), elaser(elaser_num), omega_s(eshift_num), omega_l(elaser_num))
 allocate(s1(eshift_num), s2(eshift_num,elaser_num), s3(eshift_num,elaser_num), global_sum(eshift_num,elaser_num))
@@ -180,11 +172,11 @@ allocate(domega(nmode), theta(nmode), zfactor1(nmode), zfactor2(nmode), ex1(0:n2
   !! * Allocate space for variables on all processes
 
 dstep=tpi/float(n2)
-  !! * Calculate `dstep`\(= 2\pi/n2\) where `n2=100000`
+  !! * Calculate the step size for the exponential pre-calculation
 
 do j=0,n2+1
-  !! * Calculate \(e^{i\theta}\) where \(\theta\) goes from 0 to \(2\pi\)
-  !! @todo Figure out what this is used for @endtodo
+  !! * Pre-calculate the exponential terms, \(e^{i\theta}\) where \(\theta\)
+  !!   goes from 0 to \(2\pi\), used in the linear interpolation of \(e^{i\omega_j t}\)
 
    ex1(j)=exp(I*j*dstep)
 
@@ -192,15 +184,19 @@ end do
 
 if(id == 0) then
   !! * If root process
-  !!    * For each mode
-  !!       * Read index (currently not being used), \(S_j\),
-  !!         \(\omega_j\), and \(\omega_{nj}\)
-  !!       * Divide the initial and final phonon frequencies by 100
-  !!       * Calculate \(\text{hbarOmegaBeta}=\hbar\omega\beta\omega_j\) 
-  !!       * Calculate `FjFractionFactor`\(={\sin(-i\hbar\omega\beta)}{1-\cos(-i\hbar\omega\beta)}\)
-  !!       * Calculate \(\delta\omega_{nj} = \omega_{nj} - \omega_j\)
-  !!       * Write out the id and phonon frequencies
-  !!    * Read in the energy shifts
+  !!    * Scale the phonon frequencies down by 100
+  !!    * For each mode, read index (currently not being used), 
+  !!      \(S_j\), \(\omega_j\), and \(\omega_{nj}\)
+  !!    * Calculate \(\text{hbarOmegaBeta}=\hbar\omega\beta\omega_j\) for
+  !!      each \(\omega_j\)
+  !!    * Calculate \(\delta\omega_{nj} = \omega_{nj} - \omega_j\) for all
+  !!      \(\omega_j\)/\(\omega_{nj}\) pair
+  !!    * Read in the energy shifts and laser energies
+  !!      @note 
+  !!        Reading the input file assumes the form `&ramanInput ... /`,
+  !!        blank line, ESHIFT, list of energy shifts to calculate
+  !!        intesities for, blank line, ELASER, laser energie(s) to use
+  !!      @endnote
 
   omega_j(:) = omega_j(:)/100.0d0
   omega_nj(:) = omega_nj(:)/100.0d0     
@@ -216,8 +212,12 @@ if(id == 0) then
      
      domega(:) = omega_nj(:)  - omega_j(:)
   
-     read(12,*) eshift(:)
-     read(12,*) elaser(:)
+     read(5,*)
+     read(5,*) eshift(:)
+     read(5,*)
+     read(5,*)
+     read(5,*) elaser(:)
+      ! Make sure to skip the blank lines and headers. 
 
 endif
 
@@ -234,6 +234,7 @@ call MPI_Bcast( omega_nj, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( hbarOmegaBeta, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror) 
 call MPI_Bcast( domega, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror) 
 call MPI_Barrier(MPI_COMM_WORLD,ierror)
+  !! * Broadcast input variables to other processes
 
 !> Maybe unit conversions?
 omega_l(:)=(elaser(:)-elevel)*ev/hbar/omega
@@ -286,7 +287,7 @@ do j=interval(1),interval(2)
   !! Integrate over \(x\)
 
    if(id==0) then
-      write(13,*)id,j
+      write(12,*)id,j
    endif
 
    s2 = 0.0d0
@@ -326,7 +327,7 @@ do j=interval(1),interval(2)
             tmp_i=floor(tmp_r)
             tmp_r=tmp_r-tmp_i
             expT=(1.0-tmp_r)*ex1(tmp_i)+tmp_r*ex1(tmp_i+1)
-              !! Use a linear interpolation for \(e^{i\omega t}\)
+              !! Use a linear interpolation for \(e^{i\omega_j t}\)
 
             expForFj=-expT*(1-expX(imode))*(1-expY(imode))-(expX(imode)+expY(imode))
               !! * Calculate `expForFj`\( = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})\).
@@ -361,13 +362,13 @@ call MPI_Reduce( s3, global_sum, eshift_num*elaser_num, MPI_DOUBLE_COMPLEX, MPI_
 
 
 if(id == 0) then
-  write(13,*)"calculation finalized"
+  write(12,*)"calculation finalized"
 
   do ilaserE = 1, elaser_num
-    write(13,*) "Laser energy: ", elaser(ilaserE)
+    write(12,*) "Laser energy: ", elaser(ilaserE)
     
     do j = 1, eshift_num 
-      write(13,*) eshift(j), eshift(j)*mevtocm, step**3*Real(global_sum(j,ilaserE))*2.0
+      write(12,*) eshift(j), eshift(j)*mevtocm, step**3*Real(global_sum(j,ilaserE))*2.0
     enddo
 
   enddo

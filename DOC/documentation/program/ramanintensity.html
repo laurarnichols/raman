@@ -124,7 +124,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="100.0% of total for programs.">202 statements</a>
+    title="100.0% of total for programs.">201 statements</a>
      </li> 
      
      
@@ -180,8 +180,6 @@
       <a class="list-group-item" href="../program/ramanintensity.html#variable-imode">imode</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-index1">index1</a>
-      
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-interval_a">interval_a</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-interval_t">interval_t</a>
       
@@ -241,7 +239,7 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor">zfactor</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-inputfile">Inputfile</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-sjoutputfile">SjOutputFile</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-dummy">dummy</a>
       
@@ -355,61 +353,63 @@
 <p>Initialize MPI pool</p>
 </li>
 <li>
-<p>Define input file name
- </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Make this an input variable rather than hardcode </p></div>
-<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out the purpose of these variables </p></div>
-<p>
+<p>Define a number to scale all inputs down by. This is currently 
+   set to 2 orders of magnitude larger than the phonon frequency
+   scale so that the time step is small enough to get reasonable 
+   results.</p>
+</li>
+<li>
+<p>Define the number of exponentials to pre-calculate in order
+   to do the linear interpolation of <script type="math/tex">e^(i\omega_j t)</script>
+</p>
 </li>
 <li>
 <p>If root process</p>
 <ul>
-<li>Open <code>Inputfile</code> to read the number of phonon modes
+<li>Read temperature, <code>n1</code>, <code>limit</code>, <code>gamma_p</code>, <code>alpha</code>, 
+  <code>elevel</code>, <code>elaser_num</code>, <code>eshift_num</code>, and <code>SjOutputFile</code></li>
+<li>Open <code>SjOutputFile</code> to read the number of phonon modes
   which is needed to allocate variables</li>
-<li>Open <code>input.txt</code> file to read temperature, <code>n1</code>, 
-  <code>limit</code>, <code>gamma_p</code>, <code>alpha</code>, the energy of the laser,
-  <code>elevel</code>, and <code>eshift_num</code></li>
-<li>Open <code>output.txt</code> for output
- </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Change <code>input.txt</code> to be read from input file </p></div>
-<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Change output to go to command line like QE </p></div>
-<p></li>
+<li>Calculate <script type="math/tex">\beta = 1/k_{B}T</script>
+</li>
 </ul>
 </li>
 <li>
-<p>Broadcast the number of modes, <code>eshift_num</code>, and temperature to
-  other processes</p>
-</li>
-<li>
-<p>Calculate <script type="math/tex">\beta = 1/k_{B}T</script>
-</p>
+<p>Broadcast array sizes to other modes for allocation</p>
 </li>
 <li>
 <p>Allocate space for variables on all processes</p>
 </li>
 <li>
-<p>Calculate <code>dstep</code><script type="math/tex">= 2\pi/n2</script> where <code>n2=100000</code></p>
+<p>Calculate the step size for the exponential pre-calculation</p>
 </li>
 <li>
-<p>Calculate <script type="math/tex">e^{i\theta}</script> where <script type="math/tex">\theta</script> goes from 0 to <script type="math/tex">2\pi</script>
- </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out what this is used for </p></div>
-<p>
+<p>Pre-calculate the exponential terms, <script type="math/tex">e^{i\theta}</script> where <script type="math/tex">\theta</script>
+   goes from 0 to <script type="math/tex">2\pi</script>, used in the linear interpolation of <script type="math/tex">e^{i\omega_j t}</script>
+</p>
 </li>
 <li>
 <p>If root process</p>
 <ul>
-<li>For each mode</li>
-<li>Read index (currently not being used), <script type="math/tex">S_j</script>,
-     <script type="math/tex">\omega_j</script>, and <script type="math/tex">\omega_{nj}</script>
+<li>Scale the phonon frequencies down by 100</li>
+<li>For each mode, read index (currently not being used), 
+  <script type="math/tex">S_j</script>, <script type="math/tex">\omega_j</script>, and <script type="math/tex">\omega_{nj}</script>
 </li>
-<li>Divide the initial and final phonon frequencies by 100</li>
-<li>Calculate <script type="math/tex">\text{hbarOmegaBeta}=\hbar\omega\beta\omega_j</script>
+<li>Calculate <script type="math/tex">\text{hbarOmegaBeta}=\hbar\omega\beta\omega_j</script> for
+  each <script type="math/tex">\omega_j</script>
 </li>
-<li>Calculate <code>FjFractionFactor</code><script type="math/tex">={\sin(-i\hbar\omega\beta)}{1-\cos(-i\hbar\omega\beta)}</script>
-</li>
-<li>Calculate <script type="math/tex">\delta\omega_{nj} = \omega_{nj} - \omega_j</script>
-</li>
-<li>Write out the id and phonon frequencies</li>
-<li>Read in the energy shifts</li>
+<li>Calculate <script type="math/tex">\delta\omega_{nj} = \omega_{nj} - \omega_j</script> for all
+  <script type="math/tex">\omega_j</script>/<script type="math/tex">\omega_{nj}</script> pair</li>
+<li>Read in the energy shifts and laser energies
+  </p><div class="alert alert-info" role="alert"><h4>Note</h4><p>Reading the input file assumes the form <code>&amp;ramanInput ... /</code>,
+    blank line, ESHIFT, list of energy shifts to calculate
+    intesities for, blank line, ELASER, laser energie(s) to use
+  </p></div>
+<p></li>
 </ul>
+</li>
+<li>
+<p>Broadcast input variables to other processes</p>
 </li>
 </ul>
 <p>Maybe unit conversions?
@@ -426,7 +426,7 @@
 <p>* Calculate the fractional factor in front of the cosines in
    <script type="math/tex">F_j</script>
 </p>
-<p>Use a linear interpolation for <script type="math/tex">e^{i\omega t}</script>
+<p>Use a linear interpolation for <script type="math/tex">e^{i\omega_j t}</script>
 </p>
 <ul>
 <li>Calculate <code>expForFj</code><script type="math/tex"> = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})</script>.
@@ -468,8 +468,6 @@
       <a class="list-group-item" href="../program/ramanintensity.html#variable-imode">imode</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-index1">index1</a>
-      
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-interval_a">interval_a</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-interval_t">interval_t</a>
       
@@ -529,7 +527,7 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor">zfactor</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-inputfile">Inputfile</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-sjoutputfile">SjOutputFile</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-dummy">dummy</a>
       
@@ -722,20 +720,6 @@
   
   <td></td><td>::</td>
   <td><strong>index1</strong></td><td></td><td></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-interval_a"></span>integer</td>
-  
-  
-  <td></td><td>::</td>
-  <td><strong>interval_a</strong></td><td></td><td></td><td></td>
   
 </tr>
 
@@ -1160,11 +1144,11 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-inputfile"></span>character(len=256)</td>
+  <td><span class="anchor" id="variable-sjoutputfile"></span>character(len=256)</td>
   
   
   <td></td><td>::</td>
-  <td><strong>Inputfile</strong></td><td></td><td></td><td><p>Input file name</p></td>
+  <td><strong>SjOutputFile</strong></td><td></td><td></td><td><p>Input file name</p></td>
   
 </tr>
 
@@ -1550,7 +1534,6 @@
 <span class="kt">integer</span> <span class="kd">::</span> <span class="n">imode</span>
   <span class="c">!! Loop index over phonon modes</span>
 <span class="kt">integer</span> <span class="kd">::</span> <span class="n">index1</span>
-<span class="kt">integer</span> <span class="kd">::</span> <span class="n">interval_a</span>
 <span class="kt">integer</span> <span class="kd">::</span> <span class="n">interval_t</span>
 <span class="kt">integer</span> <span class="kd">::</span> <span class="n">j</span>
 <span class="kt">integer</span> <span class="kd">::</span> <span class="n">k</span>
@@ -1594,7 +1577,7 @@
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp_exp</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">zfactor</span>
 
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span> <span class="o">=</span> <span class="mi">256</span><span class="p">)</span> <span class="kd">::</span> <span class="n">Inputfile</span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span> <span class="o">=</span> <span class="mi">256</span><span class="p">)</span> <span class="kd">::</span> <span class="n">SjOutputFile</span>
   <span class="c">!! Input file name</span>
 <span class="kt">character</span><span class="p">(</span><span class="nb">len</span> <span class="o">=</span> <span class="mi">256</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dummy</span>
 
@@ -1636,6 +1619,8 @@
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">zfactor1</span><span class="p">(:)</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">zfactor2</span><span class="p">(:)</span>
 
+<span class="k">namelist</span> <span class="o">/</span><span class="n">ramanInput</span><span class="o">/</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">gamma_p</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">elevel</span> <span class="p">&amp;</span>
+                      <span class="n">elaser_num</span><span class="p">,</span> <span class="n">eshift_num</span><span class="p">,</span> <span class="n">SjOutputFile</span>
 
 
 <span class="k">call </span><span class="n">MPI_INIT</span><span class="p">(</span><span class="n">ierror</span><span class="p">)</span>
@@ -1643,47 +1628,38 @@
 <span class="k">call </span><span class="n">MPI_COMM_SIZE</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">nprocs</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
   <span class="c">!! * Initialize MPI pool</span>
 
-<span class="n">Inputfile</span> <span class="o">=</span> <span class="s1">&#39;Sj.out&#39;</span>
-  <span class="c">!! * Define input file name</span>
-  <span class="c">!! @todo Make this an input variable rather than hardcode @endtodo</span>
 <span class="n">omega</span><span class="o">=</span><span class="mf">1.0d14</span>
+  <span class="c">!! * Define a number to scale all inputs down by. This is currently </span>
+  <span class="c">!!   set to 2 orders of magnitude larger than the phonon frequency</span>
+  <span class="c">!!   scale so that the time step is small enough to get reasonable </span>
+  <span class="c">!!   results.</span>
 <span class="n">n2</span><span class="o">=</span><span class="mi">100000</span>
-  <span class="c">!! @todo Figure out the purpose of these variables @endtodo</span>
+  <span class="c">!! * Define the number of exponentials to pre-calculate in order</span>
+  <span class="c">!!   to do the linear interpolation of \(e^(i\omega_j t)\)</span>
 
 <span class="k">if</span><span class="p">(</span><span class="n">id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
   <span class="c">!! * If root process</span>
-  <span class="c">!!    * Open `Inputfile` to read the number of phonon modes</span>
+  <span class="c">!!    * Read temperature, `n1`, `limit`, `gamma_p`, `alpha`, </span>
+  <span class="c">!!      `elevel`, `elaser_num`, `eshift_num`, and `SjOutputFile`</span>
+  <span class="c">!!    * Open `SjOutputFile` to read the number of phonon modes</span>
   <span class="c">!!      which is needed to allocate variables</span>
-  <span class="c">!!    * Open `input.txt` file to read temperature, `n1`, </span>
-  <span class="c">!!      `limit`, `gamma_p`, `alpha`, the energy of the laser,</span>
-  <span class="c">!!      `elevel`, and `eshift_num`</span>
-  <span class="c">!!    * Open `output.txt` for output</span>
-  <span class="c">!! @todo Change `input.txt` to be read from input file @endtodo</span>
-  <span class="c">!! @todo Change output to go to command line like QE @endtodo</span>
+  <span class="c">!!    * Calculate \(\beta = 1/k_{B}T\)</span>
 
-  <span class="k">open</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="k">file</span><span class="o">=</span><span class="nb">trim</span><span class="p">(</span><span class="n">Inputfile</span><span class="p">),</span> <span class="n">Action</span><span class="o">=</span><span class="s1">&#39;read&#39;</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s1">&#39;old&#39;</span><span class="p">)</span>
+  <span class="k">read</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">ramanInput</span><span class="p">)</span> 
+  <span class="k">read</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="o">*</span><span class="p">)</span>
+    <span class="c">! Read the `ramanInput` namelist then skip the next blank line</span>
+
+  <span class="k">open</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="k">file</span><span class="o">=</span><span class="nb">trim</span><span class="p">(</span><span class="n">SjOutputFile</span><span class="p">),</span> <span class="n">Action</span><span class="o">=</span><span class="s1">&#39;read&#39;</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s1">&#39;old&#39;</span><span class="p">)</span>
   <span class="k">read</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="o">*</span><span class="p">)</span>
   <span class="k">read</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">nmode</span>
 
-  <span class="k">open</span><span class="p">(</span><span class="mi">12</span> <span class="p">,</span> <span class="k">file</span><span class="o">=</span><span class="s1">&#39;input.txt&#39;</span><span class="p">,</span> <span class="n">Action</span><span class="o">=</span><span class="s1">&#39;read&#39;</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s1">&#39;old&#39;</span><span class="p">)</span>
-  <span class="k">read</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> 
-  <span class="k">read</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">gamma_p</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">elevel</span><span class="p">,</span> <span class="n">elaser_num</span><span class="p">,</span> <span class="n">eshift_num</span>
-
-  <span class="k">open</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="k">file</span><span class="o">=</span><span class="s2">&quot;output.txt&quot;</span><span class="p">,</span><span class="n">Action</span><span class="o">=</span><span class="s2">&quot;write&quot;</span><span class="p">,</span><span class="n">status</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">)</span>
+  <span class="n">beta</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">kB</span><span class="o">*</span><span class="n">temperature</span><span class="p">)</span>
 <span class="n">endif</span>
-
 
 <span class="k">call </span><span class="n">MPI_BCast</span><span class="p">(</span> <span class="n">nmode</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_Integer</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
 <span class="k">call </span><span class="n">MPI_BCast</span><span class="p">(</span> <span class="n">eshift_num</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_Integer</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
 <span class="k">call </span><span class="n">MPI_BCast</span><span class="p">(</span> <span class="n">elaser_num</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_Integer</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
-<span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">temperature</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
-  <span class="c">!! * Broadcast the number of modes, `eshift_num`, and temperature to</span>
-  <span class="c">!!  other processes</span>
-
-
-<span class="n">beta</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">kB</span><span class="o">*</span><span class="n">temperature</span><span class="p">)</span>
-  <span class="c">!! * Calculate \(\beta = 1/k_{B}T\)</span>
-
+  <span class="c">!! * Broadcast array sizes to other modes for allocation</span>
 
 <span class="k">allocate</span><span class="p">(</span><span class="n">eshift</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">elaser</span><span class="p">(</span><span class="n">elaser_num</span><span class="p">),</span> <span class="n">omega_s</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">omega_l</span><span class="p">(</span><span class="n">elaser_num</span><span class="p">))</span>
 <span class="k">allocate</span><span class="p">(</span><span class="n">s1</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s2</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">,</span><span class="n">elaser_num</span><span class="p">),</span> <span class="n">s3</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">,</span><span class="n">elaser_num</span><span class="p">),</span> <span class="n">global_sum</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">,</span><span class="n">elaser_num</span><span class="p">))</span>
@@ -1692,11 +1668,11 @@
   <span class="c">!! * Allocate space for variables on all processes</span>
 
 <span class="n">dstep</span><span class="o">=</span><span class="n">tpi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
-  <span class="c">!! * Calculate `dstep`\(= 2\pi/n2\) where `n2=100000`</span>
+  <span class="c">!! * Calculate the step size for the exponential pre-calculation</span>
 
 <span class="k">do </span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span>
-  <span class="c">!! * Calculate \(e^{i\theta}\) where \(\theta\) goes from 0 to \(2\pi\)</span>
-  <span class="c">!! @todo Figure out what this is used for @endtodo</span>
+  <span class="c">!! * Pre-calculate the exponential terms, \(e^{i\theta}\) where \(\theta\)</span>
+  <span class="c">!!   goes from 0 to \(2\pi\), used in the linear interpolation of \(e^{i\omega_j t}\)</span>
 
    <span class="n">ex1</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">=</span><span class="nb">exp</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="n">j</span><span class="o">*</span><span class="n">dstep</span><span class="p">)</span>
 
@@ -1704,15 +1680,19 @@
 
 <span class="k">if</span><span class="p">(</span><span class="n">id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
   <span class="c">!! * If root process</span>
-  <span class="c">!!    * For each mode</span>
-  <span class="c">!!       * Read index (currently not being used), \(S_j\),</span>
-  <span class="c">!!         \(\omega_j\), and \(\omega_{nj}\)</span>
-  <span class="c">!!       * Divide the initial and final phonon frequencies by 100</span>
-  <span class="c">!!       * Calculate \(\text{hbarOmegaBeta}=\hbar\omega\beta\omega_j\) </span>
-  <span class="c">!!       * Calculate `FjFractionFactor`\(={\sin(-i\hbar\omega\beta)}{1-\cos(-i\hbar\omega\beta)}\)</span>
-  <span class="c">!!       * Calculate \(\delta\omega_{nj} = \omega_{nj} - \omega_j\)</span>
-  <span class="c">!!       * Write out the id and phonon frequencies</span>
-  <span class="c">!!    * Read in the energy shifts</span>
+  <span class="c">!!    * Scale the phonon frequencies down by 100</span>
+  <span class="c">!!    * For each mode, read index (currently not being used), </span>
+  <span class="c">!!      \(S_j\), \(\omega_j\), and \(\omega_{nj}\)</span>
+  <span class="c">!!    * Calculate \(\text{hbarOmegaBeta}=\hbar\omega\beta\omega_j\) for</span>
+  <span class="c">!!      each \(\omega_j\)</span>
+  <span class="c">!!    * Calculate \(\delta\omega_{nj} = \omega_{nj} - \omega_j\) for all</span>
+  <span class="c">!!      \(\omega_j\)/\(\omega_{nj}\) pair</span>
+  <span class="c">!!    * Read in the energy shifts and laser energies</span>
+  <span class="c">!!      @note </span>
+  <span class="c">!!        Reading the input file assumes the form `&amp;ramanInput ... /`,</span>
+  <span class="c">!!        blank line, ESHIFT, list of energy shifts to calculate</span>
+  <span class="c">!!        intesities for, blank line, ELASER, laser energie(s) to use</span>
+  <span class="c">!!      @endnote</span>
 
   <span class="n">omega_j</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">omega_j</span><span class="p">(:)</span><span class="o">/</span><span class="mi">10</span><span class="mf">0.0d0</span>
   <span class="n">omega_nj</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">omega_nj</span><span class="p">(:)</span><span class="o">/</span><span class="mi">10</span><span class="mf">0.0d0</span>     
@@ -1728,8 +1708,12 @@
      
      <span class="n">domega</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">omega_nj</span><span class="p">(:)</span>  <span class="o">-</span> <span class="n">omega_j</span><span class="p">(:)</span>
   
-     <span class="k">read</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">eshift</span><span class="p">(:)</span>
-     <span class="k">read</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">elaser</span><span class="p">(:)</span>
+     <span class="k">read</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="o">*</span><span class="p">)</span>
+     <span class="k">read</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">eshift</span><span class="p">(:)</span>
+     <span class="k">read</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="o">*</span><span class="p">)</span>
+     <span class="k">read</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="o">*</span><span class="p">)</span>
+     <span class="k">read</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">elaser</span><span class="p">(:)</span>
+      <span class="c">! Make sure to skip the blank lines and headers. </span>
 
 <span class="n">endif</span>
 
@@ -1746,6 +1730,7 @@
 <span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">hbarOmegaBeta</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span> 
 <span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">domega</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span> 
 <span class="k">call </span><span class="n">MPI_Barrier</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span><span class="n">ierror</span><span class="p">)</span>
+  <span class="c">!! * Broadcast input variables to other processes</span>
 
 <span class="c">!&gt; Maybe unit conversions?</span>
 <span class="n">omega_l</span><span class="p">(:)</span><span class="o">=</span><span class="p">(</span><span class="n">elaser</span><span class="p">(:)</span><span class="o">-</span><span class="n">elevel</span><span class="p">)</span><span class="o">*</span><span class="n">ev</span><span class="o">/</span><span class="n">hbar</span><span class="o">/</span><span class="n">omega</span>
@@ -1798,7 +1783,7 @@
   <span class="c">!! Integrate over \(x\)</span>
 
    <span class="k">if</span><span class="p">(</span><span class="n">id</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">      write</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">id</span><span class="p">,</span><span class="n">j</span>
+<span class="k">      write</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">id</span><span class="p">,</span><span class="n">j</span>
    <span class="n">endif</span>
 
    <span class="n">s2</span> <span class="o">=</span> <span class="mf">0.0d0</span>
@@ -1838,7 +1823,7 @@
             <span class="n">tmp_i</span><span class="o">=</span><span class="nb">floor</span><span class="p">(</span><span class="n">tmp_r</span><span class="p">)</span>
             <span class="n">tmp_r</span><span class="o">=</span><span class="n">tmp_r</span><span class="o">-</span><span class="n">tmp_i</span>
             <span class="n">expT</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">tmp_r</span><span class="p">)</span><span class="o">*</span><span class="n">ex1</span><span class="p">(</span><span class="n">tmp_i</span><span class="p">)</span><span class="o">+</span><span class="n">tmp_r</span><span class="o">*</span><span class="n">ex1</span><span class="p">(</span><span class="n">tmp_i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-              <span class="c">!! Use a linear interpolation for \(e^{i\omega t}\)</span>
+              <span class="c">!! Use a linear interpolation for \(e^{i\omega_j t}\)</span>
 
             <span class="n">expForFj</span><span class="o">=-</span><span class="n">expT</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">expX</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">expY</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span><span class="o">-</span><span class="p">(</span><span class="n">expX</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">+</span><span class="n">expY</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span>
               <span class="c">!! * Calculate `expForFj`\( = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})\).</span>
@@ -1873,13 +1858,13 @@
 
 
 <span class="k">if</span><span class="p">(</span><span class="n">id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">  write</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s2">&quot;calculation finalized&quot;</span>
+<span class="k">  write</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s2">&quot;calculation finalized&quot;</span>
 
   <span class="k">do </span><span class="n">ilaserE</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">elaser_num</span>
-    <span class="k">write</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="s2">&quot;Laser energy: &quot;</span><span class="p">,</span> <span class="n">elaser</span><span class="p">(</span><span class="n">ilaserE</span><span class="p">)</span>
+    <span class="k">write</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="s2">&quot;Laser energy: &quot;</span><span class="p">,</span> <span class="n">elaser</span><span class="p">(</span><span class="n">ilaserE</span><span class="p">)</span>
     
     <span class="k">do </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">eshift_num</span> 
-      <span class="k">write</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">eshift</span><span class="p">(</span><span class="n">j</span><span class="p">),</span> <span class="n">eshift</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">mevtocm</span><span class="p">,</span> <span class="n">step</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="kt">Real</span><span class="p">(</span><span class="n">global_sum</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">ilaserE</span><span class="p">))</span><span class="o">*</span><span class="mf">2.0</span>
+      <span class="k">write</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">eshift</span><span class="p">(</span><span class="n">j</span><span class="p">),</span> <span class="n">eshift</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">mevtocm</span><span class="p">,</span> <span class="n">step</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="kt">Real</span><span class="p">(</span><span class="n">global_sum</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">ilaserE</span><span class="p">))</span><span class="o">*</span><span class="mf">2.0</span>
     <span class="n">enddo</span>
 
   <span class="n">enddo</span>
