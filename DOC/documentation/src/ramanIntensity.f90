@@ -25,12 +25,18 @@ use mpi
 
 implicit none
 
+integer :: elaser_num
+  !! Number of laser energies used
 integer :: eshift_num
+  !! Number of energy shifts to calculate
 integer :: ierror
   !! Error for MPI
 integer :: id
   !! MPI process id
+integer :: ilaserE
+  !! Loop index over laser energies
 integer :: imode
+  !! Loop index over phonon modes
 integer :: index1
 integer :: interval_a
 integer :: interval_t
@@ -50,8 +56,6 @@ integer :: tmp_i
 real(kind = dp) :: beta
   !! \(\beta = 1/k_{B}T\)
 real(kind = dp) :: count1
-real(kind = dp) :: elaser
-  !! \(E_L\)
 real(kind = dp) :: elevel
   !! \(E_n\)
 real(kind = dp) :: gamma1
@@ -59,7 +63,6 @@ real(kind = dp) :: gamma2
 real(kind = dp) :: loglimit
 real(kind = dp) :: limit
 real(kind = dp) :: omega
-real(kind = dp) :: omega1
 real(kind = dp) :: step1
 real(kind = dp) :: step2
   !! Step to go from 0 to \(\2\pi) in `n2` steps
@@ -90,10 +93,13 @@ real(kind = dp), allocatable :: count2(:)
 real(kind = dp), allocatable :: hbarOmegaBeta(:)
 real(kind = dp), allocatable :: domega(:)
   !! \(\delta\omega_{nj} = \omega_{nj} - \omega_j\)
+real(kind = dp), allocatable :: elaser(:)
+  !! Laser energies \(E_L\)
 real(kind = dp), allocatable :: eshift(:)
 real(kind = dp), allocatable :: omega2(:)
 real(kind = dp), allocatable :: omega_j(:)
   !! \(\omega_j\)
+real(kind = dp), allocatable :: omega_l(:)
 real(kind = dp), allocatable :: omega_nj(:)
   !! \(\omega_{nj}\)
 real(kind = dp), allocatable :: Sj(:)
@@ -108,10 +114,10 @@ complex(kind = dp), allocatable :: expY(:)
   !! \(e^{-i\omega y}\) used in calculating \(F_j\)
 complex(kind = dp), allocatable :: FjFractionFactor(:)
   !! Fraction factor in front of cosine terms in \(F_j\)
-complex(kind = dp), allocatable :: global_sum(:)
+complex(kind = dp), allocatable :: global_sum(:,:)
 complex(kind = dp), allocatable :: s1(:)
-complex(kind = dp), allocatable :: s2(:)
-complex(kind = dp), allocatable :: s3(:)
+complex(kind = dp), allocatable :: s2(:,:)
+complex(kind = dp), allocatable :: s3(:,:)
 complex(kind = dp), allocatable :: theta(:)
   !! Serves as the argument for the sines in the fraction
   !! factor `FjFractionFactor` and the exponentials in
@@ -150,7 +156,7 @@ if(id == 0) then
 
   open(12 , file='input.txt', Action='read', status='old')
   read(12,*) 
-  read(12,*) temperature, n1, limit, gamma1, gamma2, elaser, elevel, eshift_num
+  read(12,*) temperature, n1, limit, gamma1, gamma2, elevel, elaser_num, eshift_num
 
   open(13,file="output.txt",Action="write",status="replace")
 endif
@@ -158,6 +164,7 @@ endif
 
 call MPI_BCast( nmode, 1, MPI_Integer, 0, MPI_COMM_WORLD, ierror)
 call MPI_BCast( eshift_num, 1, MPI_Integer, 0, MPI_COMM_WORLD, ierror)
+call MPI_BCast( elaser_num, 1, MPI_Integer, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( temperature, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
   !! * Broadcast the number of modes, `eshift_num`, and temperature to
   !!  other processes
@@ -167,7 +174,8 @@ beta=1/(kB*temperature)
   !! * Calculate \(\beta = 1/k_{B}T\)
 
 
-allocate(eshift(eshift_num), omega2(eshift_num), s1(eshift_num), s2(eshift_num), s3(eshift_num), global_sum(eshift_num))
+allocate(eshift(eshift_num), elaser(elaser_num), omega2(eshift_num), omega_l(elaser_num))
+allocate(s1(eshift_num), s2(eshift_num,elaser_num), s3(eshift_num,elaser_num), global_sum(eshift_num,elaser_num))
 allocate(Sj(nmode), omega_j(nmode), omega_nj(nmode), hbarOmegaBeta(nmode), FjFractionFactor(nmode), expX(nmode), expY(nmode))
 allocate(domega(nmode), theta(nmode), zfactor1(nmode), zfactor2(nmode), ex1(0:n2+1), interval(2), count2(2))
   !! * Allocate space for variables on all processes
@@ -212,6 +220,7 @@ if(id == 0) then
      domega(:) = omega_nj(:)  - omega_j(:)
   
      read(12,*) eshift(:)
+     read(12,*) elaser(:)
 
 endif
 
@@ -219,7 +228,7 @@ call MPI_Bcast( n1, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( limit, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( gamma1, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( gamma2, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
-call MPI_Bcast( elaser, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
+call MPI_Bcast( elaser, elaser_num, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( elevel, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( eshift, eshift_num, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( Sj, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
@@ -230,7 +239,7 @@ call MPI_Bcast( domega, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Barrier(MPI_COMM_WORLD,ierror)
 
 !> Maybe unit conversions?
-omega1=(elaser-elevel)*ev/hbar/omega
+omega_l(:)=(elaser(:)-elevel)*ev/hbar/omega
   !! \((E_L-E_n)/\hbar\omega\)
 omega2(:)=eshift(:)*mev/hbar/omega
 gamma1=gamma1*mev/hbar/omega
@@ -340,25 +349,34 @@ do j=interval(1),interval(2)
          s1(:)=s1(:)+exp(I*tmp_exp-I*omega2(:)*t-gamma2*abs(t))
       end do
 
+      do ilaserE = 1, elaser_num
 
-      s2(:)=s2(:)+s1(:)*exp(-(I*omega1+gamma1)*y) * zfactor
+        s2(:,ilaserE)=s2(:,ilaserE)+s1(:)*exp(-(I*omega_l(ilaserE)+gamma1)*y) * zfactor
+
+      enddo
    end do
 
-
-   s3(:)=s3(:)+s2(:)*exp(-(-I*omega1+gamma1)*x)
+   do ilaserE = 1, elaser_num
+     s3(:,ilaserE)=s3(:,ilaserE)+s2(:,ilaserE)*exp(-(-I*omega_l(ilaserE)+gamma1)*x)
+   enddo
 enddo
 
 
 call MPI_Barrier(MPI_COMM_WORLD,ierror) 
-call MPI_Reduce( s3, global_sum, eshift_num, MPI_DOUBLE_COMPLEX, MPI_SUM, 0, MPI_COMM_WORLD, ierror)
+call MPI_Reduce( s3, global_sum, eshift_num*elaser_num, MPI_DOUBLE_COMPLEX, MPI_SUM, 0, MPI_COMM_WORLD, ierror)
 
 
 
 if(id == 0) then
   write(13,*)"calculation finalized"
-  do j = 1, eshift_num 
-     write(13,*) eshift(j), eshift(j)*mevtocm, step1**3*Real(global_sum(j))*2.0
-  end do
+  do ilaserE = 1, elaser_num
+    write(13,*) "Laser energy: ", elaser(ilaserE)
+    
+    do j = 1, eshift_num 
+      write(13,*) eshift(j), eshift(j)*mevtocm, step1**3*Real(global_sum(j,ilaserE))*2.0
+    enddo
+
+  enddo
 endif
 call MPI_FINALIZE(ierror)
 
