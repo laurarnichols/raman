@@ -214,7 +214,6 @@ allocate(Sj(nmode), omega_j(nmode), omega_nj(nmode), hbarOmegaBeta(nmode), FjFra
 allocate(Fj(nmode), expForFj(nmode), expT(nmode), expX(nmode), expY(nmode))
 allocate(domega(nmode), theta(nmode), zfactor1(nmode), zfactor2(nmode), ex1(0:nExpSteps+1), interval(2), count2(2))
   !! * Allocate space for variables on all processes
-  !! @todo Check on all of these to make sure they are deallocated strategically @endtodo
 
 expStep = tpi/float(nExpSteps)
   !! * Calculate the step size for the exponential pre-calculation
@@ -292,6 +291,10 @@ alpha = (alpha/hbar)*(mev/scalingFactor)
   !!      \(\alpha\) and \(\gamma\) are also divided by \(\hbar\) here so 
   !!      that it doesn't have to be done in the final exponential.
   !!   @endnote
+
+if(id /= 0) then
+  deallocate(eshift, elaser)
+endif
 
 intStep = tpi/float(nIntSteps)
 loglimit = -log(limit)
@@ -418,11 +421,16 @@ do iX = interval(1), interval(2)
    enddo
 enddo
 
+deallocate(omega_j, omega_nj, omega_s, omega_l)
+deallocate(Sj, s1, s2, hbarOmegaBeta, FjFractionFactor)
+deallocate(Fj, expForFj, expX, expY, expT, domega)
+deallocate(theta, zfactor1, zfactor2, ex1, interval, count2)
+
 
 call MPI_Barrier(MPI_COMM_WORLD,ierror) 
 call MPI_Reduce( s3, global_sum, eshift_num*elaser_num, MPI_DOUBLE_COMPLEX, MPI_SUM, 0, MPI_COMM_WORLD, ierror)
 
-
+deallocate(s3)
 
 if(id == 0) then
   write(12,*)"calculation finalized"
@@ -435,7 +443,14 @@ if(id == 0) then
     enddo
 
   enddo
+
+  deallocate(eshift, elaser)
+
 endif
+
+
+deallocate(global_sum)
+
 call MPI_FINALIZE(ierror)
 
 end program ramanIntensity
