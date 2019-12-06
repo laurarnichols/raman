@@ -124,7 +124,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="100.0% of total for programs.">201 statements</a>
+    title="100.0% of total for programs.">203 statements</a>
      </li> 
      
      
@@ -221,6 +221,8 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-omega">omega</a>
       
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-omega_a">omega_a</a>
+      
       <a class="list-group-item" href="../program/ramanintensity.html#variable-step">step</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-dstep">dstep</a>
@@ -261,13 +263,13 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-eshift">eshift</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-omega_s">omega_s</a>
-      
       <a class="list-group-item" href="../program/ramanintensity.html#variable-omega_j">omega_j</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-omega_l">omega_l</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-omega_nj">omega_nj</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-omega_s">omega_s</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-sj">Sj</a>
       
@@ -417,14 +419,14 @@
 <li>
 <p>Broadcast input variables to other processes</p>
 </li>
-</ul>
-<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Break this off into <code>omega_l</code> and <code>omega_a</code> for clarity </p></div>
-<p>* Scale down <code>omega_l</code>, <code>omega_s</code>, <code>gamma_p</code>, and <code>alpha</code>
-   to ensure that integration scale is small enough to
-   get a reasonable result</p>
-<ul>
-<li>Calculate the total number of integration steps needed and
-   distribute the intervals between the processes</li>
+<li>
+<p>Scale down <code>omega_l</code>, <code>omega_a</code>, <code>omega_s</code>, <code>gamma_p</code>, and <code>alpha</code>
+   to ensure that integration scale is small enough to get a reasonable result</p>
+</li>
+<li>
+<p>Calculate the total number of integration steps needed and
+   distribute the intervals between the processes</p>
+</li>
 <li>
 <p>Make sure that all processes get here before
  moving forward</p>
@@ -521,6 +523,8 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-omega">omega</a>
       
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-omega_a">omega_a</a>
+      
       <a class="list-group-item" href="../program/ramanintensity.html#variable-step">step</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-dstep">dstep</a>
@@ -561,13 +565,13 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-eshift">eshift</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-omega_s">omega_s</a>
-      
       <a class="list-group-item" href="../program/ramanintensity.html#variable-omega_j">omega_j</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-omega_l">omega_l</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-omega_nj">omega_nj</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-omega_s">omega_s</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-sj">Sj</a>
       
@@ -1038,6 +1042,22 @@
   
 <tr>
   
+  <td><span class="anchor" id="variable-omega_a"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>omega_a</strong></td><td></td><td></td><td><p>
+<script type="math/tex">E_a/\hbar</script>
+</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
   <td><span class="anchor" id="variable-step"></span>real(kind=dp)</td>
   
   
@@ -1326,20 +1346,6 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-omega_s"></span>real(kind=dp),</td>
-  
-  
-  <td>allocatable</td><td>::</td>
-  <td><strong>omega_s</strong>(:)</td><td></td><td></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
   <td><span class="anchor" id="variable-omega_j"></span>real(kind=dp),</td>
   
   
@@ -1360,7 +1366,9 @@
   
   
   <td>allocatable</td><td>::</td>
-  <td><strong>omega_l</strong>(:)</td><td></td><td></td><td></td>
+  <td><strong>omega_l</strong>(:)</td><td></td><td></td><td><p>
+<script type="math/tex">E_L/\hbar</script>
+</p></td>
   
 </tr>
 
@@ -1376,6 +1384,22 @@
   <td>allocatable</td><td>::</td>
   <td><strong>omega_nj</strong>(:)</td><td></td><td></td><td><p>
 <script type="math/tex">\omega_{nj}</script>
+</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-omega_s"></span>real(kind=dp),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>omega_s</strong>(:)</td><td></td><td></td><td><p>
+<script type="math/tex">E_s/\hbar</script>
 </p></td>
   
 </tr>
@@ -1632,6 +1656,8 @@
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">loglimit</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">limit</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">omega</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">omega_a</span>
+  <span class="c">!! \(E_a/\hbar\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">step</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dstep</span>
   <span class="c">!! Step to go from 0 to \(\2\pi) in `n2` steps</span>
@@ -1666,12 +1692,14 @@
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">elaser</span><span class="p">(:)</span>
   <span class="c">!! Laser energies \(E_L\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">eshift</span><span class="p">(:)</span>
-<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">omega_s</span><span class="p">(:)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">omega_j</span><span class="p">(:)</span>
   <span class="c">!! \(\omega_j\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">omega_l</span><span class="p">(:)</span>
+  <span class="c">!! \(E_L/\hbar\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">omega_nj</span><span class="p">(:)</span>
   <span class="c">!! \(\omega_{nj}\)</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">omega_s</span><span class="p">(:)</span>
+  <span class="c">!! \(E_s/\hbar\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">Sj</span><span class="p">(:)</span>
   <span class="c">!! \(S_j = \dfrac{\omega_j^2}{2\hbar}\delta q_j^2\)</span>
   <span class="c">!! Taken from input file</span>
@@ -1704,7 +1732,7 @@
 <span class="k">call </span><span class="n">MPI_COMM_SIZE</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">nprocs</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
   <span class="c">!! * Initialize MPI pool</span>
 
-<span class="n">omega</span><span class="o">=</span><span class="mf">1.0d14</span>
+<span class="n">omega</span> <span class="o">=</span> <span class="mf">1.0d14</span>
   <span class="c">!! * Define a number to scale all inputs down by. This is currently </span>
   <span class="c">!!   set to 2 orders of magnitude larger than the phonon frequency</span>
   <span class="c">!!   scale so that the time step is small enough to get reasonable </span>
@@ -1808,15 +1836,14 @@
 <span class="k">call </span><span class="n">MPI_Barrier</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span><span class="n">ierror</span><span class="p">)</span>
   <span class="c">!! * Broadcast input variables to other processes</span>
 
-<span class="n">omega_l</span><span class="p">(:)</span> <span class="o">=</span> <span class="p">(</span><span class="n">elaser</span><span class="p">(:)</span> <span class="o">-</span> <span class="n">elevel</span><span class="p">)</span><span class="o">*</span><span class="n">ev</span><span class="o">/</span><span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">omega</span><span class="p">)</span>
-  <span class="c">! \((E_L-E_n)/\hbar\omega\)</span>
-  <span class="c">!! @todo Break this off into `omega_l` and `omega_a` for clarity @endtodo</span>
+<span class="n">omega_l</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">elaser</span><span class="p">(:)</span><span class="o">*</span><span class="n">ev</span><span class="o">/</span><span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">omega</span><span class="p">)</span>
+  <span class="c">! \(E_L/\hbar\omega\)</span>
+<span class="n">omega_a</span> <span class="o">=</span> <span class="n">elevel</span><span class="o">*</span><span class="n">ev</span><span class="o">/</span><span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">omega</span><span class="p">)</span>
 <span class="n">omega_s</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">eshift</span><span class="p">(:)</span><span class="o">*</span><span class="n">mev</span><span class="o">/</span><span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">omega</span><span class="p">)</span>
 <span class="n">gamma_p</span> <span class="o">=</span> <span class="n">gamma_p</span><span class="o">*</span><span class="n">mev</span><span class="o">/</span><span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">omega</span><span class="p">)</span>
 <span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">*</span><span class="n">mev</span><span class="o">/</span><span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">omega</span><span class="p">)</span>
-  <span class="c">!! * Scale down `omega_l`, `omega_s`, `gamma_p`, and `alpha`</span>
-  <span class="c">!!   to ensure that integration scale is small enough to</span>
-  <span class="c">!!   get a reasonable result</span>
+  <span class="c">!! * Scale down `omega_l`, `omega_a`, `omega_s`, `gamma_p`, and `alpha`</span>
+  <span class="c">!!   to ensure that integration scale is small enough to get a reasonable result</span>
 
 <span class="n">step</span> <span class="o">=</span> <span class="n">tpi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>
 <span class="n">loglimit</span> <span class="o">=</span> <span class="o">-</span><span class="nb">log</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
@@ -1925,7 +1952,7 @@
 
 <span class="k">      do </span><span class="n">ilaserE</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">elaser_num</span>
 
-        <span class="n">s2</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">=</span> <span class="n">s2</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">+</span> <span class="n">s1</span><span class="p">(:)</span><span class="o">*</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="n">omega_l</span><span class="p">(</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">+</span> <span class="n">gamma_p</span><span class="p">)</span><span class="o">*</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">zfactor</span>
+        <span class="n">s2</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">=</span> <span class="n">s2</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">+</span> <span class="n">s1</span><span class="p">(:)</span><span class="o">*</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="n">omega_l</span><span class="p">(</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">omega_a</span> <span class="o">+</span> <span class="n">gamma_p</span><span class="p">)</span><span class="o">*</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">zfactor</span>
 
       <span class="n">enddo</span>
 
@@ -1933,7 +1960,7 @@
 
 <span class="k">   do </span><span class="n">ilaserE</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">elaser_num</span>
 
-     <span class="n">s3</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">=</span> <span class="n">s3</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">+</span> <span class="n">s2</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span><span class="o">*</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="o">-</span><span class="n">I</span><span class="o">*</span><span class="n">omega_l</span><span class="p">(</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">+</span> <span class="n">gamma_p</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+     <span class="n">s3</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">=</span> <span class="n">s3</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">+</span> <span class="n">s2</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span><span class="o">*</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="o">-</span><span class="n">I</span><span class="o">*</span><span class="n">omega_l</span><span class="p">(</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="n">omega_a</span> <span class="o">+</span> <span class="n">gamma_p</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
    
    <span class="n">enddo</span>
 <span class="n">enddo</span>

@@ -69,6 +69,8 @@ real(kind = dp) :: alpha
 real(kind = dp) :: loglimit
 real(kind = dp) :: limit
 real(kind = dp) :: omega
+real(kind = dp) :: omega_a
+  !! \(E_a/\hbar\)
 real(kind = dp) :: step
 real(kind = dp) :: dstep
   !! Step to go from 0 to \(\2\pi) in `n2` steps
@@ -103,12 +105,14 @@ real(kind = dp), allocatable :: domega(:)
 real(kind = dp), allocatable :: elaser(:)
   !! Laser energies \(E_L\)
 real(kind = dp), allocatable :: eshift(:)
-real(kind = dp), allocatable :: omega_s(:)
 real(kind = dp), allocatable :: omega_j(:)
   !! \(\omega_j\)
 real(kind = dp), allocatable :: omega_l(:)
+  !! \(E_L/\hbar\)
 real(kind = dp), allocatable :: omega_nj(:)
   !! \(\omega_{nj}\)
+real(kind = dp), allocatable :: omega_s(:)
+  !! \(E_s/\hbar\)
 real(kind = dp), allocatable :: Sj(:)
   !! \(S_j = \dfrac{\omega_j^2}{2\hbar}\delta q_j^2\)
   !! Taken from input file
@@ -141,7 +145,7 @@ call MPI_COMM_RANK(MPI_COMM_WORLD, id, ierror)
 call MPI_COMM_SIZE(MPI_COMM_WORLD, nprocs, ierror)
   !! * Initialize MPI pool
 
-omega=1.0d14
+omega = 1.0d14
   !! * Define a number to scale all inputs down by. This is currently 
   !!   set to 2 orders of magnitude larger than the phonon frequency
   !!   scale so that the time step is small enough to get reasonable 
@@ -245,15 +249,14 @@ call MPI_Bcast( domega, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Barrier(MPI_COMM_WORLD,ierror)
   !! * Broadcast input variables to other processes
 
-omega_l(:) = (elaser(:) - elevel)*ev/(hbar*omega)
-  ! \((E_L-E_n)/\hbar\omega\)
-  !! @todo Break this off into `omega_l` and `omega_a` for clarity @endtodo
+omega_l(:) = elaser(:)*ev/(hbar*omega)
+  ! \(E_L/\hbar\omega\)
+omega_a = elevel*ev/(hbar*omega)
 omega_s(:) = eshift(:)*mev/(hbar*omega)
 gamma_p = gamma_p*mev/(hbar*omega)
 alpha = alpha*mev/(hbar*omega)
-  !! * Scale down `omega_l`, `omega_s`, `gamma_p`, and `alpha`
-  !!   to ensure that integration scale is small enough to
-  !!   get a reasonable result
+  !! * Scale down `omega_l`, `omega_a`, `omega_s`, `gamma_p`, and `alpha`
+  !!   to ensure that integration scale is small enough to get a reasonable result
 
 step = tpi/float(n1)
 loglimit = -log(limit)
@@ -362,7 +365,7 @@ do iX = interval(1), interval(2)
 
       do ilaserE = 1, elaser_num
 
-        s2(:,ilaserE) = s2(:,ilaserE) + s1(:)*exp(-(I*omega_l(ilaserE) + gamma_p)*y) * zfactor
+        s2(:,ilaserE) = s2(:,ilaserE) + s1(:)*exp(-(I*omega_l(ilaserE) - I*omega_a + gamma_p)*y) * zfactor
 
       enddo
 
@@ -370,7 +373,7 @@ do iX = interval(1), interval(2)
 
    do ilaserE = 1, elaser_num
 
-     s3(:,ilaserE) = s3(:,ilaserE) + s2(:,ilaserE)*exp(-(-I*omega_l(ilaserE) + gamma_p)*x)
+     s3(:,ilaserE) = s3(:,ilaserE) + s2(:,ilaserE)*exp(-(-I*omega_l(ilaserE) + I*omega_a + gamma_p)*x)
    
    enddo
 enddo
