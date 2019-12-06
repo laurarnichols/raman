@@ -124,7 +124,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="100.0% of total for programs.">203 statements</a>
+    title="100.0% of total for programs.">202 statements</a>
      </li> 
      
      
@@ -203,7 +203,7 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-nprocs">nprocs</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_i">tmp_i</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-alpha">alpha</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-beta">beta</a>
       
@@ -213,11 +213,9 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-gamma_p">gamma_p</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-alpha">alpha</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-limit">limit</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-loglimit">loglimit</a>
-      
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-limit">limit</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-omega">omega</a>
       
@@ -444,15 +442,19 @@
 <p>Use a linear interpolation for <script type="math/tex">e^{i\omega_j t}</script>
 </p>
 <ul>
-<li>Calculate <code>expForFj</code><script type="math/tex"> = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})</script>.
+<li>
+<p>Calculate <code>expForFj</code><script type="math/tex"> = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})</script>.
    This is used as a trick to be able to calculate <script type="math/tex">F_j</script> quicker as the expontentials include both the
-   sines and cosines needed </li>
-<li>Calculate <script type="math/tex">F_j = \text{Im}(</script>
+   sines and cosines needed </p>
+</li>
+<li>
+<p>Calculate <script type="math/tex">F_j = \text{Im}(</script>
 <code>expForFj</code><script type="math/tex">) + </script>
 <code>FjFractionFactor</code><script type="math/tex">\text{Re}(2 + </script>
 <code>expForFj</code><script type="math/tex">)</script>
  </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Add detailed derivation of this in a separate page </p></div>
-<p></li>
+<p>
+</li>
 </ul>
     
     <br>
@@ -505,7 +507,7 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-nprocs">nprocs</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_i">tmp_i</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-alpha">alpha</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-beta">beta</a>
       
@@ -515,11 +517,9 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-gamma_p">gamma_p</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-alpha">alpha</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-limit">limit</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-loglimit">loglimit</a>
-      
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-limit">limit</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-omega">omega</a>
       
@@ -912,11 +912,11 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-tmp_i"></span>integer</td>
+  <td><span class="anchor" id="variable-alpha"></span>real(kind=dp)</td>
   
   
   <td></td><td>::</td>
-  <td><strong>tmp_i</strong></td><td></td><td></td><td></td>
+  <td><strong>alpha</strong></td><td></td><td></td><td><p>Smearing factor</p></td>
   
 </tr>
 
@@ -961,7 +961,7 @@
   
   <td></td><td>::</td>
   <td><strong>elevel</strong></td><td></td><td></td><td><p>
-<script type="math/tex">E_n</script>
+<script type="math/tex">E_a</script> or <script type="math/tex">E_n</script>
 </p></td>
   
 </tr>
@@ -976,35 +976,9 @@
   
   
   <td></td><td>::</td>
-  <td><strong>gamma_p</strong></td><td></td><td></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-alpha"></span>real(kind=dp)</td>
-  
-  
-  <td></td><td>::</td>
-  <td><strong>alpha</strong></td><td></td><td></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-loglimit"></span>real(kind=dp)</td>
-  
-  
-  <td></td><td>::</td>
-  <td><strong>loglimit</strong></td><td></td><td></td><td></td>
+  <td><strong>gamma_p</strong></td><td></td><td></td><td><p>
+<script type="math/tex">\gamma/\hbar</script>
+</p></td>
   
 </tr>
 
@@ -1019,6 +993,22 @@
   
   <td></td><td>::</td>
   <td><strong>limit</strong></td><td></td><td></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-loglimit"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>loglimit</strong></td><td></td><td></td><td><p>
+<script type="math/tex">\log(\text{limit})</script>
+</p></td>
   
 </tr>
 
@@ -1645,16 +1635,19 @@
   <span class="c">!! Number of phonon modes</span>
 <span class="kt">integer</span> <span class="kd">::</span> <span class="n">nprocs</span>
   <span class="c">!! Number of MPI processes</span>
-<span class="kt">integer</span> <span class="kd">::</span> <span class="n">tmp_i</span>
+
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">alpha</span>
+  <span class="c">!! Smearing factor</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">beta</span>
   <span class="c">!! \(\beta = 1/k_{B}T\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">count1</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">elevel</span>
-  <span class="c">!! \(E_n\)</span>
+  <span class="c">!! \(E_a\) or \(E_n\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">gamma_p</span>
-<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">alpha</span>
-<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">loglimit</span>
+  <span class="c">!! \(\gamma/\hbar\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">limit</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">loglimit</span>
+  <span class="c">!! \(\log(\text{limit})\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">omega</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">omega_a</span>
   <span class="c">!! \(E_a/\hbar\)</span>
@@ -1940,10 +1933,13 @@
               <span class="c">!! * Calculate `expForFj`\( = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})\).</span>
               <span class="c">!!   This is used as a trick to be able to calculate \(F_j\) quicker as the expontentials include both the</span>
               <span class="c">!!   sines and cosines needed </span>
+
             <span class="n">Fj</span> <span class="o">=</span> <span class="nb">Aimag</span><span class="p">(</span><span class="n">expForFj</span><span class="p">)</span> <span class="o">+</span> <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="kt">Real</span><span class="p">(</span><span class="mf">2.0d0</span> <span class="o">+</span> <span class="n">expForFj</span><span class="p">)</span>           
               <span class="c">!! * Calculate \(F_j = \text{Im}(\)`expForFj`\() + \)`FjFractionFactor`\(\text{Re}(2 + \)`expForFj`\()\)</span>
               <span class="c">!! @todo Add detailed derivation of this in a separate page @endtodo</span>
+
             <span class="n">tmp_exp</span> <span class="o">=</span> <span class="n">tmp_exp</span> <span class="o">+</span> <span class="n">Fj</span><span class="o">*</span><span class="n">Sj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>
+
          <span class="n">enddo</span>
 
          <span class="n">s1</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">s1</span><span class="p">(:)</span> <span class="o">+</span> <span class="nb">exp</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="n">tmp_exp</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">omega_s</span><span class="p">(:)</span><span class="o">*</span><span class="n">t</span> <span class="o">-</span> <span class="n">alpha</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>

@@ -58,16 +58,19 @@ integer :: nmode
   !! Number of phonon modes
 integer :: nprocs
   !! Number of MPI processes
-integer :: tmp_i
+
+real(kind = dp) :: alpha
+  !! Smearing factor
 real(kind = dp) :: beta
   !! \(\beta = 1/k_{B}T\)
 real(kind = dp) :: count1
 real(kind = dp) :: elevel
-  !! \(E_n\)
+  !! \(E_a\) or \(E_n\)
 real(kind = dp) :: gamma_p
-real(kind = dp) :: alpha
-real(kind = dp) :: loglimit
+  !! \(\gamma/\hbar\)
 real(kind = dp) :: limit
+real(kind = dp) :: loglimit
+  !! \(\log(\text{limit})\)
 real(kind = dp) :: omega
 real(kind = dp) :: omega_a
   !! \(E_a/\hbar\)
@@ -353,10 +356,13 @@ do iX = interval(1), interval(2)
               !! * Calculate `expForFj`\( = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})\).
               !!   This is used as a trick to be able to calculate \(F_j\) quicker as the expontentials include both the
               !!   sines and cosines needed 
+
             Fj = Aimag(expForFj) + FjFractionFactor(imode)*Real(2.0d0 + expForFj)           
               !! * Calculate \(F_j = \text{Im}(\)`expForFj`\() + \)`FjFractionFactor`\(\text{Re}(2 + \)`expForFj`\()\)
               !! @todo Add detailed derivation of this in a separate page @endtodo
+
             tmp_exp = tmp_exp + Fj*Sj(imode)
+
          enddo
 
          s1(:) = s1(:) + exp(I*tmp_exp - I*omega_s(:)*t - alpha*abs(t))
