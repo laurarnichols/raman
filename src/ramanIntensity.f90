@@ -343,21 +343,35 @@ s3 = 0.0d0
 do iX = interval(1), interval(2)
   !! * Begin integration over \(x\)
 
-   if(id==0) then
+   if(id == 0) then
+      !! * If root process, output your progress
+
       write(*,*) "The root process is on step ", iX, " of ", interval(2)
+
    endif
 
    s2 = 0.0d0
+
    x = (iX + 0.5) * intStep
+    !! * Define \(x\) for the current step
 
    expX(:) = cos(omega_nj(:)*x) + I*sin(omega_nj(:)*x)
+    !! * Calculate \(e^{i\omega_{nj}x}\) or 
+    !!   \(e^{i\omega_j x^{\prime}}\) for the current \(x\)
  
    do iY = 0, int(loglimit/gamma_p/intStep) - iX 
+      !! * Begin the integration over \(y\)
+
       s1 = 0.0d0
+
       y = (iY + 0.5) * intStep
+        !! * Define \(y\) for the current step
       
       expY(:) = cos( omega_nj(:)*y ) - I * sin(omega_nj(:)*y)
+        !! * Calculate \(e^{-i\omega_{nj}y}\) or 
+        !!   \(e^{-i\omega_j y^{\prime}}\) for the current \(y\)
       
+
       theta(:) = hbarOmegaBeta(:) + I*domega(:) * ( x - y ) 
       zfactor1(:) = exp(0.5*theta(:)) / ( exp(theta(:)) - 1 )        
        !! Calculate the first fraction in equation 42
@@ -365,16 +379,24 @@ do iX = interval(1), interval(2)
        !! @todo Figure out where `zfactor2` comes from @endtodo
       zfactor = product(zfactor1(:)/zfactor2(:))
       !zfactor = product(exp( 0.5*I*domega(:)*(x-y) ) * ( exp( hbarOmegaBeta(:) ) - 1 ) / ( exp( theta(:) ) - 1 ))
+        !! * Calculate `zfactor` which includes the fraction factor
+        !!   \(\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j) - 1}\)
+        !!   from equation 42 and something else
+
 
       theta(:) = domega(:)*( x - y ) - I*hbarOmegaBeta(:)
       FjFractionFactor(:) = sin(theta(:))/( 1 - cos(theta(:))  )
        !! * Calculate the fractional factor in front of the cosines in
-       !!   \(F_j\)
+       !!   \(F_j\) (equation 44)
+       !!   @todo Do a note on how this lines up with equation 44 @endtodo
 
       interval_t = int((loglimit/intStep - gamma_p*iX - gamma_p*iY)/alpha)
 
       do iT = 0, interval_t
+         !! * Begin the integration over \(t\)
+
          t = (iT + 0.5)*intStep
+          !! * Define \(t\) for the current step
  
          do imode = 1, nmode
             !! * Use a linear interpolation for \(e^{i\omega_j t}\)
@@ -403,10 +425,34 @@ do iX = interval(1), interval(2)
           !! @todo Add detailed derivation of this in a separate page @endtodo
 
          s1(:) = s1(:) + exp(I*sum(Fj(:)*Sj(:)) - I*omega_s(:)*t - alpha*abs(t))
+          !! * Increment the innermost sum that will end up being
+          !!   \(\sum\left(\product e^{iS_jF_j}\right)e^{-\frac{i}{\hbar}E_s t}e^{-\alpha/\hbar|t|}\)
+          !!   which is the portion of the integrand in equation 30 that depends on \(t\)
+          !!   @note
+          !!      The \(e^{-\alpha/\hbar |t|}\) term adds smearing. Even though the equation 
+          !!      only has `alpha`, the division by \(\hbar\) is implicit because we already 
+          !!      did the division when scaling the input variables.
+          !!   @endnote
 
       end do
 
       do ilaserE = 1, elaser_num
+        !! * For each laser energy input, increment the middle sum that will end up being
+        !!   \(\sum\)`zfactor`\(e^{\frac{-\gamma-iE_L+iE_a}{\hbar}y}\)`s1`
+        !!   which is the portion of equation 30 that depends on \(y\) multiplied by the 
+        !!   inner \(t\) sum
+        !!   @note
+        !!      Here the fraction factor in the product in equation 42 has been pulled 
+        !!      out of the integration over time, but the \(e^{iS_jF_j(x,y,t)}\)
+        !!      term must stay inside the \(t\) integral.
+        !!   @endnote
+        !!   @note
+        !!      We are technically doing multiple integrals at once for each of the 
+        !!      different laser energies \(E_L\). Because of this, `s2` and `s3` need
+        !!      to be two-dimensional, but the laser energy doesn't enter the integral
+        !!      over time, so `s1` can be one-dimensional.
+        !!   @endnote
+
 
         s2(:,ilaserE) = s2(:,ilaserE) + s1(:)*exp(-(I*omega_l(ilaserE) - I*omega_a + gamma_p)*y) * zfactor
 
@@ -415,6 +461,10 @@ do iX = interval(1), interval(2)
    end do
 
    do ilaserE = 1, elaser_num
+    !! * For each laser energy input, increment the outermost sum that will end up being
+    !!   \(\sum e^{\frac{-\gamma+iE_L-iE_a}{\hbar}x}\)
+    !!   which is the portion of equation 30 that depends on \(x\) multiplied by the 
+    !!   inner sums over \(y\) and \(t\)
 
      s3(:,ilaserE) = s3(:,ilaserE) + s2(:,ilaserE)*exp(-(-I*omega_l(ilaserE) + I*omega_a + gamma_p)*x)
    
@@ -429,17 +479,26 @@ deallocate(theta, zfactor1, zfactor2, ex1, interval, count2)
 
 call MPI_Barrier(MPI_COMM_WORLD,ierror) 
 call MPI_Reduce( s3, global_sum, eshift_num*elaser_num, MPI_DOUBLE_COMPLEX, MPI_SUM, 0, MPI_COMM_WORLD, ierror)
+  !! * Once all sums are complete on each process, combine
+  !!   the results into `global_sum`
 
 deallocate(s3)
 
 if(id == 0) then
-  write(12,*)"calculation finalized"
+  !! * If root process, output the calculated
+  !!   intensity for each laser energy and energy
+  !!   shift
+
+  write(*,*)"calculation finalized"
 
   do ilaserE = 1, elaser_num
-    write(12,*) "Laser energy: ", elaser(ilaserE)
+    write(*,*) "Laser energy: ", elaser(ilaserE)
     
     do ishiftE = 1, eshift_num 
-      write(12,*) eshift(iShiftE), eshift(iShiftE)*mevtocm, intStep**3*Real(global_sum(iShiftE,ilaserE))*2.0
+      write(*,*) eshift(iShiftE), eshift(iShiftE)*mevtocm, intStep**3*Real(global_sum(iShiftE,ilaserE))*2.0
+        ! When outputting the global sum, multiply by \(\Delta x\Delta y\Delta t\) to make it 
+        ! equivalent to the integral. Also multiply by 2 for some reason?
+        !! @todo Figure out why only multiply `global_sum` by 2 and not \(\dfrac{\kappa^{\prime}}{2\pi}\) @endtodo
     enddo
 
   enddo
