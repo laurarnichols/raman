@@ -946,7 +946,8 @@
   
   
   <td></td><td>::</td>
-  <td><strong>count1</strong></td><td></td><td></td><td></td>
+  <td><strong>count1</strong></td><td></td><td></td><td><p>Count used to set interval limits
+ for each process</p></td>
   
 </tr>
 
@@ -1039,7 +1040,7 @@
   
   
   <td></td><td>::</td>
-  <td><strong>intStep</strong></td><td></td><td></td><td></td>
+  <td><strong>intStep</strong></td><td></td><td></td><td><p>Step size for the integration</p></td>
   
 </tr>
 
@@ -1276,7 +1277,8 @@
   
   
   <td>allocatable</td><td>::</td>
-  <td><strong>count2</strong>(:)</td><td></td><td></td><td></td>
+  <td><strong>count2</strong>(:)</td><td></td><td></td><td><p>Count used to set interval limits
+ for each process</p></td>
   
 </tr>
 
@@ -1650,6 +1652,8 @@
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">beta</span>
   <span class="c">!! \(\beta = 1/k_{B}T\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">count1</span>
+  <span class="c">!! Count used to set interval limits</span>
+  <span class="c">!! for each process</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">elevel</span>
   <span class="c">!! \(E_a\) or \(E_n\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">gamma_p</span>
@@ -1662,6 +1666,7 @@
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">omega_a</span>
   <span class="c">!! \(E_a/\hbar\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">intStep</span>
+  <span class="c">!! Step size for the integration</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">expStep</span>
   <span class="c">!! Step to go from 0 to \(\2\pi) in `nExpSteps`</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">scalingFactor</span>
@@ -1697,6 +1702,8 @@
 <span class="kt">integer</span><span class="p">,</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">interval</span><span class="p">(:)</span>
 
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">count2</span><span class="p">(:)</span>
+  <span class="c">!! Count used to set interval limits</span>
+  <span class="c">!! for each process</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">hbarOmegaBeta</span><span class="p">(:)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">domega</span><span class="p">(:)</span>
   <span class="c">!! \(\delta\omega_{nj} = \omega_{nj} - \omega_j\)</span>
@@ -1874,7 +1881,6 @@
 <span class="n">indexI</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">count1</span> <span class="o">=</span> <span class="mf">0.0</span>
 
-<span class="c">! Make sure the boundaries between processes are set properly</span>
 <span class="k">do </span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">loglimit</span><span class="o">/</span><span class="n">gamma_p</span><span class="o">/</span><span class="n">intStep</span><span class="p">)</span>
 
    <span class="k">do </span><span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">loglimit</span><span class="o">/</span><span class="n">gamma_p</span><span class="o">/</span><span class="n">intStep</span><span class="p">)</span><span class="o">-</span><span class="n">j</span>

@@ -64,6 +64,8 @@ real(kind = dp) :: alpha
 real(kind = dp) :: beta
   !! \(\beta = 1/k_{B}T\)
 real(kind = dp) :: count1
+  !! Count used to set interval limits
+  !! for each process
 real(kind = dp) :: elevel
   !! \(E_a\) or \(E_n\)
 real(kind = dp) :: gamma_p
@@ -76,6 +78,7 @@ real(kind = dp) :: loglimit
 real(kind = dp) :: omega_a
   !! \(E_a/\hbar\)
 real(kind = dp) :: intStep
+  !! Step size for the integration
 real(kind = dp) :: expStep
   !! Step to go from 0 to \(\2\pi) in `nExpSteps`
 real(kind = dp) :: scalingFactor
@@ -111,6 +114,8 @@ character(len = 256) :: dummy
 integer,allocatable :: interval(:)
 
 real(kind = dp), allocatable :: count2(:)
+  !! Count used to set interval limits
+  !! for each process
 real(kind = dp), allocatable :: hbarOmegaBeta(:)
 real(kind = dp), allocatable :: domega(:)
   !! \(\delta\omega_{nj} = \omega_{nj} - \omega_j\)
@@ -288,7 +293,6 @@ count2(2) = float(id+1)/float(nprocs)*count1
 indexI = 1
 count1 = 0.0
 
-! Make sure the boundaries between processes are set properly
 do j = 0, int(loglimit/gamma_p/intStep)
 
    do k = 0, int(loglimit/gamma_p/intStep)-j
