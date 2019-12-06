@@ -49,11 +49,11 @@ integer :: iX, iY, iT
   !! Loop indices over \(x\), \(y\), and \(t\)
 integer :: j, k
   !! Misc loop indicies
-integer :: n1
-  !! Number of integration steps to take without
-  !! considering the limit cutoff or smearing
 integer :: nExpSteps
   !! Hardcoded to be 100000; used to generate `ex1`
+integer :: nIntSteps
+  !! Number of integration steps to take without
+  !! considering the limit cutoff or smearing
 integer :: nmode
   !! Number of phonon modes
 integer :: nprocs
@@ -148,7 +148,7 @@ complex(kind = dp), allocatable :: theta(:)
 complex(kind = dp), allocatable :: zfactor1(:)
 complex(kind = dp), allocatable :: zfactor2(:)
 
-namelist /ramanInput/ temperature, n1, limit, gamma_p, alpha, elevel, &
+namelist /ramanInput/ temperature, nIntSteps, limit, gamma_p, alpha, elevel, &
                       elaser_num, eshift_num, SjOutputFile
 
 
@@ -168,7 +168,7 @@ nExpSteps = 100000
 
 if(id == 0) then
   !! * If root process
-  !!    * Read temperature, `n1`, `limit`, `gamma_p`, `alpha`, 
+  !!    * Read temperature, `nIntSteps`, `limit`, `gamma_p`, `alpha`, 
   !!      `elevel`, `elaser_num`, `eshift_num`, and `SjOutputFile`
   !!    * Open `SjOutputFile` to read the number of phonon modes
   !!      which is needed to allocate variables
@@ -246,7 +246,7 @@ if(id == 0) then
 
 endif
 
-call MPI_Bcast( n1, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, ierror)
+call MPI_Bcast( nIntSteps, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( limit, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( gamma_p, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( alpha, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
@@ -270,7 +270,7 @@ alpha = (alpha/hbar)*(mev/scalingFactor)
   !! * Scale down `omega_l`, `omega_a`, `omega_s`, `gamma_p`, and `alpha`
   !!   to ensure that integration scale is small enough to get a reasonable result
 
-step = tpi/float(n1)
+step = tpi/float(nIntSteps)
 loglimit = -log(limit)
 count1 = 0.0
   ! Set loop variables
