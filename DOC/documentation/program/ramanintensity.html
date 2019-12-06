@@ -217,13 +217,13 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-loglimit">loglimit</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-omega">omega</a>
-      
       <a class="list-group-item" href="../program/ramanintensity.html#variable-omega_a">omega_a</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-step">step</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-dstep">dstep</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-scalingfactor">scalingFactor</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-t">t</a>
       
@@ -521,13 +521,13 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-loglimit">loglimit</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-omega">omega</a>
-      
       <a class="list-group-item" href="../program/ramanintensity.html#variable-omega_a">omega_a</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-step">step</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-dstep">dstep</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-scalingfactor">scalingFactor</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-t">t</a>
       
@@ -1018,20 +1018,6 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-omega"></span>real(kind=dp)</td>
-  
-  
-  <td></td><td>::</td>
-  <td><strong>omega</strong></td><td></td><td></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
   <td><span class="anchor" id="variable-omega_a"></span>real(kind=dp)</td>
   
   
@@ -1067,6 +1053,22 @@
   
   <td></td><td>::</td>
   <td><strong>dstep</strong></td><td></td><td></td><td><p>Step to go from 0 to (\2\pi) in <code>n2</code> steps</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-scalingfactor"></span>real(kind=dp)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>scalingFactor</strong></td><td></td><td></td><td><p>Factor to scale down inputs to ensure that
+ integration scale is small enough to give 
+ reasonable results</p></td>
   
 </tr>
 
@@ -1648,12 +1650,15 @@
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">limit</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">loglimit</span>
   <span class="c">!! \(\log(\text{limit})\)</span>
-<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">omega</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">omega_a</span>
   <span class="c">!! \(E_a/\hbar\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">step</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dstep</span>
   <span class="c">!! Step to go from 0 to \(\2\pi) in `n2` steps</span>
+<span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">scalingFactor</span>
+  <span class="c">!! Factor to scale down inputs to ensure that</span>
+  <span class="c">!! integration scale is small enough to give </span>
+  <span class="c">!! reasonable results</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">t</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">temperature</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp_r</span>
@@ -1725,7 +1730,7 @@
 <span class="k">call </span><span class="n">MPI_COMM_SIZE</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">nprocs</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
   <span class="c">!! * Initialize MPI pool</span>
 
-<span class="n">omega</span> <span class="o">=</span> <span class="mf">1.0d14</span>
+<span class="n">scalingFactor</span> <span class="o">=</span> <span class="mf">1.0d14</span>
   <span class="c">!! * Define a number to scale all inputs down by. This is currently </span>
   <span class="c">!!   set to 2 orders of magnitude larger than the phonon frequency</span>
   <span class="c">!!   scale so that the time step is small enough to get reasonable </span>
@@ -1801,7 +1806,7 @@
 
   <span class="k">end do</span>
 
-<span class="k">     </span><span class="n">hbarOmegaBeta</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">hbar</span><span class="o">*</span><span class="n">omega_j</span><span class="p">(:)</span><span class="o">*</span><span class="n">omega</span><span class="o">*</span><span class="n">beta</span>
+<span class="k">     </span><span class="n">hbarOmegaBeta</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">hbar</span><span class="o">*</span><span class="n">omega_j</span><span class="p">(:)</span><span class="o">*</span><span class="n">scalingFactor</span><span class="o">*</span><span class="n">beta</span>
      
      <span class="n">domega</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">omega_nj</span><span class="p">(:)</span>  <span class="o">-</span> <span class="n">omega_j</span><span class="p">(:)</span>
   
@@ -1829,12 +1834,12 @@
 <span class="k">call </span><span class="n">MPI_Barrier</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span><span class="n">ierror</span><span class="p">)</span>
   <span class="c">!! * Broadcast input variables to other processes</span>
 
-<span class="n">omega_l</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">elaser</span><span class="p">(:)</span><span class="o">*</span><span class="n">ev</span><span class="o">/</span><span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">omega</span><span class="p">)</span>
+<span class="n">omega_l</span><span class="p">(:)</span> <span class="o">=</span> <span class="p">(</span><span class="n">elaser</span><span class="p">(:)</span><span class="o">/</span><span class="n">hbar</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">ev</span><span class="o">/</span><span class="n">scalingFactor</span><span class="p">)</span>
   <span class="c">! \(E_L/\hbar\omega\)</span>
-<span class="n">omega_a</span> <span class="o">=</span> <span class="n">elevel</span><span class="o">*</span><span class="n">ev</span><span class="o">/</span><span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">omega</span><span class="p">)</span>
-<span class="n">omega_s</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">eshift</span><span class="p">(:)</span><span class="o">*</span><span class="n">mev</span><span class="o">/</span><span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">omega</span><span class="p">)</span>
-<span class="n">gamma_p</span> <span class="o">=</span> <span class="n">gamma_p</span><span class="o">*</span><span class="n">mev</span><span class="o">/</span><span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">omega</span><span class="p">)</span>
-<span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">*</span><span class="n">mev</span><span class="o">/</span><span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">omega</span><span class="p">)</span>
+<span class="n">omega_a</span> <span class="o">=</span> <span class="p">(</span><span class="n">elevel</span><span class="o">/</span><span class="n">hbar</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">ev</span><span class="o">/</span><span class="n">scalingFactor</span><span class="p">)</span>
+<span class="n">omega_s</span><span class="p">(:)</span> <span class="o">=</span> <span class="p">(</span><span class="n">eshift</span><span class="p">(:)</span><span class="o">/</span><span class="n">hbar</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">mev</span><span class="o">/</span><span class="n">scalingFactor</span><span class="p">)</span>
+<span class="n">gamma_p</span> <span class="o">=</span> <span class="p">(</span><span class="n">gamma_p</span><span class="o">/</span><span class="n">hbar</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">mev</span><span class="o">/</span><span class="n">scalingFactor</span><span class="p">)</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="p">(</span><span class="n">alpha</span><span class="o">/</span><span class="n">hbar</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">mev</span><span class="o">/</span><span class="n">scalingFactor</span><span class="p">)</span>
   <span class="c">!! * Scale down `omega_l`, `omega_a`, `omega_s`, `gamma_p`, and `alpha`</span>
   <span class="c">!!   to ensure that integration scale is small enough to get a reasonable result</span>
 

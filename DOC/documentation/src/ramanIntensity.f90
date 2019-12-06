@@ -71,12 +71,15 @@ real(kind = dp) :: gamma_p
 real(kind = dp) :: limit
 real(kind = dp) :: loglimit
   !! \(\log(\text{limit})\)
-real(kind = dp) :: omega
 real(kind = dp) :: omega_a
   !! \(E_a/\hbar\)
 real(kind = dp) :: step
 real(kind = dp) :: dstep
   !! Step to go from 0 to \(\2\pi) in `n2` steps
+real(kind = dp) :: scalingFactor
+  !! Factor to scale down inputs to ensure that
+  !! integration scale is small enough to give 
+  !! reasonable results
 real(kind = dp) :: t
 real(kind = dp) :: temperature
 real(kind = dp) :: tmp_r
@@ -148,7 +151,7 @@ call MPI_COMM_RANK(MPI_COMM_WORLD, id, ierror)
 call MPI_COMM_SIZE(MPI_COMM_WORLD, nprocs, ierror)
   !! * Initialize MPI pool
 
-omega = 1.0d14
+scalingFactor = 1.0d14
   !! * Define a number to scale all inputs down by. This is currently 
   !!   set to 2 orders of magnitude larger than the phonon frequency
   !!   scale so that the time step is small enough to get reasonable 
@@ -224,7 +227,7 @@ if(id == 0) then
 
   end do
 
-     hbarOmegaBeta(:) = hbar*omega_j(:)*omega*beta
+     hbarOmegaBeta(:) = hbar*omega_j(:)*scalingFactor*beta
      
      domega(:) = omega_nj(:)  - omega_j(:)
   
@@ -252,12 +255,12 @@ call MPI_Bcast( domega, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Barrier(MPI_COMM_WORLD,ierror)
   !! * Broadcast input variables to other processes
 
-omega_l(:) = elaser(:)*ev/(hbar*omega)
+omega_l(:) = (elaser(:)/hbar)*(ev/scalingFactor)
   ! \(E_L/\hbar\omega\)
-omega_a = elevel*ev/(hbar*omega)
-omega_s(:) = eshift(:)*mev/(hbar*omega)
-gamma_p = gamma_p*mev/(hbar*omega)
-alpha = alpha*mev/(hbar*omega)
+omega_a = (elevel/hbar)*(ev/scalingFactor)
+omega_s(:) = (eshift(:)/hbar)*(mev/scalingFactor)
+gamma_p = (gamma_p/hbar)*(mev/scalingFactor)
+alpha = (alpha/hbar)*(mev/scalingFactor)
   !! * Scale down `omega_l`, `omega_a`, `omega_s`, `gamma_p`, and `alpha`
   !!   to ensure that integration scale is small enough to get a reasonable result
 
