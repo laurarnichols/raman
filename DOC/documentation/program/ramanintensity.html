@@ -124,7 +124,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="100.0% of total for programs.">202 statements</a>
+    title="100.0% of total for programs.">200 statements</a>
      </li> 
      
      
@@ -235,14 +235,6 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-y">y</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-expforfj">expForFj</a>
-      
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-expt">expT</a>
-      
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-fj">Fj</a>
-      
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_exp">tmp_exp</a>
-      
       <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor">zfactor</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-sjoutputfile">SjOutputFile</a>
@@ -273,9 +265,15 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-ex1">ex1</a>
       
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-expforfj">expForFj</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-expt">expT</a>
+      
       <a class="list-group-item" href="../program/ramanintensity.html#variable-expx">expX</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-expy">expY</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-fj">Fj</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-fjfractionfactor">FjFractionFactor</a>
       
@@ -384,7 +382,9 @@
 <p>Broadcast array sizes to other modes for allocation</p>
 </li>
 <li>
-<p>Allocate space for variables on all processes</p>
+<p>Allocate space for variables on all processes
+ </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Check on all of these to make sure they are deallocated strategically </p></div>
+<p>
 </li>
 <li>
 <p>Calculate the step size for the exponential pre-calculation</p>
@@ -418,8 +418,12 @@
 <p>Broadcast input variables to other processes</p>
 </li>
 <li>
-<p>Scale down <code>omega_l</code>, <code>omega_a</code>, <code>omega_s</code>, <code>gamma_p</code>, and <code>alpha</code>
-   to ensure that integration scale is small enough to get a reasonable result</p>
+<p>Define frequencies by dividing the energies by <script type="math/tex">\hbar</script>, then scale down 
+   the results to ensure that integration scale is small enough to get a reasonable result
+   </p><div class="alert alert-info" role="alert"><h4>Note</h4><p><script type="math/tex">\alpha</script> and <script type="math/tex">\gamma</script> are also divided by <script type="math/tex">\hbar</script> here so 
+      that it doesn't have to be done in the final exponential.
+   </p></div>
+<p>
 </li>
 <li>
 <p>Calculate the total number of integration steps needed and
@@ -439,9 +443,16 @@
 <p>* Calculate the fractional factor in front of the cosines in
    <script type="math/tex">F_j</script>
 </p>
-<p>Use a linear interpolation for <script type="math/tex">e^{i\omega_j t}</script>
- to get a slightly more accurate value</p>
 <ul>
+<li>
+<p>Use a linear interpolation for <script type="math/tex">e^{i\omega_j t}</script>
+   to get a slightly more accurate value
+   </p><div class="alert alert-info" role="alert"><h4>Note</h4><p>This process needs to stay in the innermost loop; it cannot
+     be moved out of the loop because <code>tmp_r</code> represents a random
+     number that will change slightly each loop.
+   </p></div>
+<p>
+</li>
 <li>
 <p>Calculate <code>expForFj</code><script type="math/tex"> = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})</script>.
    This is used as a trick to be able to calculate <script type="math/tex">F_j</script> quicker as the expontentials include both the
@@ -539,14 +550,6 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-y">y</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-expforfj">expForFj</a>
-      
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-expt">expT</a>
-      
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-fj">Fj</a>
-      
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-tmp_exp">tmp_exp</a>
-      
       <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor">zfactor</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-sjoutputfile">SjOutputFile</a>
@@ -577,9 +580,15 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-ex1">ex1</a>
       
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-expforfj">expForFj</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-expt">expT</a>
+      
       <a class="list-group-item" href="../program/ramanintensity.html#variable-expx">expX</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-expy">expY</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-fj">Fj</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-fjfractionfactor">FjFractionFactor</a>
       
@@ -1157,66 +1166,6 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-expforfj"></span>complex(kind=dp)</td>
-  
-  
-  <td></td><td>::</td>
-  <td><strong>expForFj</strong></td><td></td><td></td><td><p>An exponential form to more quickly
- calculate <script type="math/tex">F_j</script>
-</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-expt"></span>complex(kind=dp)</td>
-  
-  
-  <td></td><td>::</td>
-  <td><strong>expT</strong></td><td></td><td></td><td><p>
-<script type="math/tex">e^{i\omega t}</script> used in calculating <script type="math/tex">F_j</script>
-</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-fj"></span>complex(kind=dp)</td>
-  
-  
-  <td></td><td>::</td>
-  <td><strong>Fj</strong></td><td></td><td></td><td><p>Function <script type="math/tex">F_j</script> from equation 44</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-tmp_exp"></span>complex(kind=dp)</td>
-  
-  
-  <td></td><td>::</td>
-  <td><strong>tmp_exp</strong></td><td></td><td></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
   <td><span class="anchor" id="variable-zfactor"></span>complex(kind=dp)</td>
   
   
@@ -1443,6 +1392,38 @@
   
 <tr>
   
+  <td><span class="anchor" id="variable-expforfj"></span>complex(kind=dp),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>expForFj</strong>(:)</td><td></td><td></td><td><p>An exponential form to more quickly
+ calculate <script type="math/tex">F_j</script>
+</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-expt"></span>complex(kind=dp),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>expT</strong>(:)</td><td></td><td></td><td><p>
+<script type="math/tex">e^{i\omega t}</script> used in calculating <script type="math/tex">F_j</script>
+</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
   <td><span class="anchor" id="variable-expx"></span>complex(kind=dp),</td>
   
   
@@ -1466,6 +1447,20 @@
   <td><strong>expY</strong>(:)</td><td></td><td></td><td><p>
 <script type="math/tex">e^{-i\omega y}</script> used in calculating <script type="math/tex">F_j</script>
 </p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-fj"></span>complex(kind=dp),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>Fj</strong>(:)</td><td></td><td></td><td><p>Function <script type="math/tex">F_j</script> from equation 44</p></td>
   
 </tr>
 
@@ -1685,14 +1680,6 @@
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">y</span>
   <span class="c">!! \(y\)</span>
 
-<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">expForFj</span>
-  <span class="c">!! An exponential form to more quickly</span>
-  <span class="c">!! calculate \(F_j\)</span>
-<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">expT</span>
-  <span class="c">!! \(e^{i\omega t}\) used in calculating \(F_j\)</span>
-<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">Fj</span>
-  <span class="c">!! Function \(F_j\) from equation 44</span>
-<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp_exp</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">zfactor</span>
 
 <span class="kt">character</span><span class="p">(</span><span class="nb">len</span> <span class="o">=</span> <span class="mi">256</span><span class="p">)</span> <span class="kd">::</span> <span class="n">SjOutputFile</span>
@@ -1724,10 +1711,17 @@
 
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">ex1</span><span class="p">(:)</span>
   <span class="c">!! \(e^{i\theta}\) where \(\theta\) goes from 0 to \(2\pi\)</span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">expForFj</span><span class="p">(:)</span>
+  <span class="c">!! An exponential form to more quickly</span>
+  <span class="c">!! calculate \(F_j\)</span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">expT</span><span class="p">(:)</span>
+  <span class="c">!! \(e^{i\omega t}\) used in calculating \(F_j\)</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">expX</span><span class="p">(:)</span>
   <span class="c">!! \(e^{i\omega x}\) used in calculating \(F_j\)</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">expY</span><span class="p">(:)</span>
   <span class="c">!! \(e^{-i\omega y}\) used in calculating \(F_j\)</span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">Fj</span><span class="p">(:)</span>
+  <span class="c">!! Function \(F_j\) from equation 44</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">FjFractionFactor</span><span class="p">(:)</span>
   <span class="c">!! Fraction factor in front of cosine terms in \(F_j\)</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">global_sum</span><span class="p">(:,:)</span>
@@ -1785,9 +1779,11 @@
 
 <span class="k">allocate</span><span class="p">(</span><span class="n">eshift</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">elaser</span><span class="p">(</span><span class="n">elaser_num</span><span class="p">),</span> <span class="n">omega_s</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">omega_l</span><span class="p">(</span><span class="n">elaser_num</span><span class="p">))</span>
 <span class="k">allocate</span><span class="p">(</span><span class="n">s1</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s2</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">,</span><span class="n">elaser_num</span><span class="p">),</span> <span class="n">s3</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">,</span><span class="n">elaser_num</span><span class="p">),</span> <span class="n">global_sum</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">,</span><span class="n">elaser_num</span><span class="p">))</span>
-<span class="k">allocate</span><span class="p">(</span><span class="n">Sj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">hbarOmegaBeta</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expX</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expY</span><span class="p">(</span><span class="n">nmode</span><span class="p">))</span>
+<span class="k">allocate</span><span class="p">(</span><span class="n">Sj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">hbarOmegaBeta</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">nmode</span><span class="p">))</span>
+<span class="k">allocate</span><span class="p">(</span><span class="n">Fj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expForFj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expT</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expX</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expY</span><span class="p">(</span><span class="n">nmode</span><span class="p">))</span>
 <span class="k">allocate</span><span class="p">(</span><span class="n">domega</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">theta</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">zfactor1</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">zfactor2</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">ex1</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">nExpSteps</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">count2</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
   <span class="c">!! * Allocate space for variables on all processes</span>
+  <span class="c">!! @todo Check on all of these to make sure they are deallocated strategically @endtodo</span>
 
 <span class="n">expStep</span> <span class="o">=</span> <span class="n">tpi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">nExpSteps</span><span class="p">)</span>
   <span class="c">!! * Calculate the step size for the exponential pre-calculation</span>
@@ -1855,13 +1851,16 @@
   <span class="c">!! * Broadcast input variables to other processes</span>
 
 <span class="n">omega_l</span><span class="p">(:)</span> <span class="o">=</span> <span class="p">(</span><span class="n">elaser</span><span class="p">(:)</span><span class="o">/</span><span class="n">hbar</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">ev</span><span class="o">/</span><span class="n">scalingFactor</span><span class="p">)</span>
-  <span class="c">! \(E_L/\hbar\omega\)</span>
 <span class="n">omega_a</span> <span class="o">=</span> <span class="p">(</span><span class="n">elevel</span><span class="o">/</span><span class="n">hbar</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">ev</span><span class="o">/</span><span class="n">scalingFactor</span><span class="p">)</span>
 <span class="n">omega_s</span><span class="p">(:)</span> <span class="o">=</span> <span class="p">(</span><span class="n">eshift</span><span class="p">(:)</span><span class="o">/</span><span class="n">hbar</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">mev</span><span class="o">/</span><span class="n">scalingFactor</span><span class="p">)</span>
 <span class="n">gamma_p</span> <span class="o">=</span> <span class="p">(</span><span class="n">gamma_p</span><span class="o">/</span><span class="n">hbar</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">mev</span><span class="o">/</span><span class="n">scalingFactor</span><span class="p">)</span>
 <span class="n">alpha</span> <span class="o">=</span> <span class="p">(</span><span class="n">alpha</span><span class="o">/</span><span class="n">hbar</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">mev</span><span class="o">/</span><span class="n">scalingFactor</span><span class="p">)</span>
-  <span class="c">!! * Scale down `omega_l`, `omega_a`, `omega_s`, `gamma_p`, and `alpha`</span>
-  <span class="c">!!   to ensure that integration scale is small enough to get a reasonable result</span>
+  <span class="c">!! * Define frequencies by dividing the energies by \(\hbar\), then scale down </span>
+  <span class="c">!!   the results to ensure that integration scale is small enough to get a reasonable result</span>
+  <span class="c">!!   @note </span>
+  <span class="c">!!      \(\alpha\) and \(\gamma\) are also divided by \(\hbar\) here so </span>
+  <span class="c">!!      that it doesn&#39;t have to be done in the final exponential.</span>
+  <span class="c">!!   @endnote</span>
 
 <span class="n">intStep</span> <span class="o">=</span> <span class="n">tpi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">nIntSteps</span><span class="p">)</span>
 <span class="n">loglimit</span> <span class="o">=</span> <span class="o">-</span><span class="nb">log</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
@@ -1911,7 +1910,7 @@
   <span class="c">!! * Begin integration over \(x\)</span>
 
    <span class="k">if</span><span class="p">(</span><span class="n">id</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">      write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">id</span><span class="p">,</span> <span class="n">iX</span>
+<span class="k">      write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="s2">&quot;The root process is on step &quot;</span><span class="p">,</span> <span class="n">iX</span><span class="p">,</span> <span class="s2">&quot; of &quot;</span><span class="p">,</span> <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
    <span class="n">endif</span>
 
    <span class="n">s2</span> <span class="o">=</span> <span class="mf">0.0d0</span>
@@ -1942,32 +1941,34 @@
 
       <span class="k">do </span><span class="n">iT</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">interval_t</span>
          <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">iT</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">*</span><span class="n">intStep</span>
-         <span class="n">tmp_exp</span> <span class="o">=</span> <span class="mf">0.0d0</span>
  
          <span class="k">do </span><span class="n">imode</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nmode</span>
+            <span class="c">!! * Use a linear interpolation for \(e^{i\omega_j t}\)</span>
+            <span class="c">!!   to get a slightly more accurate value</span>
+            <span class="c">!!   @note </span>
+            <span class="c">!!     This process needs to stay in the innermost loop; it cannot</span>
+            <span class="c">!!     be moved out of the loop because `tmp_r` represents a random</span>
+            <span class="c">!!     number that will change slightly each loop.</span>
+            <span class="c">!!   @endnote</span>
 
             <span class="n">tmp_r</span> <span class="o">=</span> <span class="o">-</span><span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="o">/</span><span class="n">tpi</span>
             <span class="n">tmp_r</span> <span class="o">=</span> <span class="p">(</span><span class="n">tmp_r</span> <span class="o">-</span> <span class="nb">floor</span><span class="p">(</span><span class="n">tmp_r</span><span class="p">))</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">nExpSteps</span><span class="p">)</span>
             <span class="n">indexI</span> <span class="o">=</span> <span class="nb">floor</span><span class="p">(</span><span class="n">tmp_r</span><span class="p">)</span>
             <span class="n">tmp_r</span> <span class="o">=</span> <span class="n">tmp_r</span> <span class="o">-</span> <span class="n">indexI</span>
-            <span class="n">expT</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">tmp_r</span><span class="p">)</span><span class="o">*</span><span class="n">ex1</span><span class="p">(</span><span class="n">indexI</span><span class="p">)</span> <span class="o">+</span> <span class="n">tmp_r</span><span class="o">*</span><span class="n">ex1</span><span class="p">(</span><span class="n">indexI</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-              <span class="c">!! Use a linear interpolation for \(e^{i\omega_j t}\)</span>
-              <span class="c">!! to get a slightly more accurate value</span>
-
-            <span class="n">expForFj</span> <span class="o">=</span> <span class="o">-</span><span class="n">expT</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">expX</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">expY</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span> <span class="o">-</span> <span class="p">(</span><span class="n">expX</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span> <span class="o">+</span> <span class="n">expY</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span>
-              <span class="c">!! * Calculate `expForFj`\( = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})\).</span>
-              <span class="c">!!   This is used as a trick to be able to calculate \(F_j\) quicker as the expontentials include both the</span>
-              <span class="c">!!   sines and cosines needed </span>
-
-            <span class="n">Fj</span> <span class="o">=</span> <span class="nb">Aimag</span><span class="p">(</span><span class="n">expForFj</span><span class="p">)</span> <span class="o">+</span> <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="kt">Real</span><span class="p">(</span><span class="mf">2.0d0</span> <span class="o">+</span> <span class="n">expForFj</span><span class="p">)</span>           
-              <span class="c">!! * Calculate \(F_j = \text{Im}(\)`expForFj`\() + \)`FjFractionFactor`\(\text{Re}(2 + \)`expForFj`\()\)</span>
-              <span class="c">!! @todo Add detailed derivation of this in a separate page @endtodo</span>
-
-            <span class="n">tmp_exp</span> <span class="o">=</span> <span class="n">tmp_exp</span> <span class="o">+</span> <span class="n">Fj</span><span class="o">*</span><span class="n">Sj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>
+            <span class="n">expT</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">tmp_r</span><span class="p">)</span><span class="o">*</span><span class="n">ex1</span><span class="p">(</span><span class="n">indexI</span><span class="p">)</span> <span class="o">+</span> <span class="n">tmp_r</span><span class="o">*</span><span class="n">ex1</span><span class="p">(</span><span class="n">indexI</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
 
          <span class="n">enddo</span>
 
-         <span class="n">s1</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">s1</span><span class="p">(:)</span> <span class="o">+</span> <span class="nb">exp</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="n">tmp_exp</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">omega_s</span><span class="p">(:)</span><span class="o">*</span><span class="n">t</span> <span class="o">-</span> <span class="n">alpha</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+         <span class="n">expForFj</span><span class="p">(:)</span> <span class="o">=</span> <span class="o">-</span><span class="n">expT</span><span class="p">(:)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">expX</span><span class="p">(:))</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">expY</span><span class="p">(:))</span> <span class="o">-</span> <span class="p">(</span><span class="n">expX</span><span class="p">(:)</span> <span class="o">+</span> <span class="n">expY</span><span class="p">(:))</span>
+          <span class="c">!! * Calculate `expForFj`\( = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})\).</span>
+          <span class="c">!!   This is used as a trick to be able to calculate \(F_j\) quicker as the expontentials include both the</span>
+          <span class="c">!!   sines and cosines needed </span>
+
+         <span class="n">Fj</span><span class="p">(:)</span> <span class="o">=</span> <span class="nb">Aimag</span><span class="p">(</span><span class="n">expForFj</span><span class="p">(:))</span> <span class="o">+</span> <span class="n">FjFractionFactor</span><span class="p">(:)</span><span class="o">*</span><span class="kt">Real</span><span class="p">(</span><span class="mf">2.0d0</span> <span class="o">+</span> <span class="n">expForFj</span><span class="p">(:))</span>           
+          <span class="c">!! * Calculate \(F_j = \text{Im}(\)`expForFj`\() + \)`FjFractionFactor`\(\text{Re}(2 + \)`expForFj`\()\)</span>
+          <span class="c">!! @todo Add detailed derivation of this in a separate page @endtodo</span>
+
+         <span class="n">s1</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">s1</span><span class="p">(:)</span> <span class="o">+</span> <span class="nb">exp</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="nb">sum</span><span class="p">(</span><span class="n">Fj</span><span class="p">(:)</span><span class="o">*</span><span class="n">Sj</span><span class="p">(:))</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">omega_s</span><span class="p">(:)</span><span class="o">*</span><span class="n">t</span> <span class="o">-</span> <span class="n">alpha</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
 
       <span class="k">end do</span>
 

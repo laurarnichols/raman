@@ -97,14 +97,6 @@ real(kind = dp) :: x
 real(kind = dp) :: y
   !! \(y\)
 
-complex(kind = dp) :: expForFj
-  !! An exponential form to more quickly
-  !! calculate \(F_j\)
-complex(kind = dp) :: expT
-  !! \(e^{i\omega t}\) used in calculating \(F_j\)
-complex(kind = dp) :: Fj
-  !! Function \(F_j\) from equation 44
-complex(kind = dp) :: tmp_exp
 complex(kind = dp) :: zfactor
 
 character(len = 256) :: SjOutputFile
@@ -136,10 +128,17 @@ real(kind = dp), allocatable :: Sj(:)
 
 complex(kind = dp), allocatable :: ex1(:)
   !! \(e^{i\theta}\) where \(\theta\) goes from 0 to \(2\pi\)
+complex(kind = dp), allocatable :: expForFj(:)
+  !! An exponential form to more quickly
+  !! calculate \(F_j\)
+complex(kind = dp), allocatable :: expT(:)
+  !! \(e^{i\omega t}\) used in calculating \(F_j\)
 complex(kind = dp), allocatable :: expX(:)
   !! \(e^{i\omega x}\) used in calculating \(F_j\)
 complex(kind = dp), allocatable :: expY(:)
   !! \(e^{-i\omega y}\) used in calculating \(F_j\)
+complex(kind = dp), allocatable :: Fj(:)
+  !! Function \(F_j\) from equation 44
 complex(kind = dp), allocatable :: FjFractionFactor(:)
   !! Fraction factor in front of cosine terms in \(F_j\)
 complex(kind = dp), allocatable :: global_sum(:,:)
@@ -197,9 +196,11 @@ call MPI_BCast( elaser_num, 1, MPI_Integer, 0, MPI_COMM_WORLD, ierror)
 
 allocate(eshift(eshift_num), elaser(elaser_num), omega_s(eshift_num), omega_l(elaser_num))
 allocate(s1(eshift_num), s2(eshift_num,elaser_num), s3(eshift_num,elaser_num), global_sum(eshift_num,elaser_num))
-allocate(Sj(nmode), omega_j(nmode), omega_nj(nmode), hbarOmegaBeta(nmode), FjFractionFactor(nmode), expX(nmode), expY(nmode))
+allocate(Sj(nmode), omega_j(nmode), omega_nj(nmode), hbarOmegaBeta(nmode), FjFractionFactor(nmode))
+allocate(Fj(nmode), expForFj(nmode), expT(nmode), expX(nmode), expY(nmode))
 allocate(domega(nmode), theta(nmode), zfactor1(nmode), zfactor2(nmode), ex1(0:nExpSteps+1), interval(2), count2(2))
   !! * Allocate space for variables on all processes
+  !! @todo Check on all of these to make sure they are deallocated strategically @endtodo
 
 expStep = tpi/float(nExpSteps)
   !! * Calculate the step size for the exponential pre-calculation
@@ -267,13 +268,16 @@ call MPI_Barrier(MPI_COMM_WORLD,ierror)
   !! * Broadcast input variables to other processes
 
 omega_l(:) = (elaser(:)/hbar)*(ev/scalingFactor)
-  ! \(E_L/\hbar\omega\)
 omega_a = (elevel/hbar)*(ev/scalingFactor)
 omega_s(:) = (eshift(:)/hbar)*(mev/scalingFactor)
 gamma_p = (gamma_p/hbar)*(mev/scalingFactor)
 alpha = (alpha/hbar)*(mev/scalingFactor)
-  !! * Scale down `omega_l`, `omega_a`, `omega_s`, `gamma_p`, and `alpha`
-  !!   to ensure that integration scale is small enough to get a reasonable result
+  !! * Define frequencies by dividing the energies by \(\hbar\), then scale down 
+  !!   the results to ensure that integration scale is small enough to get a reasonable result
+  !!   @note 
+  !!      \(\alpha\) and \(\gamma\) are also divided by \(\hbar\) here so 
+  !!      that it doesn't have to be done in the final exponential.
+  !!   @endnote
 
 intStep = tpi/float(nIntSteps)
 loglimit = -log(limit)
@@ -323,7 +327,7 @@ do iX = interval(1), interval(2)
   !! * Begin integration over \(x\)
 
    if(id==0) then
-      write(*,*) id, iX
+      write(*,*) "The root process is on step ", iX, " of ", interval(2)
    endif
 
    s2 = 0.0d0
@@ -354,32 +358,34 @@ do iX = interval(1), interval(2)
 
       do iT = 0, interval_t
          t = (iT + 0.5)*intStep
-         tmp_exp = 0.0d0
  
          do imode = 1, nmode
+            !! * Use a linear interpolation for \(e^{i\omega_j t}\)
+            !!   to get a slightly more accurate value
+            !!   @note 
+            !!     This process needs to stay in the innermost loop; it cannot
+            !!     be moved out of the loop because `tmp_r` represents a random
+            !!     number that will change slightly each loop.
+            !!   @endnote
 
             tmp_r = -omega_j(imode)*t/tpi
             tmp_r = (tmp_r - floor(tmp_r))*float(nExpSteps)
             indexI = floor(tmp_r)
             tmp_r = tmp_r - indexI
-            expT = (1.0 - tmp_r)*ex1(indexI) + tmp_r*ex1(indexI+1)
-              !! Use a linear interpolation for \(e^{i\omega_j t}\)
-              !! to get a slightly more accurate value
-
-            expForFj = -expT*(1 - expX(imode))*(1 - expY(imode)) - (expX(imode) + expY(imode))
-              !! * Calculate `expForFj`\( = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})\).
-              !!   This is used as a trick to be able to calculate \(F_j\) quicker as the expontentials include both the
-              !!   sines and cosines needed 
-
-            Fj = Aimag(expForFj) + FjFractionFactor(imode)*Real(2.0d0 + expForFj)           
-              !! * Calculate \(F_j = \text{Im}(\)`expForFj`\() + \)`FjFractionFactor`\(\text{Re}(2 + \)`expForFj`\()\)
-              !! @todo Add detailed derivation of this in a separate page @endtodo
-
-            tmp_exp = tmp_exp + Fj*Sj(imode)
+            expT(imode) = (1.0 - tmp_r)*ex1(indexI) + tmp_r*ex1(indexI+1)
 
          enddo
 
-         s1(:) = s1(:) + exp(I*tmp_exp - I*omega_s(:)*t - alpha*abs(t))
+         expForFj(:) = -expT(:)*(1 - expX(:))*(1 - expY(:)) - (expX(:) + expY(:))
+          !! * Calculate `expForFj`\( = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})\).
+          !!   This is used as a trick to be able to calculate \(F_j\) quicker as the expontentials include both the
+          !!   sines and cosines needed 
+
+         Fj(:) = Aimag(expForFj(:)) + FjFractionFactor(:)*Real(2.0d0 + expForFj(:))           
+          !! * Calculate \(F_j = \text{Im}(\)`expForFj`\() + \)`FjFractionFactor`\(\text{Re}(2 + \)`expForFj`\()\)
+          !! @todo Add detailed derivation of this in a separate page @endtodo
+
+         s1(:) = s1(:) + exp(I*sum(Fj(:)*Sj(:)) - I*omega_s(:)*t - alpha*abs(t))
 
       end do
 
