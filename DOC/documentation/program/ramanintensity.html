@@ -179,15 +179,21 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-imode">imode</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-index1">index1</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-indexi">indexI</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-interval_t">interval_t</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-ishifte">ishiftE</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-ix">iX</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-iy">iY</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-it">iT</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-j">j</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-k">k</a>
-      
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-l">l</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-n1">n1</a>
       
@@ -412,15 +418,22 @@
 <p>Broadcast input variables to other processes</p>
 </li>
 </ul>
-<p>Maybe unit conversions?
- <script type="math/tex">(E_L-E_n)/\hbar\omega</script>
- Set loop variables?
- Do some sort of sum? What are <code>gamma_p</code> and <code>alpha</code>? They come from the input file
- I think this is figuring out the intervals for each node to integrate over
- Make sure that all processes get here before
+<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Break this off into <code>omega_l</code> and <code>omega_a</code> for clarity </p></div>
+<p>* Scale down <code>omega_l</code>, <code>omega_s</code>, <code>gamma_p</code>, and <code>alpha</code>
+   to ensure that integration scale is small enough to
+   get a reasonable result</p>
+<ul>
+<li>Calculate the total number of integration steps needed and
+   distribute the intervals between the processes</li>
+<li>
+<p>Make sure that all processes get here before
  moving forward</p>
-<p>Integrate over <script type="math/tex">x</script>
+</li>
+<li>
+<p>Begin integration over <script type="math/tex">x</script>
 </p>
+</li>
+</ul>
 <p>Calculate the first fraction in equation 42
  </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out where <code>zfactor2</code> comes from </p></div>
 <p>* Calculate the fractional factor in front of the cosines in
@@ -437,7 +450,6 @@
 <code>FjFractionFactor</code><script type="math/tex">\text{Re}(2 + </script>
 <code>expForFj</code><script type="math/tex">)</script>
  </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Add detailed derivation of this in a separate page </p></div>
-<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out why <code>abs(t)</code> here when <code>t</code> is positive in the loop? Is <code>t</code> positive in the loop? </p></div>
 <p></li>
 </ul>
     
@@ -467,15 +479,21 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-imode">imode</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-index1">index1</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-indexi">indexI</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-interval_t">interval_t</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-ishifte">ishiftE</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-ix">iX</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-iy">iY</a>
+      
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-it">iT</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-j">j</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-k">k</a>
-      
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-l">l</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-n1">n1</a>
       
@@ -715,11 +733,14 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-index1"></span>integer</td>
+  <td><span class="anchor" id="variable-indexi"></span>integer</td>
   
   
   <td></td><td>::</td>
-  <td><strong>index1</strong></td><td></td><td></td><td></td>
+  <td><strong>indexI</strong></td><td></td><td></td><td><p>Calculated index for constructing
+ integration intervals and linear
+ extrapolation of <script type="math/tex">e^{i\omega_j t}</script>
+</p></td>
   
 </tr>
 
@@ -733,7 +754,66 @@
   
   
   <td></td><td>::</td>
-  <td><strong>interval_t</strong></td><td></td><td></td><td></td>
+  <td><strong>interval_t</strong></td><td></td><td></td><td><p>Interval for time integration</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-ishifte"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>ishiftE</strong></td><td></td><td></td><td><p>Loop index over energy shifts</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-ix"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>iX</strong></td><td></td><td></td><td><p>Loop indices over <script type="math/tex">x</script>, <script type="math/tex">y</script>, and <script type="math/tex">t</script>
+</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-iy"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>iY</strong></td><td></td><td></td><td><p>Loop indices over <script type="math/tex">x</script>, <script type="math/tex">y</script>, and <script type="math/tex">t</script>
+</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-it"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>iT</strong></td><td></td><td></td><td><p>Loop indices over <script type="math/tex">x</script>, <script type="math/tex">y</script>, and <script type="math/tex">t</script>
+</p></td>
   
 </tr>
 
@@ -747,7 +827,7 @@
   
   
   <td></td><td>::</td>
-  <td><strong>j</strong></td><td></td><td></td><td></td>
+  <td><strong>j</strong></td><td></td><td></td><td><p>Misc loop indicies</p></td>
   
 </tr>
 
@@ -761,21 +841,7 @@
   
   
   <td></td><td>::</td>
-  <td><strong>k</strong></td><td></td><td></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-l"></span>integer</td>
-  
-  
-  <td></td><td>::</td>
-  <td><strong>l</strong></td><td></td><td></td><td></td>
+  <td><strong>k</strong></td><td></td><td></td><td><p>Misc loop indicies</p></td>
   
 </tr>
 
@@ -789,7 +855,8 @@
   
   
   <td></td><td>::</td>
-  <td><strong>n1</strong></td><td></td><td></td><td></td>
+  <td><strong>n1</strong></td><td></td><td></td><td><p>Number of integration steps to take without
+ considering the limit cutoff or smearing</p></td>
   
 </tr>
 
@@ -1533,12 +1600,21 @@
   <span class="c">!! Loop index over laser energies</span>
 <span class="kt">integer</span> <span class="kd">::</span> <span class="n">imode</span>
   <span class="c">!! Loop index over phonon modes</span>
-<span class="kt">integer</span> <span class="kd">::</span> <span class="n">index1</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">indexI</span>
+  <span class="c">!! Calculated index for constructing</span>
+  <span class="c">!! integration intervals and linear</span>
+  <span class="c">!! extrapolation of \(e^{i\omega_j t}\)</span>
 <span class="kt">integer</span> <span class="kd">::</span> <span class="n">interval_t</span>
-<span class="kt">integer</span> <span class="kd">::</span> <span class="n">j</span>
-<span class="kt">integer</span> <span class="kd">::</span> <span class="n">k</span>
-<span class="kt">integer</span> <span class="kd">::</span> <span class="n">l</span>
+  <span class="c">!! Interval for time integration</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">ishiftE</span>
+  <span class="c">!! Loop index over energy shifts</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">iX</span><span class="p">,</span> <span class="n">iY</span><span class="p">,</span> <span class="n">iT</span>
+  <span class="c">!! Loop indices over \(x\), \(y\), and \(t\)</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span>
+  <span class="c">!! Misc loop indicies</span>
 <span class="kt">integer</span> <span class="kd">::</span> <span class="n">n1</span>
+  <span class="c">!! Number of integration steps to take without</span>
+  <span class="c">!! considering the limit cutoff or smearing</span>
 <span class="kt">integer</span> <span class="kd">::</span> <span class="n">n2</span>
   <span class="c">!! Hardcoded to be 100000; used to generate `ex1`</span>
 <span class="kt">integer</span> <span class="kd">::</span> <span class="n">nmode</span>
@@ -1619,7 +1695,7 @@
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">zfactor1</span><span class="p">(:)</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">zfactor2</span><span class="p">(:)</span>
 
-<span class="k">namelist</span> <span class="o">/</span><span class="n">ramanInput</span><span class="o">/</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">gamma_p</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">elevel</span> <span class="p">&amp;</span>
+<span class="k">namelist</span> <span class="o">/</span><span class="n">ramanInput</span><span class="o">/</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">gamma_p</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">elevel</span><span class="p">,</span> <span class="p">&amp;</span>
                       <span class="n">elaser_num</span><span class="p">,</span> <span class="n">eshift_num</span><span class="p">,</span> <span class="n">SjOutputFile</span>
 
 
@@ -1633,7 +1709,7 @@
   <span class="c">!!   set to 2 orders of magnitude larger than the phonon frequency</span>
   <span class="c">!!   scale so that the time step is small enough to get reasonable </span>
   <span class="c">!!   results.</span>
-<span class="n">n2</span><span class="o">=</span><span class="mi">100000</span>
+<span class="n">n2</span> <span class="o">=</span> <span class="mi">100000</span>
   <span class="c">!! * Define the number of exponentials to pre-calculate in order</span>
   <span class="c">!!   to do the linear interpolation of \(e^(i\omega_j t)\)</span>
 
@@ -1653,7 +1729,7 @@
   <span class="k">read</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="o">*</span><span class="p">)</span>
   <span class="k">read</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">nmode</span>
 
-  <span class="n">beta</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">kB</span><span class="o">*</span><span class="n">temperature</span><span class="p">)</span>
+  <span class="n">beta</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">kB</span><span class="o">*</span><span class="n">temperature</span><span class="p">)</span>
 <span class="n">endif</span>
 
 <span class="k">call </span><span class="n">MPI_BCast</span><span class="p">(</span> <span class="n">nmode</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPI_Integer</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
@@ -1667,10 +1743,10 @@
 <span class="k">allocate</span><span class="p">(</span><span class="n">domega</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">theta</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">zfactor1</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">zfactor2</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">ex1</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">count2</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
   <span class="c">!! * Allocate space for variables on all processes</span>
 
-<span class="n">dstep</span><span class="o">=</span><span class="n">tpi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
+<span class="n">dstep</span> <span class="o">=</span> <span class="n">tpi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
   <span class="c">!! * Calculate the step size for the exponential pre-calculation</span>
 
-<span class="k">do </span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span>
+<span class="k">do </span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n2</span><span class="o">+</span><span class="mi">1</span>
   <span class="c">!! * Pre-calculate the exponential terms, \(e^{i\theta}\) where \(\theta\)</span>
   <span class="c">!!   goes from 0 to \(2\pi\), used in the linear interpolation of \(e^{i\omega_j t}\)</span>
 
@@ -1698,7 +1774,7 @@
   <span class="n">omega_nj</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">omega_nj</span><span class="p">(:)</span><span class="o">/</span><span class="mi">10</span><span class="mf">0.0d0</span>     
   
 
-  <span class="k">do </span><span class="n">imode</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nmode</span>
+  <span class="k">do </span><span class="n">imode</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nmode</span>
      
      <span class="k">read</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">j</span><span class="p">,</span> <span class="n">Sj</span><span class="p">(</span><span class="n">imode</span><span class="p">),</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">),</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>
 
@@ -1732,68 +1808,76 @@
 <span class="k">call </span><span class="n">MPI_Barrier</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span><span class="n">ierror</span><span class="p">)</span>
   <span class="c">!! * Broadcast input variables to other processes</span>
 
-<span class="c">!&gt; Maybe unit conversions?</span>
-<span class="n">omega_l</span><span class="p">(:)</span><span class="o">=</span><span class="p">(</span><span class="n">elaser</span><span class="p">(:)</span><span class="o">-</span><span class="n">elevel</span><span class="p">)</span><span class="o">*</span><span class="n">ev</span><span class="o">/</span><span class="n">hbar</span><span class="o">/</span><span class="n">omega</span>
-  <span class="c">!! \((E_L-E_n)/\hbar\omega\)</span>
-<span class="n">omega_s</span><span class="p">(:)</span><span class="o">=</span><span class="n">eshift</span><span class="p">(:)</span><span class="o">*</span><span class="n">mev</span><span class="o">/</span><span class="n">hbar</span><span class="o">/</span><span class="n">omega</span>
-<span class="n">gamma_p</span><span class="o">=</span><span class="n">gamma_p</span><span class="o">*</span><span class="n">mev</span><span class="o">/</span><span class="n">hbar</span><span class="o">/</span><span class="n">omega</span>
-<span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="o">*</span><span class="n">mev</span><span class="o">/</span><span class="n">hbar</span><span class="o">/</span><span class="n">omega</span>
+<span class="n">omega_l</span><span class="p">(:)</span> <span class="o">=</span> <span class="p">(</span><span class="n">elaser</span><span class="p">(:)</span> <span class="o">-</span> <span class="n">elevel</span><span class="p">)</span><span class="o">*</span><span class="n">ev</span><span class="o">/</span><span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">omega</span><span class="p">)</span>
+  <span class="c">! \((E_L-E_n)/\hbar\omega\)</span>
+  <span class="c">!! @todo Break this off into `omega_l` and `omega_a` for clarity @endtodo</span>
+<span class="n">omega_s</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">eshift</span><span class="p">(:)</span><span class="o">*</span><span class="n">mev</span><span class="o">/</span><span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">omega</span><span class="p">)</span>
+<span class="n">gamma_p</span> <span class="o">=</span> <span class="n">gamma_p</span><span class="o">*</span><span class="n">mev</span><span class="o">/</span><span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">omega</span><span class="p">)</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">*</span><span class="n">mev</span><span class="o">/</span><span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">omega</span><span class="p">)</span>
+  <span class="c">!! * Scale down `omega_l`, `omega_s`, `gamma_p`, and `alpha`</span>
+  <span class="c">!!   to ensure that integration scale is small enough to</span>
+  <span class="c">!!   get a reasonable result</span>
 
-<span class="c">!&gt; Set loop variables?</span>
-<span class="n">step</span><span class="o">=</span><span class="n">tpi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>
-<span class="n">loglimit</span><span class="o">=-</span><span class="nb">log</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
-<span class="n">count1</span><span class="o">=</span><span class="mf">0.0</span>
+<span class="n">step</span> <span class="o">=</span> <span class="n">tpi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>
+<span class="n">loglimit</span> <span class="o">=</span> <span class="o">-</span><span class="nb">log</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
+<span class="n">count1</span> <span class="o">=</span> <span class="mf">0.0</span>
+  <span class="c">! Set loop variables</span>
 
-<span class="c">!&gt; Do some sort of sum? What are `gamma_p` and `alpha`? They come from the input file</span>
-<span class="c">!&gt; I think this is figuring out the intervals for each node to integrate over</span>
-<span class="k">do </span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">loglimit</span><span class="o">/</span><span class="n">gamma_p</span><span class="o">/</span><span class="n">step</span><span class="p">)</span>
-   <span class="k">do </span><span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">loglimit</span><span class="o">/</span><span class="n">gamma_p</span><span class="o">/</span><span class="n">step</span><span class="o">-</span><span class="n">j</span><span class="p">)</span>
-      <span class="n">count1</span><span class="o">=</span><span class="n">count1</span><span class="o">+</span><span class="nb">int</span><span class="p">((</span><span class="n">loglimit</span><span class="o">/</span><span class="n">step</span><span class="o">-</span><span class="n">gamma_p</span><span class="o">*</span><span class="n">j</span><span class="o">-</span><span class="n">gamma_p</span><span class="o">*</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">alpha</span><span class="p">)</span>
+<span class="c">!&gt; * Calculate the total number of integration steps needed and</span>
+<span class="c">!&gt;   distribute the intervals between the processes</span>
+<span class="k">do </span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">loglimit</span><span class="o">/</span><span class="n">gamma_p</span><span class="o">/</span><span class="n">step</span><span class="p">)</span>
+   <span class="k">do </span><span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">loglimit</span><span class="o">/</span><span class="n">gamma_p</span><span class="o">/</span><span class="n">step</span><span class="o">-</span><span class="n">j</span><span class="p">)</span>
+      <span class="n">count1</span> <span class="o">=</span> <span class="n">count1</span> <span class="o">+</span> <span class="nb">int</span><span class="p">((</span><span class="n">loglimit</span><span class="o">/</span><span class="n">step</span> <span class="o">-</span> <span class="n">gamma_p</span><span class="o">*</span><span class="n">j</span> <span class="o">-</span> <span class="n">gamma_p</span><span class="o">*</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">alpha</span><span class="p">)</span>
    <span class="n">enddo</span>
 <span class="k">end do</span>
 
 <span class="n">count2</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">nprocs</span><span class="p">)</span><span class="o">*</span><span class="n">count1</span>
 <span class="n">count2</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">id</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">nprocs</span><span class="p">)</span><span class="o">*</span><span class="n">count1</span>
-<span class="n">index1</span><span class="o">=</span><span class="mi">1</span>
-<span class="n">count1</span><span class="o">=</span><span class="mf">0.0</span>
+<span class="n">indexI</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">count1</span> <span class="o">=</span> <span class="mf">0.0</span>
 
-<span class="k">do </span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">loglimit</span><span class="o">/</span><span class="n">gamma_p</span><span class="o">/</span><span class="n">step</span><span class="p">)</span>
-   <span class="k">do </span><span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">loglimit</span><span class="o">/</span><span class="n">gamma_p</span><span class="o">/</span><span class="n">step</span><span class="p">)</span><span class="o">-</span><span class="n">j</span>
-      <span class="n">count1</span><span class="o">=</span><span class="n">count1</span><span class="o">+</span><span class="nb">int</span><span class="p">((</span><span class="n">loglimit</span><span class="o">/</span><span class="n">step</span><span class="o">-</span><span class="n">gamma_p</span><span class="o">*</span><span class="n">j</span><span class="o">-</span><span class="n">gamma_p</span><span class="o">*</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">alpha</span><span class="p">)</span>
+<span class="c">! Make sure the boundaries between processes are set properly</span>
+<span class="k">do </span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">loglimit</span><span class="o">/</span><span class="n">gamma_p</span><span class="o">/</span><span class="n">step</span><span class="p">)</span>
+
+   <span class="k">do </span><span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">loglimit</span><span class="o">/</span><span class="n">gamma_p</span><span class="o">/</span><span class="n">step</span><span class="p">)</span><span class="o">-</span><span class="n">j</span>
+      <span class="n">count1</span> <span class="o">=</span> <span class="n">count1</span> <span class="o">+</span> <span class="nb">int</span><span class="p">((</span><span class="n">loglimit</span><span class="o">/</span><span class="n">step</span> <span class="o">-</span> <span class="n">gamma_p</span><span class="o">*</span><span class="n">j</span> <span class="o">-</span> <span class="n">gamma_p</span><span class="o">*</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">alpha</span><span class="p">)</span>
    <span class="n">enddo</span>
 
-   <span class="k">if</span><span class="p">(</span><span class="n">count1</span><span class="o">&gt;=</span><span class="n">count2</span><span class="p">(</span><span class="n">index1</span><span class="p">))</span> <span class="k">then</span>
-<span class="k">      </span><span class="n">interval</span><span class="p">(</span><span class="n">index1</span><span class="p">)</span><span class="o">=</span><span class="n">j</span>
-      <span class="n">index1</span><span class="o">=</span><span class="n">index1</span><span class="o">+</span><span class="mi">1</span>
-      <span class="k">if</span><span class="p">(</span><span class="n">index1</span><span class="o">==</span><span class="mi">3</span> <span class="p">)</span> <span class="k">then</span>
+   <span class="k">if</span><span class="p">(</span><span class="n">count1</span> <span class="o">&gt;=</span> <span class="n">count2</span><span class="p">(</span><span class="n">indexI</span><span class="p">))</span> <span class="k">then</span>
+
+<span class="k">      </span><span class="n">interval</span><span class="p">(</span><span class="n">indexI</span><span class="p">)</span> <span class="o">=</span> <span class="n">j</span>
+      <span class="n">indexI</span> <span class="o">=</span> <span class="n">indexI</span> <span class="o">+</span> <span class="mi">1</span>
+   
+      <span class="k">if</span><span class="p">(</span><span class="n">indexI</span> <span class="o">==</span> <span class="mi">3</span> <span class="p">)</span> <span class="k">then</span>
 <span class="k">         exit</span>
 <span class="k">      </span><span class="n">endif</span>
+
    <span class="n">endif</span>
 <span class="k">end do</span>
 
-<span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">=</span><span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+<span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
 
 
 <span class="k">call </span><span class="n">MPI_Barrier</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span><span class="n">ierror</span><span class="p">)</span>
-  <span class="c">!! Make sure that all processes get here before</span>
+  <span class="c">!! * Make sure that all processes get here before</span>
   <span class="c">!! moving forward</span>
 
-<span class="n">s3</span><span class="o">=</span><span class="mf">0.0d0</span>
-<span class="k">do </span><span class="n">j</span><span class="o">=</span><span class="n">interval</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-  <span class="c">!! Integrate over \(x\)</span>
+<span class="n">s3</span> <span class="o">=</span> <span class="mf">0.0d0</span>
+<span class="k">do </span><span class="n">iX</span> <span class="o">=</span> <span class="n">interval</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+  <span class="c">!! * Begin integration over \(x\)</span>
 
    <span class="k">if</span><span class="p">(</span><span class="n">id</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">      write</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">id</span><span class="p">,</span><span class="n">j</span>
+<span class="k">      write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">id</span><span class="p">,</span> <span class="n">iX</span>
    <span class="n">endif</span>
 
    <span class="n">s2</span> <span class="o">=</span> <span class="mf">0.0d0</span>
-   <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">step</span>
+   <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">iX</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">step</span>
 
-   <span class="n">expX</span><span class="p">(:)</span><span class="o">=</span><span class="nb">cos</span><span class="p">(</span><span class="n">omega_nj</span><span class="p">(:)</span><span class="o">*</span><span class="n">x</span><span class="p">)</span><span class="o">+</span><span class="n">I</span><span class="o">*</span><span class="nb">sin</span><span class="p">(</span><span class="n">omega_nj</span><span class="p">(:)</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+   <span class="n">expX</span><span class="p">(:)</span> <span class="o">=</span> <span class="nb">cos</span><span class="p">(</span><span class="n">omega_nj</span><span class="p">(:)</span><span class="o">*</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="nb">sin</span><span class="p">(</span><span class="n">omega_nj</span><span class="p">(:)</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
  
-   <span class="k">do </span><span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">loglimit</span><span class="o">/</span><span class="n">gamma_p</span><span class="o">/</span><span class="n">step</span><span class="p">)</span><span class="o">-</span><span class="n">j</span> 
+   <span class="k">do </span><span class="n">iY</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">loglimit</span><span class="o">/</span><span class="n">gamma_p</span><span class="o">/</span><span class="n">step</span><span class="p">)</span> <span class="o">-</span> <span class="n">iX</span> 
       <span class="n">s1</span> <span class="o">=</span> <span class="mf">0.0d0</span>
-      <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">step</span>
+      <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">iY</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">step</span>
       
       <span class="n">expY</span><span class="p">(:)</span> <span class="o">=</span> <span class="nb">cos</span><span class="p">(</span> <span class="n">omega_nj</span><span class="p">(:)</span><span class="o">*</span><span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span> <span class="o">*</span> <span class="nb">sin</span><span class="p">(</span><span class="n">omega_nj</span><span class="p">(:)</span><span class="o">*</span><span class="n">y</span><span class="p">)</span>
       
@@ -1810,44 +1894,47 @@
        <span class="c">!! * Calculate the fractional factor in front of the cosines in</span>
        <span class="c">!!   \(F_j\)</span>
 
-      <span class="n">interval_t</span><span class="o">=</span><span class="nb">int</span><span class="p">((</span><span class="n">loglimit</span><span class="o">/</span><span class="n">step</span><span class="o">-</span><span class="n">gamma_p</span><span class="o">*</span><span class="n">j</span><span class="o">-</span><span class="n">gamma_p</span><span class="o">*</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">alpha</span><span class="p">)</span>
+      <span class="n">interval_t</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">loglimit</span><span class="o">/</span><span class="n">step</span> <span class="o">-</span> <span class="n">gamma_p</span><span class="o">*</span><span class="n">iX</span> <span class="o">-</span> <span class="n">gamma_p</span><span class="o">*</span><span class="n">iY</span><span class="p">)</span><span class="o">/</span><span class="n">alpha</span><span class="p">)</span>
 
-      <span class="k">do </span><span class="n">l</span><span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">interval_t</span>
-         <span class="n">t</span><span class="o">=</span><span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)</span><span class="o">*</span><span class="n">step</span>
-         <span class="n">tmp_exp</span><span class="o">=</span><span class="mf">0.0d0</span>
+      <span class="k">do </span><span class="n">iT</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">interval_t</span>
+         <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">iT</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">*</span><span class="n">step</span>
+         <span class="n">tmp_exp</span> <span class="o">=</span> <span class="mf">0.0d0</span>
  
-         <span class="k">do </span><span class="n">imode</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nmode</span>
+         <span class="k">do </span><span class="n">imode</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nmode</span>
 
-            <span class="n">tmp_r</span><span class="o">=-</span><span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="o">/</span><span class="n">tpi</span>
-            <span class="n">tmp_r</span><span class="o">=</span><span class="p">(</span><span class="n">tmp_r</span><span class="o">-</span><span class="nb">floor</span><span class="p">(</span><span class="n">tmp_r</span><span class="p">))</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
-            <span class="n">tmp_i</span><span class="o">=</span><span class="nb">floor</span><span class="p">(</span><span class="n">tmp_r</span><span class="p">)</span>
-            <span class="n">tmp_r</span><span class="o">=</span><span class="n">tmp_r</span><span class="o">-</span><span class="n">tmp_i</span>
-            <span class="n">expT</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">tmp_r</span><span class="p">)</span><span class="o">*</span><span class="n">ex1</span><span class="p">(</span><span class="n">tmp_i</span><span class="p">)</span><span class="o">+</span><span class="n">tmp_r</span><span class="o">*</span><span class="n">ex1</span><span class="p">(</span><span class="n">tmp_i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">tmp_r</span> <span class="o">=</span> <span class="o">-</span><span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="o">/</span><span class="n">tpi</span>
+            <span class="n">tmp_r</span> <span class="o">=</span> <span class="p">(</span><span class="n">tmp_r</span> <span class="o">-</span> <span class="nb">floor</span><span class="p">(</span><span class="n">tmp_r</span><span class="p">))</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
+            <span class="n">indexI</span> <span class="o">=</span> <span class="nb">floor</span><span class="p">(</span><span class="n">tmp_r</span><span class="p">)</span>
+            <span class="n">tmp_r</span> <span class="o">=</span> <span class="n">tmp_r</span> <span class="o">-</span> <span class="n">indexI</span>
+            <span class="n">expT</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">tmp_r</span><span class="p">)</span><span class="o">*</span><span class="n">ex1</span><span class="p">(</span><span class="n">indexI</span><span class="p">)</span> <span class="o">+</span> <span class="n">tmp_r</span><span class="o">*</span><span class="n">ex1</span><span class="p">(</span><span class="n">indexI</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
               <span class="c">!! Use a linear interpolation for \(e^{i\omega_j t}\)</span>
 
-            <span class="n">expForFj</span><span class="o">=-</span><span class="n">expT</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">expX</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">expY</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span><span class="o">-</span><span class="p">(</span><span class="n">expX</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">+</span><span class="n">expY</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span>
+            <span class="n">expForFj</span> <span class="o">=</span> <span class="o">-</span><span class="n">expT</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">expX</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">expY</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span> <span class="o">-</span> <span class="p">(</span><span class="n">expX</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span> <span class="o">+</span> <span class="n">expY</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span>
               <span class="c">!! * Calculate `expForFj`\( = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})\).</span>
               <span class="c">!!   This is used as a trick to be able to calculate \(F_j\) quicker as the expontentials include both the</span>
               <span class="c">!!   sines and cosines needed </span>
-            <span class="n">Fj</span><span class="o">=</span><span class="nb">Aimag</span><span class="p">(</span><span class="n">expForFj</span><span class="p">)</span><span class="o">+</span><span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="kt">Real</span><span class="p">(</span><span class="mf">2.0d0</span><span class="o">+</span><span class="n">expForFj</span><span class="p">)</span>           
+            <span class="n">Fj</span> <span class="o">=</span> <span class="nb">Aimag</span><span class="p">(</span><span class="n">expForFj</span><span class="p">)</span> <span class="o">+</span> <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="kt">Real</span><span class="p">(</span><span class="mf">2.0d0</span> <span class="o">+</span> <span class="n">expForFj</span><span class="p">)</span>           
               <span class="c">!! * Calculate \(F_j = \text{Im}(\)`expForFj`\() + \)`FjFractionFactor`\(\text{Re}(2 + \)`expForFj`\()\)</span>
               <span class="c">!! @todo Add detailed derivation of this in a separate page @endtodo</span>
-            <span class="n">tmp_exp</span><span class="o">=</span><span class="n">tmp_exp</span><span class="o">+</span><span class="n">Fj</span><span class="o">*</span><span class="n">Sj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>
+            <span class="n">tmp_exp</span> <span class="o">=</span> <span class="n">tmp_exp</span> <span class="o">+</span> <span class="n">Fj</span><span class="o">*</span><span class="n">Sj</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span>
          <span class="n">enddo</span>
 
-         <span class="n">s1</span><span class="p">(:)</span><span class="o">=</span><span class="n">s1</span><span class="p">(:)</span><span class="o">+</span><span class="nb">exp</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="n">tmp_exp</span><span class="o">-</span><span class="n">I</span><span class="o">*</span><span class="n">omega_s</span><span class="p">(:)</span><span class="o">*</span><span class="n">t</span><span class="o">-</span><span class="n">alpha</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
-          <span class="c">!! @todo Figure out why `abs(t)` here when `t` is positive in the loop? Is `t` positive in the loop? @endtodo</span>
+         <span class="n">s1</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">s1</span><span class="p">(:)</span> <span class="o">+</span> <span class="nb">exp</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="n">tmp_exp</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">omega_s</span><span class="p">(:)</span><span class="o">*</span><span class="n">t</span> <span class="o">-</span> <span class="n">alpha</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+
       <span class="k">end do</span>
 
 <span class="k">      do </span><span class="n">ilaserE</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">elaser_num</span>
 
-        <span class="n">s2</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span><span class="o">=</span><span class="n">s2</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span><span class="o">+</span><span class="n">s1</span><span class="p">(:)</span><span class="o">*</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="n">omega_l</span><span class="p">(</span><span class="n">ilaserE</span><span class="p">)</span><span class="o">+</span><span class="n">gamma_p</span><span class="p">)</span><span class="o">*</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">zfactor</span>
+        <span class="n">s2</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">=</span> <span class="n">s2</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">+</span> <span class="n">s1</span><span class="p">(:)</span><span class="o">*</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="n">omega_l</span><span class="p">(</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">+</span> <span class="n">gamma_p</span><span class="p">)</span><span class="o">*</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">zfactor</span>
 
       <span class="n">enddo</span>
+
    <span class="k">end do</span>
 
 <span class="k">   do </span><span class="n">ilaserE</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">elaser_num</span>
-     <span class="n">s3</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span><span class="o">=</span><span class="n">s3</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span><span class="o">+</span><span class="n">s2</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span><span class="o">*</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="o">-</span><span class="n">I</span><span class="o">*</span><span class="n">omega_l</span><span class="p">(</span><span class="n">ilaserE</span><span class="p">)</span><span class="o">+</span><span class="n">gamma_p</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+
+     <span class="n">s3</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">=</span> <span class="n">s3</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">+</span> <span class="n">s2</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span><span class="o">*</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="o">-</span><span class="n">I</span><span class="o">*</span><span class="n">omega_l</span><span class="p">(</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">+</span> <span class="n">gamma_p</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+   
    <span class="n">enddo</span>
 <span class="n">enddo</span>
 
@@ -1863,8 +1950,8 @@
   <span class="k">do </span><span class="n">ilaserE</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">elaser_num</span>
     <span class="k">write</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="s2">&quot;Laser energy: &quot;</span><span class="p">,</span> <span class="n">elaser</span><span class="p">(</span><span class="n">ilaserE</span><span class="p">)</span>
     
-    <span class="k">do </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">eshift_num</span> 
-      <span class="k">write</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">eshift</span><span class="p">(</span><span class="n">j</span><span class="p">),</span> <span class="n">eshift</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">mevtocm</span><span class="p">,</span> <span class="n">step</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="kt">Real</span><span class="p">(</span><span class="n">global_sum</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">ilaserE</span><span class="p">))</span><span class="o">*</span><span class="mf">2.0</span>
+    <span class="k">do </span><span class="n">ishiftE</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">eshift_num</span> 
+      <span class="k">write</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">eshift</span><span class="p">(</span><span class="n">iShiftE</span><span class="p">),</span> <span class="n">eshift</span><span class="p">(</span><span class="n">iShiftE</span><span class="p">)</span><span class="o">*</span><span class="n">mevtocm</span><span class="p">,</span> <span class="n">step</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="kt">Real</span><span class="p">(</span><span class="n">global_sum</span><span class="p">(</span><span class="n">iShiftE</span><span class="p">,</span><span class="n">ilaserE</span><span class="p">))</span><span class="o">*</span><span class="mf">2.0</span>
     <span class="n">enddo</span>
 
   <span class="n">enddo</span>

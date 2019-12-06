@@ -37,12 +37,21 @@ integer :: ilaserE
   !! Loop index over laser energies
 integer :: imode
   !! Loop index over phonon modes
-integer :: index1
+integer :: indexI
+  !! Calculated index for constructing
+  !! integration intervals and linear
+  !! extrapolation of \(e^{i\omega_j t}\)
 integer :: interval_t
-integer :: j
-integer :: k
-integer :: l
+  !! Interval for time integration
+integer :: ishiftE
+  !! Loop index over energy shifts
+integer :: iX, iY, iT
+  !! Loop indices over \(x\), \(y\), and \(t\)
+integer :: j, k
+  !! Misc loop indicies
 integer :: n1
+  !! Number of integration steps to take without
+  !! considering the limit cutoff or smearing
 integer :: n2
   !! Hardcoded to be 100000; used to generate `ex1`
 integer :: nmode
@@ -123,7 +132,7 @@ complex(kind = dp), allocatable :: theta(:)
 complex(kind = dp), allocatable :: zfactor1(:)
 complex(kind = dp), allocatable :: zfactor2(:)
 
-namelist /ramanInput/ temperature, n1, limit, gamma_p, alpha, elevel &
+namelist /ramanInput/ temperature, n1, limit, gamma_p, alpha, elevel, &
                       elaser_num, eshift_num, SjOutputFile
 
 
@@ -137,7 +146,7 @@ omega=1.0d14
   !!   set to 2 orders of magnitude larger than the phonon frequency
   !!   scale so that the time step is small enough to get reasonable 
   !!   results.
-n2=100000
+n2 = 100000
   !! * Define the number of exponentials to pre-calculate in order
   !!   to do the linear interpolation of \(e^(i\omega_j t)\)
 
@@ -157,7 +166,7 @@ if(id == 0) then
   read(11,*)
   read(11,*) nmode
 
-  beta=1/(kB*temperature)
+  beta = 1/(kB*temperature)
 endif
 
 call MPI_BCast( nmode, 1, MPI_Integer, 0, MPI_COMM_WORLD, ierror)
@@ -171,10 +180,10 @@ allocate(Sj(nmode), omega_j(nmode), omega_nj(nmode), hbarOmegaBeta(nmode), FjFra
 allocate(domega(nmode), theta(nmode), zfactor1(nmode), zfactor2(nmode), ex1(0:n2+1), interval(2), count2(2))
   !! * Allocate space for variables on all processes
 
-dstep=tpi/float(n2)
+dstep = tpi/float(n2)
   !! * Calculate the step size for the exponential pre-calculation
 
-do j=0,n2+1
+do j = 0, n2+1
   !! * Pre-calculate the exponential terms, \(e^{i\theta}\) where \(\theta\)
   !!   goes from 0 to \(2\pi\), used in the linear interpolation of \(e^{i\omega_j t}\)
 
@@ -202,7 +211,7 @@ if(id == 0) then
   omega_nj(:) = omega_nj(:)/100.0d0     
   
 
-  do imode=1,nmode
+  do imode = 1, nmode
      
      read(11,*) j, Sj(imode), omega_j(imode), omega_nj(imode)
 
@@ -236,68 +245,76 @@ call MPI_Bcast( domega, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Barrier(MPI_COMM_WORLD,ierror)
   !! * Broadcast input variables to other processes
 
-!> Maybe unit conversions?
-omega_l(:)=(elaser(:)-elevel)*ev/hbar/omega
-  !! \((E_L-E_n)/\hbar\omega\)
-omega_s(:)=eshift(:)*mev/hbar/omega
-gamma_p=gamma_p*mev/hbar/omega
-alpha=alpha*mev/hbar/omega
+omega_l(:) = (elaser(:) - elevel)*ev/(hbar*omega)
+  ! \((E_L-E_n)/\hbar\omega\)
+  !! @todo Break this off into `omega_l` and `omega_a` for clarity @endtodo
+omega_s(:) = eshift(:)*mev/(hbar*omega)
+gamma_p = gamma_p*mev/(hbar*omega)
+alpha = alpha*mev/(hbar*omega)
+  !! * Scale down `omega_l`, `omega_s`, `gamma_p`, and `alpha`
+  !!   to ensure that integration scale is small enough to
+  !!   get a reasonable result
 
-!> Set loop variables?
-step=tpi/float(n1)
-loglimit=-log(limit)
-count1=0.0
+step = tpi/float(n1)
+loglimit = -log(limit)
+count1 = 0.0
+  ! Set loop variables
 
-!> Do some sort of sum? What are `gamma_p` and `alpha`? They come from the input file
-!> I think this is figuring out the intervals for each node to integrate over
-do j=0,int(loglimit/gamma_p/step)
-   do k=0,int(loglimit/gamma_p/step-j)
-      count1=count1+int((loglimit/step-gamma_p*j-gamma_p*k)/alpha)
+!> * Calculate the total number of integration steps needed and
+!>   distribute the intervals between the processes
+do j = 0, int(loglimit/gamma_p/step)
+   do k = 0, int(loglimit/gamma_p/step-j)
+      count1 = count1 + int((loglimit/step - gamma_p*j - gamma_p*k)/alpha)
    enddo
 end do
 
 count2(1) = float(id)/float(nprocs)*count1
 count2(2) = float(id+1)/float(nprocs)*count1
-index1=1
-count1=0.0
+indexI = 1
+count1 = 0.0
 
-do j=0,int(loglimit/gamma_p/step)
-   do k=0,int(loglimit/gamma_p/step)-j
-      count1=count1+int((loglimit/step-gamma_p*j-gamma_p*k)/alpha)
+! Make sure the boundaries between processes are set properly
+do j = 0, int(loglimit/gamma_p/step)
+
+   do k = 0, int(loglimit/gamma_p/step)-j
+      count1 = count1 + int((loglimit/step - gamma_p*j - gamma_p*k)/alpha)
    enddo
 
-   if(count1>=count2(index1)) then
-      interval(index1)=j
-      index1=index1+1
-      if(index1==3 ) then
+   if(count1 >= count2(indexI)) then
+
+      interval(indexI) = j
+      indexI = indexI + 1
+   
+      if(indexI == 3 ) then
          exit
       endif
+
    endif
 end do
 
-interval(2)=interval(2)-1
+interval(2) = interval(2) - 1
 
 
 call MPI_Barrier(MPI_COMM_WORLD,ierror)
-  !! Make sure that all processes get here before
+  !! * Make sure that all processes get here before
   !! moving forward
 
-s3=0.0d0
-do j=interval(1),interval(2)
-  !! Integrate over \(x\)
+s3 = 0.0d0
+do iX = interval(1), interval(2)
+  !! * Begin integration over \(x\)
 
    if(id==0) then
-      write(12,*)id,j
+      write(*,*) id, iX
    endif
 
    s2 = 0.0d0
-   x = (j+0.5) * step
+   x = (iX + 0.5) * step
 
-   expX(:)=cos(omega_nj(:)*x)+I*sin(omega_nj(:)*x)
+   expX(:) = cos(omega_nj(:)*x) + I*sin(omega_nj(:)*x)
  
-   do k=0,int(loglimit/gamma_p/step)-j 
+   do iY = 0, int(loglimit/gamma_p/step) - iX 
       s1 = 0.0d0
-      y = (k+0.5) * step
+      y = (iY + 0.5) * step
       
       expY(:) = cos( omega_nj(:)*y ) - I * sin(omega_nj(:)*y)
       
@@ -314,44 +331,47 @@ do j=interval(1),interval(2)
        !! * Calculate the fractional factor in front of the cosines in
        !!   \(F_j\)
 
-      interval_t=int((loglimit/step-gamma_p*j-gamma_p*k)/alpha)
+      interval_t = int((loglimit/step - gamma_p*iX - gamma_p*iY)/alpha)
 
-      do l= 0, interval_t
-         t=(l+0.5)*step
-         tmp_exp=0.0d0
+      do iT = 0, interval_t
+         t = (iT + 0.5)*step
+         tmp_exp = 0.0d0
  
-         do imode=1,nmode
+         do imode = 1, nmode
 
-            tmp_r=-omega_j(imode)*t/tpi
-            tmp_r=(tmp_r-floor(tmp_r))*float(n2)
-            tmp_i=floor(tmp_r)
-            tmp_r=tmp_r-tmp_i
-            expT=(1.0-tmp_r)*ex1(tmp_i)+tmp_r*ex1(tmp_i+1)
+            tmp_r = -omega_j(imode)*t/tpi
+            tmp_r = (tmp_r - floor(tmp_r))*float(n2)
+            indexI = floor(tmp_r)
+            tmp_r = tmp_r - indexI
+            expT = (1.0 - tmp_r)*ex1(indexI) + tmp_r*ex1(indexI+1)
               !! Use a linear interpolation for \(e^{i\omega_j t}\)
 
-            expForFj=-expT*(1-expX(imode))*(1-expY(imode))-(expX(imode)+expY(imode))
+            expForFj = -expT*(1 - expX(imode))*(1 - expY(imode)) - (expX(imode) + expY(imode))
               !! * Calculate `expForFj`\( = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})\).
               !!   This is used as a trick to be able to calculate \(F_j\) quicker as the expontentials include both the
               !!   sines and cosines needed 
-            Fj=Aimag(expForFj)+FjFractionFactor(imode)*Real(2.0d0+expForFj)           
+            Fj = Aimag(expForFj) + FjFractionFactor(imode)*Real(2.0d0 + expForFj)           
               !! * Calculate \(F_j = \text{Im}(\)`expForFj`\() + \)`FjFractionFactor`\(\text{Re}(2 + \)`expForFj`\()\)
               !! @todo Add detailed derivation of this in a separate page @endtodo
-            tmp_exp=tmp_exp+Fj*Sj(imode)
+            tmp_exp = tmp_exp + Fj*Sj(imode)
          enddo
 
-         s1(:)=s1(:)+exp(I*tmp_exp-I*omega_s(:)*t-alpha*abs(t))
-          !! @todo Figure out why `abs(t)` here when `t` is positive in the loop? Is `t` positive in the loop? @endtodo
+         s1(:) = s1(:) + exp(I*tmp_exp - I*omega_s(:)*t - alpha*abs(t))
+
       end do
 
       do ilaserE = 1, elaser_num
 
-        s2(:,ilaserE)=s2(:,ilaserE)+s1(:)*exp(-(I*omega_l(ilaserE)+gamma_p)*y) * zfactor
+        s2(:,ilaserE) = s2(:,ilaserE) + s1(:)*exp(-(I*omega_l(ilaserE) + gamma_p)*y) * zfactor
 
       enddo
+
    end do
 
    do ilaserE = 1, elaser_num
-     s3(:,ilaserE)=s3(:,ilaserE)+s2(:,ilaserE)*exp(-(-I*omega_l(ilaserE)+gamma_p)*x)
+
+     s3(:,ilaserE) = s3(:,ilaserE) + s2(:,ilaserE)*exp(-(-I*omega_l(ilaserE) + gamma_p)*x)
+   
    enddo
 enddo
 
@@ -367,8 +387,8 @@ if(id == 0) then
   do ilaserE = 1, elaser_num
     write(12,*) "Laser energy: ", elaser(ilaserE)
     
-    do j = 1, eshift_num 
-      write(12,*) eshift(j), eshift(j)*mevtocm, step**3*Real(global_sum(j,ilaserE))*2.0
+    do ishiftE = 1, eshift_num 
+      write(12,*) eshift(iShiftE), eshift(iShiftE)*mevtocm, step**3*Real(global_sum(iShiftE,ilaserE))*2.0
     enddo
 
   enddo
