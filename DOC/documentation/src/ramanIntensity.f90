@@ -52,7 +52,7 @@ integer :: j, k
 integer :: n1
   !! Number of integration steps to take without
   !! considering the limit cutoff or smearing
-integer :: n2
+integer :: nExpSteps
   !! Hardcoded to be 100000; used to generate `ex1`
 integer :: nmode
   !! Number of phonon modes
@@ -69,24 +69,30 @@ real(kind = dp) :: elevel
 real(kind = dp) :: gamma_p
   !! \(\gamma/\hbar\)
 real(kind = dp) :: limit
+  !! Limit to truncate integration at since
+  !! the integrand is exponentially decaying
 real(kind = dp) :: loglimit
   !! \(\log(\text{limit})\)
 real(kind = dp) :: omega_a
   !! \(E_a/\hbar\)
 real(kind = dp) :: step
 real(kind = dp) :: dstep
-  !! Step to go from 0 to \(\2\pi) in `n2` steps
+  !! Step to go from 0 to \(\2\pi) in `nExpSteps`
 real(kind = dp) :: scalingFactor
   !! Factor to scale down inputs to ensure that
   !! integration scale is small enough to give 
   !! reasonable results
 real(kind = dp) :: t
+  !! \(t\)
 real(kind = dp) :: temperature
+  !! The temperature
 real(kind = dp) :: tmp_r
   !! Temporary variable used in linear 
   !! interpolation of \(t\) exponential
 real(kind = dp) :: x
+  !! \(x\)
 real(kind = dp) :: y
+  !! \(y\)
 
 complex(kind = dp) :: expForFj
   !! An exponential form to more quickly
@@ -156,7 +162,7 @@ scalingFactor = 1.0d14
   !!   set to 2 orders of magnitude larger than the phonon frequency
   !!   scale so that the time step is small enough to get reasonable 
   !!   results.
-n2 = 100000
+nExpSteps = 100000
   !! * Define the number of exponentials to pre-calculate in order
   !!   to do the linear interpolation of \(e^(i\omega_j t)\)
 
@@ -187,13 +193,13 @@ call MPI_BCast( elaser_num, 1, MPI_Integer, 0, MPI_COMM_WORLD, ierror)
 allocate(eshift(eshift_num), elaser(elaser_num), omega_s(eshift_num), omega_l(elaser_num))
 allocate(s1(eshift_num), s2(eshift_num,elaser_num), s3(eshift_num,elaser_num), global_sum(eshift_num,elaser_num))
 allocate(Sj(nmode), omega_j(nmode), omega_nj(nmode), hbarOmegaBeta(nmode), FjFractionFactor(nmode), expX(nmode), expY(nmode))
-allocate(domega(nmode), theta(nmode), zfactor1(nmode), zfactor2(nmode), ex1(0:n2+1), interval(2), count2(2))
+allocate(domega(nmode), theta(nmode), zfactor1(nmode), zfactor2(nmode), ex1(0:nExpSteps+1), interval(2), count2(2))
   !! * Allocate space for variables on all processes
 
-dstep = tpi/float(n2)
+dstep = tpi/float(nExpSteps)
   !! * Calculate the step size for the exponential pre-calculation
 
-do j = 0, n2+1
+do j = 0, nExpSteps+1
   !! * Pre-calculate the exponential terms, \(e^{i\theta}\) where \(\theta\)
   !!   goes from 0 to \(2\pi\), used in the linear interpolation of \(e^{i\omega_j t}\)
 
@@ -349,11 +355,12 @@ do iX = interval(1), interval(2)
          do imode = 1, nmode
 
             tmp_r = -omega_j(imode)*t/tpi
-            tmp_r = (tmp_r - floor(tmp_r))*float(n2)
+            tmp_r = (tmp_r - floor(tmp_r))*float(nExpSteps)
             indexI = floor(tmp_r)
             tmp_r = tmp_r - indexI
             expT = (1.0 - tmp_r)*ex1(indexI) + tmp_r*ex1(indexI+1)
               !! Use a linear interpolation for \(e^{i\omega_j t}\)
+              !! to get a slightly more accurate value
 
             expForFj = -expT*(1 - expX(imode))*(1 - expY(imode)) - (expX(imode) + expY(imode))
               !! * Calculate `expForFj`\( = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})\).

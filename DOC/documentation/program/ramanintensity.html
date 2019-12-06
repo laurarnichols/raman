@@ -197,7 +197,7 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-n1">n1</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-n2">n2</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-nexpsteps">nExpSteps</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-nmode">nmode</a>
       
@@ -440,7 +440,7 @@
    <script type="math/tex">F_j</script>
 </p>
 <p>Use a linear interpolation for <script type="math/tex">e^{i\omega_j t}</script>
-</p>
+ to get a slightly more accurate value</p>
 <ul>
 <li>
 <p>Calculate <code>expForFj</code><script type="math/tex"> = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})</script>.
@@ -501,7 +501,7 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-n1">n1</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-n2">n2</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-nexpsteps">nExpSteps</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-nmode">nmode</a>
       
@@ -870,11 +870,11 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-n2"></span>integer</td>
+  <td><span class="anchor" id="variable-nexpsteps"></span>integer</td>
   
   
   <td></td><td>::</td>
-  <td><strong>n2</strong></td><td></td><td></td><td><p>Hardcoded to be 100000; used to generate <code>ex1</code></p></td>
+  <td><strong>nExpSteps</strong></td><td></td><td></td><td><p>Hardcoded to be 100000; used to generate <code>ex1</code></p></td>
   
 </tr>
 
@@ -992,7 +992,8 @@
   
   
   <td></td><td>::</td>
-  <td><strong>limit</strong></td><td></td><td></td><td></td>
+  <td><strong>limit</strong></td><td></td><td></td><td><p>Limit to truncate integration at since
+ the integrand is exponentially decaying</p></td>
   
 </tr>
 
@@ -1052,7 +1053,7 @@
   
   
   <td></td><td>::</td>
-  <td><strong>dstep</strong></td><td></td><td></td><td><p>Step to go from 0 to (\2\pi) in <code>n2</code> steps</p></td>
+  <td><strong>dstep</strong></td><td></td><td></td><td><p>Step to go from 0 to (\2\pi) in <code>nExpSteps</code></p></td>
   
 </tr>
 
@@ -1082,7 +1083,9 @@
   
   
   <td></td><td>::</td>
-  <td><strong>t</strong></td><td></td><td></td><td></td>
+  <td><strong>t</strong></td><td></td><td></td><td><p>
+<script type="math/tex">t</script>
+</p></td>
   
 </tr>
 
@@ -1096,7 +1099,7 @@
   
   
   <td></td><td>::</td>
-  <td><strong>temperature</strong></td><td></td><td></td><td></td>
+  <td><strong>temperature</strong></td><td></td><td></td><td><p>The temperature</p></td>
   
 </tr>
 
@@ -1125,7 +1128,9 @@
   
   
   <td></td><td>::</td>
-  <td><strong>x</strong></td><td></td><td></td><td></td>
+  <td><strong>x</strong></td><td></td><td></td><td><p>
+<script type="math/tex">x</script>
+</p></td>
   
 </tr>
 
@@ -1139,7 +1144,9 @@
   
   
   <td></td><td>::</td>
-  <td><strong>y</strong></td><td></td><td></td><td></td>
+  <td><strong>y</strong></td><td></td><td></td><td><p>
+<script type="math/tex">y</script>
+</p></td>
   
 </tr>
 
@@ -1631,7 +1638,7 @@
 <span class="kt">integer</span> <span class="kd">::</span> <span class="n">n1</span>
   <span class="c">!! Number of integration steps to take without</span>
   <span class="c">!! considering the limit cutoff or smearing</span>
-<span class="kt">integer</span> <span class="kd">::</span> <span class="n">n2</span>
+<span class="kt">integer</span> <span class="kd">::</span> <span class="n">nExpSteps</span>
   <span class="c">!! Hardcoded to be 100000; used to generate `ex1`</span>
 <span class="kt">integer</span> <span class="kd">::</span> <span class="n">nmode</span>
   <span class="c">!! Number of phonon modes</span>
@@ -1648,24 +1655,30 @@
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">gamma_p</span>
   <span class="c">!! \(\gamma/\hbar\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">limit</span>
+  <span class="c">!! Limit to truncate integration at since</span>
+  <span class="c">!! the integrand is exponentially decaying</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">loglimit</span>
   <span class="c">!! \(\log(\text{limit})\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">omega_a</span>
   <span class="c">!! \(E_a/\hbar\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">step</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dstep</span>
-  <span class="c">!! Step to go from 0 to \(\2\pi) in `n2` steps</span>
+  <span class="c">!! Step to go from 0 to \(\2\pi) in `nExpSteps`</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">scalingFactor</span>
   <span class="c">!! Factor to scale down inputs to ensure that</span>
   <span class="c">!! integration scale is small enough to give </span>
   <span class="c">!! reasonable results</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">t</span>
+  <span class="c">!! \(t\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">temperature</span>
+  <span class="c">!! The temperature</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tmp_r</span>
   <span class="c">!! Temporary variable used in linear </span>
   <span class="c">!! interpolation of \(t\) exponential</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x</span>
+  <span class="c">!! \(x\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">y</span>
+  <span class="c">!! \(y\)</span>
 
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">expForFj</span>
   <span class="c">!! An exponential form to more quickly</span>
@@ -1735,7 +1748,7 @@
   <span class="c">!!   set to 2 orders of magnitude larger than the phonon frequency</span>
   <span class="c">!!   scale so that the time step is small enough to get reasonable </span>
   <span class="c">!!   results.</span>
-<span class="n">n2</span> <span class="o">=</span> <span class="mi">100000</span>
+<span class="n">nExpSteps</span> <span class="o">=</span> <span class="mi">100000</span>
   <span class="c">!! * Define the number of exponentials to pre-calculate in order</span>
   <span class="c">!!   to do the linear interpolation of \(e^(i\omega_j t)\)</span>
 
@@ -1766,13 +1779,13 @@
 <span class="k">allocate</span><span class="p">(</span><span class="n">eshift</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">elaser</span><span class="p">(</span><span class="n">elaser_num</span><span class="p">),</span> <span class="n">omega_s</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">omega_l</span><span class="p">(</span><span class="n">elaser_num</span><span class="p">))</span>
 <span class="k">allocate</span><span class="p">(</span><span class="n">s1</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s2</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">,</span><span class="n">elaser_num</span><span class="p">),</span> <span class="n">s3</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">,</span><span class="n">elaser_num</span><span class="p">),</span> <span class="n">global_sum</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">,</span><span class="n">elaser_num</span><span class="p">))</span>
 <span class="k">allocate</span><span class="p">(</span><span class="n">Sj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">hbarOmegaBeta</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expX</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expY</span><span class="p">(</span><span class="n">nmode</span><span class="p">))</span>
-<span class="k">allocate</span><span class="p">(</span><span class="n">domega</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">theta</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">zfactor1</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">zfactor2</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">ex1</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">count2</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="k">allocate</span><span class="p">(</span><span class="n">domega</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">theta</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">zfactor1</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">zfactor2</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">ex1</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">nExpSteps</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">count2</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
   <span class="c">!! * Allocate space for variables on all processes</span>
 
-<span class="n">dstep</span> <span class="o">=</span> <span class="n">tpi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
+<span class="n">dstep</span> <span class="o">=</span> <span class="n">tpi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">nExpSteps</span><span class="p">)</span>
   <span class="c">!! * Calculate the step size for the exponential pre-calculation</span>
 
-<span class="k">do </span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n2</span><span class="o">+</span><span class="mi">1</span>
+<span class="k">do </span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">nExpSteps</span><span class="o">+</span><span class="mi">1</span>
   <span class="c">!! * Pre-calculate the exponential terms, \(e^{i\theta}\) where \(\theta\)</span>
   <span class="c">!!   goes from 0 to \(2\pi\), used in the linear interpolation of \(e^{i\omega_j t}\)</span>
 
@@ -1928,11 +1941,12 @@
          <span class="k">do </span><span class="n">imode</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nmode</span>
 
             <span class="n">tmp_r</span> <span class="o">=</span> <span class="o">-</span><span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="o">/</span><span class="n">tpi</span>
-            <span class="n">tmp_r</span> <span class="o">=</span> <span class="p">(</span><span class="n">tmp_r</span> <span class="o">-</span> <span class="nb">floor</span><span class="p">(</span><span class="n">tmp_r</span><span class="p">))</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
+            <span class="n">tmp_r</span> <span class="o">=</span> <span class="p">(</span><span class="n">tmp_r</span> <span class="o">-</span> <span class="nb">floor</span><span class="p">(</span><span class="n">tmp_r</span><span class="p">))</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">nExpSteps</span><span class="p">)</span>
             <span class="n">indexI</span> <span class="o">=</span> <span class="nb">floor</span><span class="p">(</span><span class="n">tmp_r</span><span class="p">)</span>
             <span class="n">tmp_r</span> <span class="o">=</span> <span class="n">tmp_r</span> <span class="o">-</span> <span class="n">indexI</span>
             <span class="n">expT</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">tmp_r</span><span class="p">)</span><span class="o">*</span><span class="n">ex1</span><span class="p">(</span><span class="n">indexI</span><span class="p">)</span> <span class="o">+</span> <span class="n">tmp_r</span><span class="o">*</span><span class="n">ex1</span><span class="p">(</span><span class="n">indexI</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
               <span class="c">!! Use a linear interpolation for \(e^{i\omega_j t}\)</span>
+              <span class="c">!! to get a slightly more accurate value</span>
 
             <span class="n">expForFj</span> <span class="o">=</span> <span class="o">-</span><span class="n">expT</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">expX</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">expY</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span> <span class="o">-</span> <span class="p">(</span><span class="n">expX</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span> <span class="o">+</span> <span class="n">expY</span><span class="p">(</span><span class="n">imode</span><span class="p">))</span>
               <span class="c">!! * Calculate `expForFj`\( = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})\).</span>
