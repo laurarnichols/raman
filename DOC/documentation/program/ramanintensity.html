@@ -380,9 +380,6 @@
 <p>Broadcast array sizes to other modes for allocation</p>
 </li>
 <li>
-<p>Allocate space for variables on all processes</p>
-</li>
-<li>
 <p>Calculate the step size for the exponential pre-calculation</p>
 </li>
 <li>
@@ -414,8 +411,9 @@
 <p>Broadcast input variables to other processes</p>
 </li>
 <li>
-<p>Define frequencies by dividing the energies by <script type="math/tex">\hbar</script>, then scale down 
-   the results to ensure that integration scale is small enough to get a reasonable result
+<p>Convert the input energies to J, then define frequencies by dividing the energies 
+   by <script type="math/tex">\hbar</script> that has been scaled to ensure the results to ensure that integration 
+   scale is small enough to get a reasonable result
    </p><div class="alert alert-info" role="alert"><h4>Note</h4><p><script type="math/tex">\alpha</script> and <script type="math/tex">\gamma</script> are also divided by <script type="math/tex">\hbar</script> here so 
       that it doesn't have to be done in the final exponential.
    </p></div>
@@ -1864,7 +1862,6 @@
 <span class="k">allocate</span><span class="p">(</span><span class="n">Sj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">hbarOmegaBeta</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">nmode</span><span class="p">))</span>
 <span class="k">allocate</span><span class="p">(</span><span class="n">Fj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expForFj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expT</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expX</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expY</span><span class="p">(</span><span class="n">nmode</span><span class="p">))</span>
 <span class="k">allocate</span><span class="p">(</span><span class="n">domega</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">theta</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">zfactor1</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">zfactor2</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">ex1</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">nExpSteps</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">count2</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
-  <span class="c">!! * Allocate space for variables on all processes</span>
 
 <span class="n">expStep</span> <span class="o">=</span> <span class="n">tpi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">nExpSteps</span><span class="p">)</span>
   <span class="c">!! * Calculate the step size for the exponential pre-calculation</span>
@@ -1903,7 +1900,7 @@
 
   <span class="k">end do</span>
 
-<span class="k">     </span><span class="n">hbarOmegaBeta</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">hbar</span><span class="o">*</span><span class="n">omega_j</span><span class="p">(:)</span><span class="o">*</span><span class="n">scalingFactor</span><span class="o">*</span><span class="n">beta</span>
+<span class="k">     </span><span class="n">hbarOmegaBeta</span><span class="p">(:)</span> <span class="o">=</span> <span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">scalingFactor</span><span class="p">)</span><span class="o">*</span><span class="n">omega_j</span><span class="p">(:)</span><span class="o">*</span><span class="n">beta</span>
      
      <span class="n">domega</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">omega_nj</span><span class="p">(:)</span>  <span class="o">-</span> <span class="n">omega_j</span><span class="p">(:)</span>
   
@@ -1931,13 +1928,14 @@
 <span class="k">call </span><span class="n">MPI_Barrier</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span><span class="n">ierror</span><span class="p">)</span>
   <span class="c">!! * Broadcast input variables to other processes</span>
 
-<span class="n">omega_l</span><span class="p">(:)</span> <span class="o">=</span> <span class="p">(</span><span class="n">elaser</span><span class="p">(:)</span><span class="o">/</span><span class="n">hbar</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">ev</span><span class="o">/</span><span class="n">scalingFactor</span><span class="p">)</span>
-<span class="n">omega_a</span> <span class="o">=</span> <span class="p">(</span><span class="n">elevel</span><span class="o">/</span><span class="n">hbar</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">ev</span><span class="o">/</span><span class="n">scalingFactor</span><span class="p">)</span>
-<span class="n">omega_s</span><span class="p">(:)</span> <span class="o">=</span> <span class="p">(</span><span class="n">eshift</span><span class="p">(:)</span><span class="o">/</span><span class="n">hbar</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">mev</span><span class="o">/</span><span class="n">scalingFactor</span><span class="p">)</span>
-<span class="n">gamma_p</span> <span class="o">=</span> <span class="p">(</span><span class="n">gamma_p</span><span class="o">/</span><span class="n">hbar</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">mev</span><span class="o">/</span><span class="n">scalingFactor</span><span class="p">)</span>
-<span class="n">alpha</span> <span class="o">=</span> <span class="p">(</span><span class="n">alpha</span><span class="o">/</span><span class="n">hbar</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">mev</span><span class="o">/</span><span class="n">scalingFactor</span><span class="p">)</span>
-  <span class="c">!! * Define frequencies by dividing the energies by \(\hbar\), then scale down </span>
-  <span class="c">!!   the results to ensure that integration scale is small enough to get a reasonable result</span>
+<span class="n">omega_l</span><span class="p">(:)</span> <span class="o">=</span> <span class="p">(</span><span class="n">elaser</span><span class="p">(:)</span><span class="o">*</span><span class="n">ev</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">scalingFactor</span><span class="p">)</span>
+<span class="n">omega_a</span> <span class="o">=</span> <span class="p">(</span><span class="n">elevel</span><span class="o">*</span><span class="n">ev</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">scalingFactor</span><span class="p">)</span>
+<span class="n">omega_s</span><span class="p">(:)</span> <span class="o">=</span> <span class="p">(</span><span class="n">eshift</span><span class="p">(:)</span><span class="o">*</span><span class="n">mev</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">scalingFactor</span><span class="p">)</span>
+<span class="n">gamma_p</span> <span class="o">=</span> <span class="p">(</span><span class="n">gamma_p</span><span class="o">*</span><span class="n">mev</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">scalingFactor</span><span class="p">)</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="p">(</span><span class="n">alpha</span><span class="o">*</span><span class="n">mev</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">scalingFactor</span><span class="p">)</span>
+  <span class="c">!! * Convert the input energies to J, then define frequencies by dividing the energies </span>
+  <span class="c">!!   by \(\hbar\) that has been scaled to ensure the results to ensure that integration </span>
+  <span class="c">!!   scale is small enough to get a reasonable result</span>
   <span class="c">!!   @note </span>
   <span class="c">!!      \(\alpha\) and \(\gamma\) are also divided by \(\hbar\) here so </span>
   <span class="c">!!      that it doesn&#39;t have to be done in the final exponential.</span>

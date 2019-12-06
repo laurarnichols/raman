@@ -213,7 +213,6 @@ allocate(s1(eshift_num), s2(eshift_num,elaser_num), s3(eshift_num,elaser_num), g
 allocate(Sj(nmode), omega_j(nmode), omega_nj(nmode), hbarOmegaBeta(nmode), FjFractionFactor(nmode))
 allocate(Fj(nmode), expForFj(nmode), expT(nmode), expX(nmode), expY(nmode))
 allocate(domega(nmode), theta(nmode), zfactor1(nmode), zfactor2(nmode), ex1(0:nExpSteps+1), interval(2), count2(2))
-  !! * Allocate space for variables on all processes
 
 expStep = tpi/float(nExpSteps)
   !! * Calculate the step size for the exponential pre-calculation
@@ -252,7 +251,7 @@ if(id == 0) then
 
   end do
 
-     hbarOmegaBeta(:) = hbar*omega_j(:)*scalingFactor*beta
+     hbarOmegaBeta(:) = (hbar*scalingFactor)*omega_j(:)*beta
      
      domega(:) = omega_nj(:)  - omega_j(:)
   
@@ -280,13 +279,14 @@ call MPI_Bcast( domega, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Barrier(MPI_COMM_WORLD,ierror)
   !! * Broadcast input variables to other processes
 
-omega_l(:) = (elaser(:)/hbar)*(ev/scalingFactor)
-omega_a = (elevel/hbar)*(ev/scalingFactor)
-omega_s(:) = (eshift(:)/hbar)*(mev/scalingFactor)
-gamma_p = (gamma_p/hbar)*(mev/scalingFactor)
-alpha = (alpha/hbar)*(mev/scalingFactor)
-  !! * Define frequencies by dividing the energies by \(\hbar\), then scale down 
-  !!   the results to ensure that integration scale is small enough to get a reasonable result
+omega_l(:) = (elaser(:)*ev)/(hbar*scalingFactor)
+omega_a = (elevel*ev)/(hbar*scalingFactor)
+omega_s(:) = (eshift(:)*mev)/(hbar*scalingFactor)
+gamma_p = (gamma_p*mev)/(hbar*scalingFactor)
+alpha = (alpha*mev)/(hbar*scalingFactor)
+  !! * Convert the input energies to J, then define frequencies by dividing the energies 
+  !!   by \(\hbar\) that has been scaled to ensure the results to ensure that integration 
+  !!   scale is small enough to get a reasonable result
   !!   @note 
   !!      \(\alpha\) and \(\gamma\) are also divided by \(\hbar\) here so 
   !!      that it doesn't have to be done in the final exponential.
