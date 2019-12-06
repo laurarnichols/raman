@@ -75,8 +75,8 @@ real(kind = dp) :: loglimit
   !! \(\log(\text{limit})\)
 real(kind = dp) :: omega_a
   !! \(E_a/\hbar\)
-real(kind = dp) :: step
-real(kind = dp) :: dstep
+real(kind = dp) :: intStep
+real(kind = dp) :: expStep
   !! Step to go from 0 to \(\2\pi) in `nExpSteps`
 real(kind = dp) :: scalingFactor
   !! Factor to scale down inputs to ensure that
@@ -196,14 +196,14 @@ allocate(Sj(nmode), omega_j(nmode), omega_nj(nmode), hbarOmegaBeta(nmode), FjFra
 allocate(domega(nmode), theta(nmode), zfactor1(nmode), zfactor2(nmode), ex1(0:nExpSteps+1), interval(2), count2(2))
   !! * Allocate space for variables on all processes
 
-dstep = tpi/float(nExpSteps)
+expStep = tpi/float(nExpSteps)
   !! * Calculate the step size for the exponential pre-calculation
 
 do j = 0, nExpSteps+1
   !! * Pre-calculate the exponential terms, \(e^{i\theta}\) where \(\theta\)
   !!   goes from 0 to \(2\pi\), used in the linear interpolation of \(e^{i\omega_j t}\)
 
-   ex1(j)=exp(I*j*dstep)
+   ex1(j)=exp(I*j*expStep)
 
 end do
 
@@ -270,16 +270,16 @@ alpha = (alpha/hbar)*(mev/scalingFactor)
   !! * Scale down `omega_l`, `omega_a`, `omega_s`, `gamma_p`, and `alpha`
   !!   to ensure that integration scale is small enough to get a reasonable result
 
-step = tpi/float(nIntSteps)
+intStep = tpi/float(nIntSteps)
 loglimit = -log(limit)
 count1 = 0.0
   ! Set loop variables
 
 !> * Calculate the total number of integration steps needed and
 !>   distribute the intervals between the processes
-do j = 0, int(loglimit/gamma_p/step)
-   do k = 0, int(loglimit/gamma_p/step-j)
-      count1 = count1 + int((loglimit/step - gamma_p*j - gamma_p*k)/alpha)
+do j = 0, int(loglimit/gamma_p/intStep)
+   do k = 0, int(loglimit/gamma_p/intStep-j)
+      count1 = count1 + int((loglimit/intStep - gamma_p*j - gamma_p*k)/alpha)
    enddo
 end do
 
@@ -289,10 +289,10 @@ indexI = 1
 count1 = 0.0
 
 ! Make sure the boundaries between processes are set properly
-do j = 0, int(loglimit/gamma_p/step)
+do j = 0, int(loglimit/gamma_p/intStep)
 
-   do k = 0, int(loglimit/gamma_p/step)-j
-      count1 = count1 + int((loglimit/step - gamma_p*j - gamma_p*k)/alpha)
+   do k = 0, int(loglimit/gamma_p/intStep)-j
+      count1 = count1 + int((loglimit/intStep - gamma_p*j - gamma_p*k)/alpha)
    enddo
 
    if(count1 >= count2(indexI)) then
@@ -323,13 +323,13 @@ do iX = interval(1), interval(2)
    endif
 
    s2 = 0.0d0
-   x = (iX + 0.5) * step
+   x = (iX + 0.5) * intStep
 
    expX(:) = cos(omega_nj(:)*x) + I*sin(omega_nj(:)*x)
  
-   do iY = 0, int(loglimit/gamma_p/step) - iX 
+   do iY = 0, int(loglimit/gamma_p/intStep) - iX 
       s1 = 0.0d0
-      y = (iY + 0.5) * step
+      y = (iY + 0.5) * intStep
       
       expY(:) = cos( omega_nj(:)*y ) - I * sin(omega_nj(:)*y)
       
@@ -346,10 +346,10 @@ do iX = interval(1), interval(2)
        !! * Calculate the fractional factor in front of the cosines in
        !!   \(F_j\)
 
-      interval_t = int((loglimit/step - gamma_p*iX - gamma_p*iY)/alpha)
+      interval_t = int((loglimit/intStep - gamma_p*iX - gamma_p*iY)/alpha)
 
       do iT = 0, interval_t
-         t = (iT + 0.5)*step
+         t = (iT + 0.5)*intStep
          tmp_exp = 0.0d0
  
          do imode = 1, nmode
@@ -407,7 +407,7 @@ if(id == 0) then
     write(12,*) "Laser energy: ", elaser(ilaserE)
     
     do ishiftE = 1, eshift_num 
-      write(12,*) eshift(iShiftE), eshift(iShiftE)*mevtocm, step**3*Real(global_sum(iShiftE,ilaserE))*2.0
+      write(12,*) eshift(iShiftE), eshift(iShiftE)*mevtocm, intStep**3*Real(global_sum(iShiftE,ilaserE))*2.0
     enddo
 
   enddo
