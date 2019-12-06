@@ -124,7 +124,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="100.0% of total for programs.">200 statements</a>
+    title="100.0% of total for programs.">199 statements</a>
      </li> 
      
      
@@ -238,8 +238,6 @@
       <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor">zfactor</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-sjoutputfile">SjOutputFile</a>
-      
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-dummy">dummy</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-interval">interval</a>
       
@@ -553,8 +551,6 @@
       <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor">zfactor</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-sjoutputfile">SjOutputFile</a>
-      
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-dummy">dummy</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-interval">interval</a>
       
@@ -1170,7 +1166,8 @@
   
   
   <td></td><td>::</td>
-  <td><strong>zfactor</strong></td><td></td><td></td><td></td>
+  <td><strong>zfactor</strong></td><td></td><td></td><td><p>The pre-factor in the product in equation 42
+ and something else</p></td>
   
 </tr>
 
@@ -1184,21 +1181,7 @@
   
   
   <td></td><td>::</td>
-  <td><strong>SjOutputFile</strong></td><td></td><td></td><td><p>Input file name</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-dummy"></span>character(len=256)</td>
-  
-  
-  <td></td><td>::</td>
-  <td><strong>dummy</strong></td><td></td><td></td><td></td>
+  <td><strong>SjOutputFile</strong></td><td></td><td></td><td><p>Ouput file name from the <script type="math/tex">S_j</script> calculation</p></td>
   
 </tr>
 
@@ -1212,7 +1195,7 @@
   
   
   <td>allocatable</td><td>::</td>
-  <td><strong>interval</strong>(:)</td><td></td><td></td><td></td>
+  <td><strong>interval</strong>(:)</td><td></td><td></td><td><p>Defines the integration interval for each process</p></td>
   
 </tr>
 
@@ -1241,7 +1224,9 @@
   
   
   <td>allocatable</td><td>::</td>
-  <td><strong>hbarOmegaBeta</strong>(:)</td><td></td><td></td><td></td>
+  <td><strong>hbarOmegaBeta</strong>(:)</td><td></td><td></td><td><p>
+<script type="math/tex">\hbar\omega_j\beta</script>
+</p></td>
   
 </tr>
 
@@ -1286,7 +1271,7 @@
   
   
   <td>allocatable</td><td>::</td>
-  <td><strong>eshift</strong>(:)</td><td></td><td></td><td></td>
+  <td><strong>eshift</strong>(:)</td><td></td><td></td><td><p>Energy shifts to calculate the intensity for</p></td>
   
 </tr>
 
@@ -1366,7 +1351,7 @@
   <td>allocatable</td><td>::</td>
   <td><strong>Sj</strong>(:)</td><td></td><td></td><td><p>
 <script type="math/tex">S_j = \dfrac{\omega_j^2}{2\hbar}\delta q_j^2</script>
- Taken from input file</p></td>
+ from output file of previous <script type="math/tex">S_j</script> calculation</p></td>
   
 </tr>
 
@@ -1382,6 +1367,7 @@
   <td>allocatable</td><td>::</td>
   <td><strong>ex1</strong>(:)</td><td></td><td></td><td><p>
 <script type="math/tex">e^{i\theta}</script> where <script type="math/tex">\theta</script> goes from 0 to <script type="math/tex">2\pi</script>
+ used in linear interpolation of <script type="math/tex">e^{i\omega_j t}</script>
 </p></td>
   
 </tr>
@@ -1489,7 +1475,7 @@
   
   
   <td>allocatable</td><td>::</td>
-  <td><strong>global_sum</strong>(:,:)</td><td></td><td></td><td></td>
+  <td><strong>global_sum</strong>(:,:)</td><td></td><td></td><td><p>Total integral from all processes</p></td>
   
 </tr>
 
@@ -1503,7 +1489,7 @@
   
   
   <td>allocatable</td><td>::</td>
-  <td><strong>s1</strong>(:)</td><td></td><td></td><td></td>
+  <td><strong>s1</strong>(:)</td><td></td><td></td><td><p>Integral over <script type="math/tex">t</script> for a single process</p></td>
   
 </tr>
 
@@ -1517,7 +1503,8 @@
   
   
   <td>allocatable</td><td>::</td>
-  <td><strong>s2</strong>(:,:)</td><td></td><td></td><td></td>
+  <td><strong>s2</strong>(:,:)</td><td></td><td></td><td><p>Integral over <script type="math/tex">y</script> and <script type="math/tex">t</script> for a single
+ process</p></td>
   
 </tr>
 
@@ -1531,7 +1518,8 @@
   
   
   <td>allocatable</td><td>::</td>
-  <td><strong>s3</strong>(:,:)</td><td></td><td></td><td></td>
+  <td><strong>s3</strong>(:,:)</td><td></td><td></td><td><p>Integral over <script type="math/tex">x</script>, <script type="math/tex">y</script>, and <script type="math/tex">t</script> for
+ a single process</p></td>
   
 </tr>
 
@@ -1561,7 +1549,7 @@
   
   
   <td>allocatable</td><td>::</td>
-  <td><strong>zfactor1</strong>(:)</td><td></td><td></td><td></td>
+  <td><strong>zfactor1</strong>(:)</td><td></td><td></td><td><p>Fraction factor in equation 42</p></td>
   
 </tr>
 
@@ -1575,7 +1563,7 @@
   
   
   <td>allocatable</td><td>::</td>
-  <td><strong>zfactor2</strong>(:)</td><td></td><td></td><td></td>
+  <td><strong>zfactor2</strong>(:)</td><td></td><td></td><td><p>??</p></td>
   
 </tr>
 
@@ -1681,22 +1669,26 @@
   <span class="c">!! \(y\)</span>
 
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">zfactor</span>
+  <span class="c">!! The pre-factor in the product in equation 42</span>
+  <span class="c">!! and something else</span>
 
 <span class="kt">character</span><span class="p">(</span><span class="nb">len</span> <span class="o">=</span> <span class="mi">256</span><span class="p">)</span> <span class="kd">::</span> <span class="n">SjOutputFile</span>
-  <span class="c">!! Input file name</span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span> <span class="o">=</span> <span class="mi">256</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dummy</span>
+  <span class="c">!! Ouput file name from the \(S_j\) calculation</span>
 
 <span class="kt">integer</span><span class="p">,</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">interval</span><span class="p">(:)</span>
+  <span class="c">!! Defines the integration interval for each process</span>
 
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">count2</span><span class="p">(:)</span>
   <span class="c">!! Count used to set interval limits</span>
   <span class="c">!! for each process</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">hbarOmegaBeta</span><span class="p">(:)</span>
+  <span class="c">!! \(\hbar\omega_j\beta\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">domega</span><span class="p">(:)</span>
   <span class="c">!! \(\delta\omega_{nj} = \omega_{nj} - \omega_j\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">elaser</span><span class="p">(:)</span>
   <span class="c">!! Laser energies \(E_L\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">eshift</span><span class="p">(:)</span>
+  <span class="c">!! Energy shifts to calculate the intensity for</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">omega_j</span><span class="p">(:)</span>
   <span class="c">!! \(\omega_j\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">omega_l</span><span class="p">(:)</span>
@@ -1707,10 +1699,11 @@
   <span class="c">!! \(E_s/\hbar\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">Sj</span><span class="p">(:)</span>
   <span class="c">!! \(S_j = \dfrac{\omega_j^2}{2\hbar}\delta q_j^2\)</span>
-  <span class="c">!! Taken from input file</span>
+  <span class="c">!! from output file of previous \(S_j\) calculation</span>
 
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">ex1</span><span class="p">(:)</span>
   <span class="c">!! \(e^{i\theta}\) where \(\theta\) goes from 0 to \(2\pi\)</span>
+  <span class="c">!! used in linear interpolation of \(e^{i\omega_j t}\)</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">expForFj</span><span class="p">(:)</span>
   <span class="c">!! An exponential form to more quickly</span>
   <span class="c">!! calculate \(F_j\)</span>
@@ -1725,16 +1718,25 @@
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">FjFractionFactor</span><span class="p">(:)</span>
   <span class="c">!! Fraction factor in front of cosine terms in \(F_j\)</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">global_sum</span><span class="p">(:,:)</span>
+  <span class="c">!! Total integral from all processes</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">s1</span><span class="p">(:)</span>
+  <span class="c">!! Integral over \(t\) for a single process</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">s2</span><span class="p">(:,:)</span>
+  <span class="c">!! Integral over \(y\) and \(t\) for a single</span>
+  <span class="c">!! process</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">s3</span><span class="p">(:,:)</span>
+  <span class="c">!! Integral over \(x\), \(y\), and \(t\) for</span>
+  <span class="c">!! a single process</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">theta</span><span class="p">(:)</span>
   <span class="c">!! Serves as the argument for the sines in the fraction</span>
   <span class="c">!! factor `FjFractionFactor` and the exponentials in</span>
   <span class="c">!! `zfactor1` </span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">zfactor1</span><span class="p">(:)</span>
+  <span class="c">!! Fraction factor in equation 42</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">zfactor2</span><span class="p">(:)</span>
+  <span class="c">!! ??</span>
 
+<span class="c">! Define a namelist to read in all of the input variables from the input file</span>
 <span class="k">namelist</span> <span class="o">/</span><span class="n">ramanInput</span><span class="o">/</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">nIntSteps</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">gamma_p</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">elevel</span><span class="p">,</span> <span class="p">&amp;</span>
                       <span class="n">elaser_num</span><span class="p">,</span> <span class="n">eshift_num</span><span class="p">,</span> <span class="n">SjOutputFile</span>
 

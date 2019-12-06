@@ -98,22 +98,26 @@ real(kind = dp) :: y
   !! \(y\)
 
 complex(kind = dp) :: zfactor
+  !! The pre-factor in the product in equation 42
+  !! and something else
 
 character(len = 256) :: SjOutputFile
-  !! Input file name
-character(len = 256) :: dummy
+  !! Ouput file name from the \(S_j\) calculation
 
 integer,allocatable :: interval(:)
+  !! Defines the integration interval for each process
 
 real(kind = dp), allocatable :: count2(:)
   !! Count used to set interval limits
   !! for each process
 real(kind = dp), allocatable :: hbarOmegaBeta(:)
+  !! \(\hbar\omega_j\beta\)
 real(kind = dp), allocatable :: domega(:)
   !! \(\delta\omega_{nj} = \omega_{nj} - \omega_j\)
 real(kind = dp), allocatable :: elaser(:)
   !! Laser energies \(E_L\)
 real(kind = dp), allocatable :: eshift(:)
+  !! Energy shifts to calculate the intensity for
 real(kind = dp), allocatable :: omega_j(:)
   !! \(\omega_j\)
 real(kind = dp), allocatable :: omega_l(:)
@@ -124,10 +128,11 @@ real(kind = dp), allocatable :: omega_s(:)
   !! \(E_s/\hbar\)
 real(kind = dp), allocatable :: Sj(:)
   !! \(S_j = \dfrac{\omega_j^2}{2\hbar}\delta q_j^2\)
-  !! Taken from input file
+  !! from output file of previous \(S_j\) calculation
 
 complex(kind = dp), allocatable :: ex1(:)
   !! \(e^{i\theta}\) where \(\theta\) goes from 0 to \(2\pi\)
+  !! used in linear interpolation of \(e^{i\omega_j t}\)
 complex(kind = dp), allocatable :: expForFj(:)
   !! An exponential form to more quickly
   !! calculate \(F_j\)
@@ -142,16 +147,25 @@ complex(kind = dp), allocatable :: Fj(:)
 complex(kind = dp), allocatable :: FjFractionFactor(:)
   !! Fraction factor in front of cosine terms in \(F_j\)
 complex(kind = dp), allocatable :: global_sum(:,:)
+  !! Total integral from all processes
 complex(kind = dp), allocatable :: s1(:)
+  !! Integral over \(t\) for a single process
 complex(kind = dp), allocatable :: s2(:,:)
+  !! Integral over \(y\) and \(t\) for a single
+  !! process
 complex(kind = dp), allocatable :: s3(:,:)
+  !! Integral over \(x\), \(y\), and \(t\) for
+  !! a single process
 complex(kind = dp), allocatable :: theta(:)
   !! Serves as the argument for the sines in the fraction
   !! factor `FjFractionFactor` and the exponentials in
   !! `zfactor1` 
 complex(kind = dp), allocatable :: zfactor1(:)
+  !! Fraction factor in equation 42
 complex(kind = dp), allocatable :: zfactor2(:)
+  !! ??
 
+! Define a namelist to read in all of the input variables from the input file
 namelist /ramanInput/ temperature, nIntSteps, limit, gamma_p, alpha, elevel, &
                       elaser_num, eshift_num, SjOutputFile
 
