@@ -26,6 +26,11 @@ use mpi
 !! In the previous version of the code, you define 
 !! `zfactor =`\(\prod\) `zfactor1*zfactor2` or
 !! `zfactor` \(=\displaystyle\prod\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\dfrac{e^{\beta\hbar\omega_j} - 1}{e^{\frac{1}{2}\beta\hbar\omega_j}}\)
+!! The \(\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\) part matches
+!! the fraction in equation 42 (the one in the picture in your email), but \(\dfrac{e^{\beta\hbar\omega_j} - 1}{e^{\frac{1}{2}\beta\hbar\omega_j}}\)
+!! doesn't match anything in the paper that I can find. Where does that come from?
+!!
+!! And sorry for not being clear. I meant why is there a negative sign in the equation `tmp_r = -phonon(imode,2)*t/tpi`?
 
 implicit none
 

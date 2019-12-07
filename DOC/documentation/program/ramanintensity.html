@@ -354,7 +354,10 @@
  <code>zfactor =</code><script type="math/tex">\prod</script>
 <code>zfactor1*zfactor2</code> or
  <code>zfactor</code> <script type="math/tex">=\displaystyle\prod\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\dfrac{e^{\beta\hbar\omega_j} - 1}{e^{\frac{1}{2}\beta\hbar\omega_j}}</script>
-</p>
+ The <script type="math/tex">\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}</script> part matches
+ the fraction in equation 42 (the one in the picture in your email), but <script type="math/tex">\dfrac{e^{\beta\hbar\omega_j} - 1}{e^{\frac{1}{2}\beta\hbar\omega_j}}</script>
+ doesn't match anything in the paper that I can find. Where does that come from?</p>
+<p>And sorry for not being clear. I meant why is there a negative sign in the equation <code>tmp_r = -phonon(imode,2)*t/tpi</code>?</p>
 <ul>
 <li>
 <p>Initialize MPI pool</p>
@@ -1680,6 +1683,11 @@
 <span class="c">!! In the previous version of the code, you define </span>
 <span class="c">!! `zfactor =`\(\prod\) `zfactor1*zfactor2` or</span>
 <span class="c">!! `zfactor` \(=\displaystyle\prod\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\dfrac{e^{\beta\hbar\omega_j} - 1}{e^{\frac{1}{2}\beta\hbar\omega_j}}\)</span>
+<span class="c">!! The \(\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\) part matches</span>
+<span class="c">!! the fraction in equation 42 (the one in the picture in your email), but \(\dfrac{e^{\beta\hbar\omega_j} - 1}{e^{\frac{1}{2}\beta\hbar\omega_j}}\)</span>
+<span class="c">!! doesn&#39;t match anything in the paper that I can find. Where does that come from?</span>
+<span class="c">!!</span>
+<span class="c">!! And sorry for not being clear. I meant why is there a negative sign in the equation `tmp_r = -phonon(imode,2)*t/tpi`?</span>
 
 <span class="k">implicit none</span>
 
