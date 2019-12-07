@@ -237,8 +237,8 @@ if(id == 0) then
   !!    * Read in the energy shifts and laser energies
   !!      @note 
   !!        Reading the input file assumes the form `&ramanInput ... /`,
-  !!        blank line, ESHIFT, list of energy shifts to calculate
-  !!        intesities for, blank line, ELASER, laser energie(s) to use
+  !!        blank line, `ESHIFT`, list of energy shifts to calculate
+  !!        intesities for, blank line, `ELASER`, laser energie(s) to use
   !!      @endnote
 
   omega_j(:) = omega_j(:)/100.0d0
@@ -380,7 +380,7 @@ do iX = interval(1), interval(2)
       zfactor = product(zfactor1(:)/zfactor2(:))
       !zfactor = product(exp( 0.5*I*domega(:)*(x-y) ) * ( exp( hbarOmegaBeta(:) ) - 1 ) / ( exp( theta(:) ) - 1 ))
         !! * Calculate `zfactor` which includes the fraction factor
-        !!   \(\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j) - 1}\)
+        !!   \(\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j) - 1}}\)
         !!   from equation 42 and something else
 
 

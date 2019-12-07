@@ -522,8 +522,8 @@
 <a name="ln-237"></a>  <span class="c">!!    * Read in the energy shifts and laser energies</span>
 <a name="ln-238"></a>  <span class="c">!!      @note </span>
 <a name="ln-239"></a>  <span class="c">!!        Reading the input file assumes the form `&amp;ramanInput ... /`,</span>
-<a name="ln-240"></a>  <span class="c">!!        blank line, ESHIFT, list of energy shifts to calculate</span>
-<a name="ln-241"></a>  <span class="c">!!        intesities for, blank line, ELASER, laser energie(s) to use</span>
+<a name="ln-240"></a>  <span class="c">!!        blank line, `ESHIFT`, list of energy shifts to calculate</span>
+<a name="ln-241"></a>  <span class="c">!!        intesities for, blank line, `ELASER`, laser energie(s) to use</span>
 <a name="ln-242"></a>  <span class="c">!!      @endnote</span>
 <a name="ln-243"></a>
 <a name="ln-244"></a>  <span class="n">omega_j</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">omega_j</span><span class="p">(:)</span><span class="o">/</span><span class="mi">10</span><span class="mf">0.0d0</span>
@@ -665,7 +665,7 @@
 <a name="ln-380"></a>      <span class="n">zfactor</span> <span class="o">=</span> <span class="nb">product</span><span class="p">(</span><span class="n">zfactor1</span><span class="p">(:)</span><span class="o">/</span><span class="n">zfactor2</span><span class="p">(:))</span>
 <a name="ln-381"></a>      <span class="c">!zfactor = product(exp( 0.5*I*domega(:)*(x-y) ) * ( exp( hbarOmegaBeta(:) ) - 1 ) / ( exp( theta(:) ) - 1 ))</span>
 <a name="ln-382"></a>        <span class="c">!! * Calculate `zfactor` which includes the fraction factor</span>
-<a name="ln-383"></a>        <span class="c">!!   \(\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j) - 1}\)</span>
+<a name="ln-383"></a>        <span class="c">!!   \(\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j) - 1}}\)</span>
 <a name="ln-384"></a>        <span class="c">!!   from equation 42 and something else</span>
 <a name="ln-385"></a>
 <a name="ln-386"></a>
