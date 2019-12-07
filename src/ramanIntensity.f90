@@ -25,7 +25,7 @@ use mpi
 
 !! In the previous version of the code, you define 
 !! `zfactor =`\(\prod\) `zfactor1*zfactor2` or
-!! `zfactor` \(=\prod\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\dfrac{e^{\beta\hbar\omega_j} - 1}{e^{\frac{1}{2}\beta\hbar\omega_j}}\)
+!! `zfactor` \(=\displaystyle\prod\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\dfrac{e^{\beta\hbar\omega_j} - 1}{e^{\frac{1}{2}\beta\hbar\omega_j}}\)
 
 implicit none
 
