@@ -23,6 +23,10 @@ program ramanIntensity
 use para
 use mpi
 
+!! In the previous version of the code, you define 
+!! `zfactor =`\(\prod\) zfactor1*zfactor2` or
+!! `zfactor`\(=\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\dfrac{e^{\beta\hbar\omega_j} - 1}{e^{\frac{1}{2}\beta\hbar\omega_j}})
+
 implicit none
 
 integer :: elaser_num
@@ -380,7 +384,7 @@ do iX = interval(1), interval(2)
       zfactor = product(zfactor1(:)/zfactor2(:))
       !zfactor = product(exp( 0.5*I*domega(:)*(x-y) ) * ( exp( hbarOmegaBeta(:) ) - 1 ) / ( exp( theta(:) ) - 1 ))
         !! * Calculate `zfactor` which includes the fraction factor
-        !!   \(\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j) - 1}}\)
+        !!   \(\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\)
         !!   from equation 42 and something else
 
 
@@ -426,7 +430,7 @@ do iX = interval(1), interval(2)
 
          s1(:) = s1(:) + exp(I*sum(Fj(:)*Sj(:)) - I*omega_s(:)*t - alpha*abs(t))
           !! * Increment the innermost sum that will end up being
-          !!   \(\sum\left(\product e^{iS_jF_j}\right)e^{-\frac{i}{\hbar}E_s t}e^{-\alpha/\hbar|t|}\)
+          !!   \(\sum\left(\prod e^{iS_jF_j}\right)e^{-\frac{i}{\hbar}E_s t}e^{-\alpha/\hbar|t|}\)
           !!   which is the portion of the integrand in equation 30 that depends on \(t\)
           !!   @note
           !!      The \(e^{-\alpha/\hbar |t|}\) term adds smearing. Even though the equation 

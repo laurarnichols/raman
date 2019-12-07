@@ -350,7 +350,9 @@
     </div>
     
 
-    <ul>
+    <p>In the previous version of the code, you define 
+ <code>zfactor =</code><script type="math/tex">\prod</script> zfactor1*zfactor2<code>or</code>zfactor`(=\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\dfrac{e^{\beta\hbar\omega_j} - 1}{e^{\frac{1}{2}\beta\hbar\omega_j}})</p>
+<ul>
 <li>
 <p>Initialize MPI pool</p>
 </li>
@@ -458,7 +460,7 @@
 <p>Calculate the first fraction in equation 42
  </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out where <code>zfactor2</code> comes from </p></div>
 <p>* Calculate <code>zfactor</code> which includes the fraction factor
-   <script type="math/tex">\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j) - 1}}</script>
+   <script type="math/tex">\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}</script>
    from equation 42 and something else</p>
 <ul>
 <li>
@@ -498,7 +500,7 @@
 </li>
 <li>
 <p>Increment the innermost sum that will end up being
-   <script type="math/tex">\sum\left(\product e^{iS_jF_j}\right)e^{-\frac{i}{\hbar}E_s t}e^{-\alpha/\hbar|t|}</script>
+   <script type="math/tex">\sum\left(\prod e^{iS_jF_j}\right)e^{-\frac{i}{\hbar}E_s t}e^{-\alpha/\hbar|t|}</script>
    which is the portion of the integrand in equation 30 that depends on <script type="math/tex">t</script>
    </p><div class="alert alert-info" role="alert"><h4>Note</h4><p>The <script type="math/tex">e^{-\alpha/\hbar |t|}</script> term adds smearing. Even though the equation 
       only has <code>alpha</code>, the division by <script type="math/tex">\hbar</script> is implicit because we already 
@@ -1672,6 +1674,10 @@
 <span class="k">use </span><span class="n">para</span>
 <span class="k">use </span><span class="n">mpi</span>
 
+<span class="c">!! In the previous version of the code, you define </span>
+<span class="c">!! `zfactor =`\(\prod\) zfactor1*zfactor2` or</span>
+<span class="c">!! `zfactor`\(=\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\dfrac{e^{\beta\hbar\omega_j} - 1}{e^{\frac{1}{2}\beta\hbar\omega_j}})</span>
+
 <span class="k">implicit none</span>
 
 <span class="kt">integer</span> <span class="kd">::</span> <span class="n">elaser_num</span>
@@ -2029,7 +2035,7 @@
       <span class="n">zfactor</span> <span class="o">=</span> <span class="nb">product</span><span class="p">(</span><span class="n">zfactor1</span><span class="p">(:)</span><span class="o">/</span><span class="n">zfactor2</span><span class="p">(:))</span>
       <span class="c">!zfactor = product(exp( 0.5*I*domega(:)*(x-y) ) * ( exp( hbarOmegaBeta(:) ) - 1 ) / ( exp( theta(:) ) - 1 ))</span>
         <span class="c">!! * Calculate `zfactor` which includes the fraction factor</span>
-        <span class="c">!!   \(\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j) - 1}}\)</span>
+        <span class="c">!!   \(\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\)</span>
         <span class="c">!!   from equation 42 and something else</span>
 
 
@@ -2075,7 +2081,7 @@
 
          <span class="n">s1</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">s1</span><span class="p">(:)</span> <span class="o">+</span> <span class="nb">exp</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="nb">sum</span><span class="p">(</span><span class="n">Fj</span><span class="p">(:)</span><span class="o">*</span><span class="n">Sj</span><span class="p">(:))</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">omega_s</span><span class="p">(:)</span><span class="o">*</span><span class="n">t</span> <span class="o">-</span> <span class="n">alpha</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
           <span class="c">!! * Increment the innermost sum that will end up being</span>
-          <span class="c">!!   \(\sum\left(\product e^{iS_jF_j}\right)e^{-\frac{i}{\hbar}E_s t}e^{-\alpha/\hbar|t|}\)</span>
+          <span class="c">!!   \(\sum\left(\prod e^{iS_jF_j}\right)e^{-\frac{i}{\hbar}E_s t}e^{-\alpha/\hbar|t|}\)</span>
           <span class="c">!!   which is the portion of the integrand in equation 30 that depends on \(t\)</span>
           <span class="c">!!   @note</span>
           <span class="c">!!      The \(e^{-\alpha/\hbar |t|}\) term adds smearing. Even though the equation </span>
