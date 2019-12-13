@@ -489,9 +489,9 @@
 </p>
 </li>
 <li>
-<p>Calculate <code>zfactor</code> which includes the fraction factor
-   <script type="math/tex">\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}</script>
-   and the partition function</p>
+<p>Calculate <code>zfactor</code> which is
+   <script type="math/tex">\dfrac{1}{Z}\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}</script>
+</p>
 </li>
 <li>
 <p>Calculate the fractional factor in front of the cosines in
@@ -2092,9 +2092,8 @@
       <span class="n">theta</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">hbarOmegaBeta</span><span class="p">(:)</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="n">domega</span><span class="p">(:)</span> <span class="o">*</span> <span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> 
       <span class="n">TFractionFactor</span><span class="p">(:)</span> <span class="o">=</span> <span class="nb">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">theta</span><span class="p">(:))</span> <span class="o">/</span> <span class="p">(</span> <span class="nb">exp</span><span class="p">(</span><span class="n">theta</span><span class="p">(:))</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>        
       <span class="n">zfactor</span> <span class="o">=</span> <span class="nb">product</span><span class="p">(</span><span class="n">TFractionFactor</span><span class="p">(:)</span><span class="o">/</span><span class="n">partitionFunction</span><span class="p">(:))</span>
-        <span class="c">!! * Calculate `zfactor` which includes the fraction factor</span>
-        <span class="c">!!   \(\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\)</span>
-        <span class="c">!!   and the partition function</span>
+        <span class="c">!! * Calculate `zfactor` which is</span>
+        <span class="c">!!   \(\dfrac{1}{Z}\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\)</span>
 
 
       <span class="n">theta</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">domega</span><span class="p">(:)</span><span class="o">*</span><span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">hbarOmegaBeta</span><span class="p">(:)</span>

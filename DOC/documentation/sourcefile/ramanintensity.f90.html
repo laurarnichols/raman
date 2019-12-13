@@ -696,142 +696,141 @@
 <a name="ln-411"></a>      <span class="n">theta</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">hbarOmegaBeta</span><span class="p">(:)</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="n">domega</span><span class="p">(:)</span> <span class="o">*</span> <span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> 
 <a name="ln-412"></a>      <span class="n">TFractionFactor</span><span class="p">(:)</span> <span class="o">=</span> <span class="nb">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">theta</span><span class="p">(:))</span> <span class="o">/</span> <span class="p">(</span> <span class="nb">exp</span><span class="p">(</span><span class="n">theta</span><span class="p">(:))</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>        
 <a name="ln-413"></a>      <span class="n">zfactor</span> <span class="o">=</span> <span class="nb">product</span><span class="p">(</span><span class="n">TFractionFactor</span><span class="p">(:)</span><span class="o">/</span><span class="n">partitionFunction</span><span class="p">(:))</span>
-<a name="ln-414"></a>        <span class="c">!! * Calculate `zfactor` which includes the fraction factor</span>
-<a name="ln-415"></a>        <span class="c">!!   \(\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\)</span>
-<a name="ln-416"></a>        <span class="c">!!   and the partition function</span>
+<a name="ln-414"></a>        <span class="c">!! * Calculate `zfactor` which is</span>
+<a name="ln-415"></a>        <span class="c">!!   \(\dfrac{1}{Z}\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\)</span>
+<a name="ln-416"></a>
 <a name="ln-417"></a>
-<a name="ln-418"></a>
-<a name="ln-419"></a>      <span class="n">theta</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">domega</span><span class="p">(:)</span><span class="o">*</span><span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">hbarOmegaBeta</span><span class="p">(:)</span>
-<a name="ln-420"></a>      <span class="n">FjFractionFactor</span><span class="p">(:)</span> <span class="o">=</span> <span class="nb">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">(:))</span><span class="o">/</span><span class="p">(</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">(:))</span>  <span class="p">)</span>
-<a name="ln-421"></a>       <span class="c">!! * Calculate the fractional factor in front of the cosines in</span>
-<a name="ln-422"></a>       <span class="c">!!   \(F_j\) (equation 44)</span>
-<a name="ln-423"></a>       <span class="c">!!   @todo Do a note on how this lines up with equation 44 @endtodo</span>
-<a name="ln-424"></a>
-<a name="ln-425"></a>      <span class="n">interval_t</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">loglimit</span><span class="o">/</span><span class="n">intStep</span> <span class="o">-</span> <span class="n">gamma_p</span><span class="o">*</span><span class="n">iX</span> <span class="o">-</span> <span class="n">gamma_p</span><span class="o">*</span><span class="n">iY</span><span class="p">)</span><span class="o">/</span><span class="n">alpha</span><span class="p">)</span>
-<a name="ln-426"></a>
-<a name="ln-427"></a>      <span class="k">do </span><span class="n">iT</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">interval_t</span>
-<a name="ln-428"></a>         <span class="c">!! * Begin the integration over \(t\)</span>
-<a name="ln-429"></a>
-<a name="ln-430"></a>         <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">iT</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">*</span><span class="n">intStep</span>
-<a name="ln-431"></a>          <span class="c">!! * Define \(t\) for the current step</span>
-<a name="ln-432"></a> 
-<a name="ln-433"></a>         <span class="k">do </span><span class="n">imode</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nmode</span>
-<a name="ln-434"></a>            <span class="c">!! * Use a linear interpolation for \(e^{i\omega_j t}\)</span>
-<a name="ln-435"></a>            <span class="c">!!   to get a slightly more accurate value</span>
-<a name="ln-436"></a>            <span class="c">!!   @note </span>
-<a name="ln-437"></a>            <span class="c">!!     This process needs to stay in the innermost loop; it cannot</span>
-<a name="ln-438"></a>            <span class="c">!!     be moved out of the loop because `tmp_r` represents a random</span>
-<a name="ln-439"></a>            <span class="c">!!     number that will change slightly each loop.</span>
-<a name="ln-440"></a>            <span class="c">!!   @endnote</span>
-<a name="ln-441"></a>
-<a name="ln-442"></a>            <span class="n">tmp_r</span> <span class="o">=</span> <span class="o">-</span><span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="o">/</span><span class="n">tpi</span>
-<a name="ln-443"></a>            <span class="n">tmp_r</span> <span class="o">=</span> <span class="p">(</span><span class="n">tmp_r</span> <span class="o">-</span> <span class="nb">floor</span><span class="p">(</span><span class="n">tmp_r</span><span class="p">))</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">nExpSteps</span><span class="p">)</span>
-<a name="ln-444"></a>            <span class="n">indexI</span> <span class="o">=</span> <span class="nb">floor</span><span class="p">(</span><span class="n">tmp_r</span><span class="p">)</span>
-<a name="ln-445"></a>            <span class="n">tmp_r</span> <span class="o">=</span> <span class="n">tmp_r</span> <span class="o">-</span> <span class="n">indexI</span>
-<a name="ln-446"></a>            <span class="n">expT</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">tmp_r</span><span class="p">)</span><span class="o">*</span><span class="n">ex1</span><span class="p">(</span><span class="n">indexI</span><span class="p">)</span> <span class="o">+</span> <span class="n">tmp_r</span><span class="o">*</span><span class="n">ex1</span><span class="p">(</span><span class="n">indexI</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-<a name="ln-447"></a>
-<a name="ln-448"></a>         <span class="n">enddo</span>
-<a name="ln-449"></a>
-<a name="ln-450"></a>         <span class="n">expForFj</span><span class="p">(:)</span> <span class="o">=</span> <span class="o">-</span><span class="n">expT</span><span class="p">(:)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">expX</span><span class="p">(:))</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">expY</span><span class="p">(:))</span> <span class="o">-</span> <span class="p">(</span><span class="n">expX</span><span class="p">(:)</span> <span class="o">+</span> <span class="n">expY</span><span class="p">(:))</span>
-<a name="ln-451"></a>          <span class="c">!! * Calculate `expForFj`\( = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})\).</span>
-<a name="ln-452"></a>          <span class="c">!!   This is used as a trick to be able to calculate \(F_j\) quicker as the expontentials include both the</span>
-<a name="ln-453"></a>          <span class="c">!!   sines and cosines needed </span>
-<a name="ln-454"></a>
-<a name="ln-455"></a>         <span class="n">Fj</span><span class="p">(:)</span> <span class="o">=</span> <span class="nb">Aimag</span><span class="p">(</span><span class="n">expForFj</span><span class="p">(:))</span> <span class="o">+</span> <span class="n">FjFractionFactor</span><span class="p">(:)</span><span class="o">*</span><span class="kt">Real</span><span class="p">(</span><span class="mf">2.0d0</span> <span class="o">+</span> <span class="n">expForFj</span><span class="p">(:))</span>           
-<a name="ln-456"></a>          <span class="c">!! * Calculate \(F_j = \text{Im}(\)`expForFj`\() + \)`FjFractionFactor`\(\text{Re}(2 + \)`expForFj`\()\)</span>
-<a name="ln-457"></a>          <span class="c">!! @todo Add detailed derivation of this in a separate page @endtodo</span>
-<a name="ln-458"></a>
-<a name="ln-459"></a>         <span class="n">s1</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">s1</span><span class="p">(:)</span> <span class="o">+</span> <span class="nb">exp</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="nb">sum</span><span class="p">(</span><span class="n">Fj</span><span class="p">(:)</span><span class="o">*</span><span class="n">Sj</span><span class="p">(:))</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">omega_s</span><span class="p">(:)</span><span class="o">*</span><span class="n">t</span> <span class="o">-</span> <span class="n">alpha</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
-<a name="ln-460"></a>          <span class="c">!! * Increment the innermost sum that will end up being</span>
-<a name="ln-461"></a>          <span class="c">!!   \(\sum\left(\prod e^{iS_jF_j}\right)e^{-\frac{i}{\hbar}E_s t}e^{-\alpha/\hbar|t|}\)</span>
-<a name="ln-462"></a>          <span class="c">!!   which is the portion of the integrand in equation 30 that depends on \(t\)</span>
-<a name="ln-463"></a>          <span class="c">!!   @note</span>
-<a name="ln-464"></a>          <span class="c">!!      The \(e^{-\alpha/\hbar |t|}\) term adds smearing. Even though the equation </span>
-<a name="ln-465"></a>          <span class="c">!!      only has `alpha`, the division by \(\hbar\) is implicit because we already </span>
-<a name="ln-466"></a>          <span class="c">!!      did the division when scaling the input variables.</span>
-<a name="ln-467"></a>          <span class="c">!!   @endnote</span>
-<a name="ln-468"></a>
-<a name="ln-469"></a>      <span class="k">end do</span>
-<a name="ln-470"></a>
-<a name="ln-471"></a><span class="k">      do </span><span class="n">ilaserE</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">elaser_num</span>
-<a name="ln-472"></a>        <span class="c">!! * For each laser energy input, increment the middle sum that will end up being</span>
-<a name="ln-473"></a>        <span class="c">!!   \(\sum\)`zfactor`\(e^{\frac{-\gamma-iE_L+iE_a}{\hbar}y}\)`s1`</span>
-<a name="ln-474"></a>        <span class="c">!!   which is the portion of equation 30 that depends on \(y\) multiplied by the </span>
-<a name="ln-475"></a>        <span class="c">!!   inner \(t\) sum</span>
-<a name="ln-476"></a>        <span class="c">!!   @note</span>
-<a name="ln-477"></a>        <span class="c">!!      Here the fraction factor in the product in equation 42 has been pulled </span>
-<a name="ln-478"></a>        <span class="c">!!      out of the integration over time, but the \(e^{iS_jF_j(x,y,t)}\)</span>
-<a name="ln-479"></a>        <span class="c">!!      term must stay inside the \(t\) integral.</span>
-<a name="ln-480"></a>        <span class="c">!!   @endnote</span>
-<a name="ln-481"></a>        <span class="c">!!   @note</span>
-<a name="ln-482"></a>        <span class="c">!!      We are technically doing multiple integrals at once for each of the </span>
-<a name="ln-483"></a>        <span class="c">!!      different laser energies \(E_L\). Because of this, `s2` and `s3` need</span>
-<a name="ln-484"></a>        <span class="c">!!      to be two-dimensional, but the laser energy doesn&#39;t enter the integral</span>
-<a name="ln-485"></a>        <span class="c">!!      over time, so `s1` can be one-dimensional.</span>
-<a name="ln-486"></a>        <span class="c">!!   @endnote</span>
+<a name="ln-418"></a>      <span class="n">theta</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">domega</span><span class="p">(:)</span><span class="o">*</span><span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">hbarOmegaBeta</span><span class="p">(:)</span>
+<a name="ln-419"></a>      <span class="n">FjFractionFactor</span><span class="p">(:)</span> <span class="o">=</span> <span class="nb">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">(:))</span><span class="o">/</span><span class="p">(</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">(:))</span>  <span class="p">)</span>
+<a name="ln-420"></a>       <span class="c">!! * Calculate the fractional factor in front of the cosines in</span>
+<a name="ln-421"></a>       <span class="c">!!   \(F_j\) (equation 44)</span>
+<a name="ln-422"></a>       <span class="c">!!   @todo Do a note on how this lines up with equation 44 @endtodo</span>
+<a name="ln-423"></a>
+<a name="ln-424"></a>      <span class="n">interval_t</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">loglimit</span><span class="o">/</span><span class="n">intStep</span> <span class="o">-</span> <span class="n">gamma_p</span><span class="o">*</span><span class="n">iX</span> <span class="o">-</span> <span class="n">gamma_p</span><span class="o">*</span><span class="n">iY</span><span class="p">)</span><span class="o">/</span><span class="n">alpha</span><span class="p">)</span>
+<a name="ln-425"></a>
+<a name="ln-426"></a>      <span class="k">do </span><span class="n">iT</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">interval_t</span>
+<a name="ln-427"></a>         <span class="c">!! * Begin the integration over \(t\)</span>
+<a name="ln-428"></a>
+<a name="ln-429"></a>         <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">iT</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">*</span><span class="n">intStep</span>
+<a name="ln-430"></a>          <span class="c">!! * Define \(t\) for the current step</span>
+<a name="ln-431"></a> 
+<a name="ln-432"></a>         <span class="k">do </span><span class="n">imode</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nmode</span>
+<a name="ln-433"></a>            <span class="c">!! * Use a linear interpolation for \(e^{i\omega_j t}\)</span>
+<a name="ln-434"></a>            <span class="c">!!   to get a slightly more accurate value</span>
+<a name="ln-435"></a>            <span class="c">!!   @note </span>
+<a name="ln-436"></a>            <span class="c">!!     This process needs to stay in the innermost loop; it cannot</span>
+<a name="ln-437"></a>            <span class="c">!!     be moved out of the loop because `tmp_r` represents a random</span>
+<a name="ln-438"></a>            <span class="c">!!     number that will change slightly each loop.</span>
+<a name="ln-439"></a>            <span class="c">!!   @endnote</span>
+<a name="ln-440"></a>
+<a name="ln-441"></a>            <span class="n">tmp_r</span> <span class="o">=</span> <span class="o">-</span><span class="n">omega_j</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="o">/</span><span class="n">tpi</span>
+<a name="ln-442"></a>            <span class="n">tmp_r</span> <span class="o">=</span> <span class="p">(</span><span class="n">tmp_r</span> <span class="o">-</span> <span class="nb">floor</span><span class="p">(</span><span class="n">tmp_r</span><span class="p">))</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">nExpSteps</span><span class="p">)</span>
+<a name="ln-443"></a>            <span class="n">indexI</span> <span class="o">=</span> <span class="nb">floor</span><span class="p">(</span><span class="n">tmp_r</span><span class="p">)</span>
+<a name="ln-444"></a>            <span class="n">tmp_r</span> <span class="o">=</span> <span class="n">tmp_r</span> <span class="o">-</span> <span class="n">indexI</span>
+<a name="ln-445"></a>            <span class="n">expT</span><span class="p">(</span><span class="n">imode</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">tmp_r</span><span class="p">)</span><span class="o">*</span><span class="n">ex1</span><span class="p">(</span><span class="n">indexI</span><span class="p">)</span> <span class="o">+</span> <span class="n">tmp_r</span><span class="o">*</span><span class="n">ex1</span><span class="p">(</span><span class="n">indexI</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<a name="ln-446"></a>
+<a name="ln-447"></a>         <span class="n">enddo</span>
+<a name="ln-448"></a>
+<a name="ln-449"></a>         <span class="n">expForFj</span><span class="p">(:)</span> <span class="o">=</span> <span class="o">-</span><span class="n">expT</span><span class="p">(:)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">expX</span><span class="p">(:))</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">expY</span><span class="p">(:))</span> <span class="o">-</span> <span class="p">(</span><span class="n">expX</span><span class="p">(:)</span> <span class="o">+</span> <span class="n">expY</span><span class="p">(:))</span>
+<a name="ln-450"></a>          <span class="c">!! * Calculate `expForFj`\( = -e^{-i\omega t}(1-e^{i\omega x})(1-e^{-i\omega y})-(e^{i\omega x} + e^{-i\omega y})\).</span>
+<a name="ln-451"></a>          <span class="c">!!   This is used as a trick to be able to calculate \(F_j\) quicker as the expontentials include both the</span>
+<a name="ln-452"></a>          <span class="c">!!   sines and cosines needed </span>
+<a name="ln-453"></a>
+<a name="ln-454"></a>         <span class="n">Fj</span><span class="p">(:)</span> <span class="o">=</span> <span class="nb">Aimag</span><span class="p">(</span><span class="n">expForFj</span><span class="p">(:))</span> <span class="o">+</span> <span class="n">FjFractionFactor</span><span class="p">(:)</span><span class="o">*</span><span class="kt">Real</span><span class="p">(</span><span class="mf">2.0d0</span> <span class="o">+</span> <span class="n">expForFj</span><span class="p">(:))</span>           
+<a name="ln-455"></a>          <span class="c">!! * Calculate \(F_j = \text{Im}(\)`expForFj`\() + \)`FjFractionFactor`\(\text{Re}(2 + \)`expForFj`\()\)</span>
+<a name="ln-456"></a>          <span class="c">!! @todo Add detailed derivation of this in a separate page @endtodo</span>
+<a name="ln-457"></a>
+<a name="ln-458"></a>         <span class="n">s1</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">s1</span><span class="p">(:)</span> <span class="o">+</span> <span class="nb">exp</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="nb">sum</span><span class="p">(</span><span class="n">Fj</span><span class="p">(:)</span><span class="o">*</span><span class="n">Sj</span><span class="p">(:))</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">omega_s</span><span class="p">(:)</span><span class="o">*</span><span class="n">t</span> <span class="o">-</span> <span class="n">alpha</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<a name="ln-459"></a>          <span class="c">!! * Increment the innermost sum that will end up being</span>
+<a name="ln-460"></a>          <span class="c">!!   \(\sum\left(\prod e^{iS_jF_j}\right)e^{-\frac{i}{\hbar}E_s t}e^{-\alpha/\hbar|t|}\)</span>
+<a name="ln-461"></a>          <span class="c">!!   which is the portion of the integrand in equation 30 that depends on \(t\)</span>
+<a name="ln-462"></a>          <span class="c">!!   @note</span>
+<a name="ln-463"></a>          <span class="c">!!      The \(e^{-\alpha/\hbar |t|}\) term adds smearing. Even though the equation </span>
+<a name="ln-464"></a>          <span class="c">!!      only has `alpha`, the division by \(\hbar\) is implicit because we already </span>
+<a name="ln-465"></a>          <span class="c">!!      did the division when scaling the input variables.</span>
+<a name="ln-466"></a>          <span class="c">!!   @endnote</span>
+<a name="ln-467"></a>
+<a name="ln-468"></a>      <span class="k">end do</span>
+<a name="ln-469"></a>
+<a name="ln-470"></a><span class="k">      do </span><span class="n">ilaserE</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">elaser_num</span>
+<a name="ln-471"></a>        <span class="c">!! * For each laser energy input, increment the middle sum that will end up being</span>
+<a name="ln-472"></a>        <span class="c">!!   \(\sum\)`zfactor`\(e^{\frac{-\gamma-iE_L+iE_a}{\hbar}y}\)`s1`</span>
+<a name="ln-473"></a>        <span class="c">!!   which is the portion of equation 30 that depends on \(y\) multiplied by the </span>
+<a name="ln-474"></a>        <span class="c">!!   inner \(t\) sum</span>
+<a name="ln-475"></a>        <span class="c">!!   @note</span>
+<a name="ln-476"></a>        <span class="c">!!      Here the fraction factor in the product in equation 42 has been pulled </span>
+<a name="ln-477"></a>        <span class="c">!!      out of the integration over time, but the \(e^{iS_jF_j(x,y,t)}\)</span>
+<a name="ln-478"></a>        <span class="c">!!      term must stay inside the \(t\) integral.</span>
+<a name="ln-479"></a>        <span class="c">!!   @endnote</span>
+<a name="ln-480"></a>        <span class="c">!!   @note</span>
+<a name="ln-481"></a>        <span class="c">!!      We are technically doing multiple integrals at once for each of the </span>
+<a name="ln-482"></a>        <span class="c">!!      different laser energies \(E_L\). Because of this, `s2` and `s3` need</span>
+<a name="ln-483"></a>        <span class="c">!!      to be two-dimensional, but the laser energy doesn&#39;t enter the integral</span>
+<a name="ln-484"></a>        <span class="c">!!      over time, so `s1` can be one-dimensional.</span>
+<a name="ln-485"></a>        <span class="c">!!   @endnote</span>
+<a name="ln-486"></a>
 <a name="ln-487"></a>
-<a name="ln-488"></a>
-<a name="ln-489"></a>        <span class="n">s2</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">=</span> <span class="n">s2</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">+</span> <span class="n">s1</span><span class="p">(:)</span><span class="o">*</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="n">omega_l</span><span class="p">(</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">omega_a</span> <span class="o">+</span> <span class="n">gamma_p</span><span class="p">)</span><span class="o">*</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">zfactor</span>
-<a name="ln-490"></a>
-<a name="ln-491"></a>      <span class="n">enddo</span>
-<a name="ln-492"></a>
-<a name="ln-493"></a>   <span class="k">end do</span>
-<a name="ln-494"></a>
-<a name="ln-495"></a><span class="k">   do </span><span class="n">ilaserE</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">elaser_num</span>
-<a name="ln-496"></a>    <span class="c">!! * For each laser energy input, increment the outermost sum that will end up being</span>
-<a name="ln-497"></a>    <span class="c">!!   \(\sum e^{\frac{-\gamma+iE_L-iE_a}{\hbar}x}\)</span>
-<a name="ln-498"></a>    <span class="c">!!   which is the portion of equation 30 that depends on \(x\) multiplied by the </span>
-<a name="ln-499"></a>    <span class="c">!!   inner sums over \(y\) and \(t\)</span>
-<a name="ln-500"></a>
-<a name="ln-501"></a>     <span class="n">s3</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">=</span> <span class="n">s3</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">+</span> <span class="n">s2</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span><span class="o">*</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="o">-</span><span class="n">I</span><span class="o">*</span><span class="n">omega_l</span><span class="p">(</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="n">omega_a</span> <span class="o">+</span> <span class="n">gamma_p</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
-<a name="ln-502"></a>   
-<a name="ln-503"></a>   <span class="n">enddo</span>
-<a name="ln-504"></a><span class="n">enddo</span>
-<a name="ln-505"></a>
-<a name="ln-506"></a><span class="k">deallocate</span><span class="p">(</span><span class="n">omega_j</span><span class="p">,</span> <span class="n">omega_nj</span><span class="p">,</span> <span class="n">omega_s</span><span class="p">,</span> <span class="n">omega_l</span><span class="p">)</span>
-<a name="ln-507"></a><span class="k">deallocate</span><span class="p">(</span><span class="n">Sj</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">hbarOmegaBeta</span><span class="p">,</span> <span class="n">FjFractionFactor</span><span class="p">)</span>
-<a name="ln-508"></a><span class="k">deallocate</span><span class="p">(</span><span class="n">Fj</span><span class="p">,</span> <span class="n">expForFj</span><span class="p">,</span> <span class="n">expX</span><span class="p">,</span> <span class="n">expY</span><span class="p">,</span> <span class="n">expT</span><span class="p">,</span> <span class="n">domega</span><span class="p">)</span>
-<a name="ln-509"></a><span class="k">deallocate</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">TFractionFactor</span><span class="p">,</span> <span class="n">partitionFunction</span><span class="p">,</span> <span class="n">ex1</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">count2</span><span class="p">)</span>
+<a name="ln-488"></a>        <span class="n">s2</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">=</span> <span class="n">s2</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">+</span> <span class="n">s1</span><span class="p">(:)</span><span class="o">*</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="n">omega_l</span><span class="p">(</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">omega_a</span> <span class="o">+</span> <span class="n">gamma_p</span><span class="p">)</span><span class="o">*</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">zfactor</span>
+<a name="ln-489"></a>
+<a name="ln-490"></a>      <span class="n">enddo</span>
+<a name="ln-491"></a>
+<a name="ln-492"></a>   <span class="k">end do</span>
+<a name="ln-493"></a>
+<a name="ln-494"></a><span class="k">   do </span><span class="n">ilaserE</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">elaser_num</span>
+<a name="ln-495"></a>    <span class="c">!! * For each laser energy input, increment the outermost sum that will end up being</span>
+<a name="ln-496"></a>    <span class="c">!!   \(\sum e^{\frac{-\gamma+iE_L-iE_a}{\hbar}x}\)</span>
+<a name="ln-497"></a>    <span class="c">!!   which is the portion of equation 30 that depends on \(x\) multiplied by the </span>
+<a name="ln-498"></a>    <span class="c">!!   inner sums over \(y\) and \(t\)</span>
+<a name="ln-499"></a>
+<a name="ln-500"></a>     <span class="n">s3</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">=</span> <span class="n">s3</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">+</span> <span class="n">s2</span><span class="p">(:,</span><span class="n">ilaserE</span><span class="p">)</span><span class="o">*</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="o">-</span><span class="n">I</span><span class="o">*</span><span class="n">omega_l</span><span class="p">(</span><span class="n">ilaserE</span><span class="p">)</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="n">omega_a</span> <span class="o">+</span> <span class="n">gamma_p</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+<a name="ln-501"></a>   
+<a name="ln-502"></a>   <span class="n">enddo</span>
+<a name="ln-503"></a><span class="n">enddo</span>
+<a name="ln-504"></a>
+<a name="ln-505"></a><span class="k">deallocate</span><span class="p">(</span><span class="n">omega_j</span><span class="p">,</span> <span class="n">omega_nj</span><span class="p">,</span> <span class="n">omega_s</span><span class="p">,</span> <span class="n">omega_l</span><span class="p">)</span>
+<a name="ln-506"></a><span class="k">deallocate</span><span class="p">(</span><span class="n">Sj</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">hbarOmegaBeta</span><span class="p">,</span> <span class="n">FjFractionFactor</span><span class="p">)</span>
+<a name="ln-507"></a><span class="k">deallocate</span><span class="p">(</span><span class="n">Fj</span><span class="p">,</span> <span class="n">expForFj</span><span class="p">,</span> <span class="n">expX</span><span class="p">,</span> <span class="n">expY</span><span class="p">,</span> <span class="n">expT</span><span class="p">,</span> <span class="n">domega</span><span class="p">)</span>
+<a name="ln-508"></a><span class="k">deallocate</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">TFractionFactor</span><span class="p">,</span> <span class="n">partitionFunction</span><span class="p">,</span> <span class="n">ex1</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">count2</span><span class="p">)</span>
+<a name="ln-509"></a>
 <a name="ln-510"></a>
-<a name="ln-511"></a>
-<a name="ln-512"></a><span class="k">call </span><span class="n">MPI_Barrier</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span><span class="n">ierror</span><span class="p">)</span> 
-<a name="ln-513"></a><span class="k">call </span><span class="n">MPI_Reduce</span><span class="p">(</span> <span class="n">s3</span><span class="p">,</span> <span class="n">global_sum</span><span class="p">,</span> <span class="n">eshift_num</span><span class="o">*</span><span class="n">elaser_num</span><span class="p">,</span> <span class="n">MPI_DOUBLE_COMPLEX</span><span class="p">,</span> <span class="n">MPI_SUM</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
-<a name="ln-514"></a>  <span class="c">!! * Once all sums are complete on each process, combine</span>
-<a name="ln-515"></a>  <span class="c">!!   the results into `global_sum`</span>
-<a name="ln-516"></a>
-<a name="ln-517"></a><span class="k">deallocate</span><span class="p">(</span><span class="n">s3</span><span class="p">)</span>
-<a name="ln-518"></a>
-<a name="ln-519"></a><span class="k">if</span><span class="p">(</span><span class="n">id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
-<a name="ln-520"></a>  <span class="c">!! * If root process, output the calculated</span>
-<a name="ln-521"></a>  <span class="c">!!   intensity for each laser energy and energy</span>
-<a name="ln-522"></a>  <span class="c">!!   shift</span>
-<a name="ln-523"></a>
-<a name="ln-524"></a>  <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s2">&quot;calculation finalized&quot;</span>
-<a name="ln-525"></a>
-<a name="ln-526"></a>  <span class="k">do </span><span class="n">ilaserE</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">elaser_num</span>
-<a name="ln-527"></a>    <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="s2">&quot;Laser energy: &quot;</span><span class="p">,</span> <span class="n">elaser</span><span class="p">(</span><span class="n">ilaserE</span><span class="p">)</span>
-<a name="ln-528"></a>    
-<a name="ln-529"></a>    <span class="k">do </span><span class="n">ishiftE</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">eshift_num</span> 
-<a name="ln-530"></a>      <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">eshift</span><span class="p">(</span><span class="n">iShiftE</span><span class="p">),</span> <span class="n">eshift</span><span class="p">(</span><span class="n">iShiftE</span><span class="p">)</span><span class="o">*</span><span class="n">mevtocm</span><span class="p">,</span> <span class="n">intStep</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="kt">Real</span><span class="p">(</span><span class="n">global_sum</span><span class="p">(</span><span class="n">iShiftE</span><span class="p">,</span><span class="n">ilaserE</span><span class="p">))</span><span class="o">*</span><span class="mf">2.0</span>
-<a name="ln-531"></a>        <span class="c">! When outputting the global sum, multiply by \(\Delta x\Delta y\Delta t\) to make it </span>
-<a name="ln-532"></a>        <span class="c">! equivalent to the integral. Also multiply by 2 for some reason?</span>
-<a name="ln-533"></a>        <span class="c">!! @todo Figure out why only multiply `global_sum` by 2 and not \(\dfrac{\kappa^{\prime}}{2\pi}\) @endtodo</span>
-<a name="ln-534"></a>    <span class="n">enddo</span>
-<a name="ln-535"></a>
-<a name="ln-536"></a>  <span class="n">enddo</span>
-<a name="ln-537"></a>
-<a name="ln-538"></a>  <span class="k">deallocate</span><span class="p">(</span><span class="n">eshift</span><span class="p">,</span> <span class="n">elaser</span><span class="p">)</span>
-<a name="ln-539"></a>
-<a name="ln-540"></a><span class="n">endif</span>
+<a name="ln-511"></a><span class="k">call </span><span class="n">MPI_Barrier</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span><span class="n">ierror</span><span class="p">)</span> 
+<a name="ln-512"></a><span class="k">call </span><span class="n">MPI_Reduce</span><span class="p">(</span> <span class="n">s3</span><span class="p">,</span> <span class="n">global_sum</span><span class="p">,</span> <span class="n">eshift_num</span><span class="o">*</span><span class="n">elaser_num</span><span class="p">,</span> <span class="n">MPI_DOUBLE_COMPLEX</span><span class="p">,</span> <span class="n">MPI_SUM</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
+<a name="ln-513"></a>  <span class="c">!! * Once all sums are complete on each process, combine</span>
+<a name="ln-514"></a>  <span class="c">!!   the results into `global_sum`</span>
+<a name="ln-515"></a>
+<a name="ln-516"></a><span class="k">deallocate</span><span class="p">(</span><span class="n">s3</span><span class="p">)</span>
+<a name="ln-517"></a>
+<a name="ln-518"></a><span class="k">if</span><span class="p">(</span><span class="n">id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
+<a name="ln-519"></a>  <span class="c">!! * If root process, output the calculated</span>
+<a name="ln-520"></a>  <span class="c">!!   intensity for each laser energy and energy</span>
+<a name="ln-521"></a>  <span class="c">!!   shift</span>
+<a name="ln-522"></a>
+<a name="ln-523"></a>  <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s2">&quot;calculation finalized&quot;</span>
+<a name="ln-524"></a>
+<a name="ln-525"></a>  <span class="k">do </span><span class="n">ilaserE</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">elaser_num</span>
+<a name="ln-526"></a>    <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="s2">&quot;Laser energy: &quot;</span><span class="p">,</span> <span class="n">elaser</span><span class="p">(</span><span class="n">ilaserE</span><span class="p">)</span>
+<a name="ln-527"></a>    
+<a name="ln-528"></a>    <span class="k">do </span><span class="n">ishiftE</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">eshift_num</span> 
+<a name="ln-529"></a>      <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">eshift</span><span class="p">(</span><span class="n">iShiftE</span><span class="p">),</span> <span class="n">eshift</span><span class="p">(</span><span class="n">iShiftE</span><span class="p">)</span><span class="o">*</span><span class="n">mevtocm</span><span class="p">,</span> <span class="n">intStep</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="kt">Real</span><span class="p">(</span><span class="n">global_sum</span><span class="p">(</span><span class="n">iShiftE</span><span class="p">,</span><span class="n">ilaserE</span><span class="p">))</span><span class="o">*</span><span class="mf">2.0</span>
+<a name="ln-530"></a>        <span class="c">! When outputting the global sum, multiply by \(\Delta x\Delta y\Delta t\) to make it </span>
+<a name="ln-531"></a>        <span class="c">! equivalent to the integral. Also multiply by 2 for some reason?</span>
+<a name="ln-532"></a>        <span class="c">!! @todo Figure out why only multiply `global_sum` by 2 and not \(\dfrac{\kappa^{\prime}}{2\pi}\) @endtodo</span>
+<a name="ln-533"></a>    <span class="n">enddo</span>
+<a name="ln-534"></a>
+<a name="ln-535"></a>  <span class="n">enddo</span>
+<a name="ln-536"></a>
+<a name="ln-537"></a>  <span class="k">deallocate</span><span class="p">(</span><span class="n">eshift</span><span class="p">,</span> <span class="n">elaser</span><span class="p">)</span>
+<a name="ln-538"></a>
+<a name="ln-539"></a><span class="n">endif</span>
+<a name="ln-540"></a>
 <a name="ln-541"></a>
-<a name="ln-542"></a>
-<a name="ln-543"></a><span class="k">deallocate</span><span class="p">(</span><span class="n">global_sum</span><span class="p">)</span>
-<a name="ln-544"></a>
-<a name="ln-545"></a><span class="k">call </span><span class="n">MPI_FINALIZE</span><span class="p">(</span><span class="n">ierror</span><span class="p">)</span>
-<a name="ln-546"></a>
-<a name="ln-547"></a><span class="k">end program </span><span class="n">ramanIntensity</span>
-<a name="ln-548"></a>
-<a name="ln-549"></a>         
+<a name="ln-542"></a><span class="k">deallocate</span><span class="p">(</span><span class="n">global_sum</span><span class="p">)</span>
+<a name="ln-543"></a>
+<a name="ln-544"></a><span class="k">call </span><span class="n">MPI_FINALIZE</span><span class="p">(</span><span class="n">ierror</span><span class="p">)</span>
+<a name="ln-545"></a>
+<a name="ln-546"></a><span class="k">end program </span><span class="n">ramanIntensity</span>
+<a name="ln-547"></a>
+<a name="ln-548"></a>         
 </pre></div>
 
     </section>

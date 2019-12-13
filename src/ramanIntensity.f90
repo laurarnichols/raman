@@ -411,9 +411,8 @@ do iX = interval(1), interval(2)
       theta(:) = hbarOmegaBeta(:) + I*domega(:) * ( x - y ) 
       TFractionFactor(:) = exp(0.5*theta(:)) / ( exp(theta(:)) - 1 )        
       zfactor = product(TFractionFactor(:)/partitionFunction(:))
-        !! * Calculate `zfactor` which includes the fraction factor
-        !!   \(\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\)
-        !!   and the partition function
+        !! * Calculate `zfactor` which is
+        !!   \(\dfrac{1}{Z}\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\)
 
 
       theta(:) = domega(:)*( x - y ) - I*hbarOmegaBeta(:)
