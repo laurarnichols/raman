@@ -20,6 +20,32 @@ module para
 end module
 
 program ramanIntensity
+  !! The program calculates the normalized Raman intensity
+  !! at given energy shifts for given laser energies.
+  !!
+  !! Input variables:
+  !!  * `nIntSteps` -- number of integration steps
+  !!  * `limit` -- limit to truncate the integration at
+  !!  * `gamma_p` -- the lifetime \(\gamma\) of the electronic 
+  !!     state \(|n\rangle\)
+  !!  * `alpha` -- smearing parameter
+  !!  * `elevel` -- energy \(E_a\) of the intermediate state
+  !!  * `elaser(elaser_num)` -- laser energies
+  !!  * `eshift(eshift_num)` -- energy shifts to calculate 
+  !!    intensities at
+  !!  * `Sj` -- \(S_j = \dfrac{\omega_j^2}{2\hbar}\delta q_j^2\)
+  !!  * `omega_j` -- phonon frequencies \(\omega_j\) in the 
+  !!     ground state \(|0\rangle\)
+  !!  * `omega_{nj}` -- phonon frequencies \(omega_{nj}\) in
+  !!    the electronic states \(|n\rangle\)
+  !!
+  !! Output variables:
+  !!  * `elaser` -- same laser energies from input
+  !!  * `eshift` (meV) -- same energy shifts from input
+  !!  * `eshift` (cm\(^{-1}\)) -- converted energy shifts
+  !!  * Normalized Raman intensity for each laser energy and 
+  !!    energy shift
+
 use para
 use mpi
 
@@ -67,9 +93,11 @@ real(kind = dp) :: count1
   !! Count used to set interval limits
   !! for each process
 real(kind = dp) :: elevel
-  !! \(E_a\) or \(E_n\)
+  !! Energy \(E_a\) of the intermediate state
 real(kind = dp) :: gamma_p
-  !! \(\gamma/\hbar\)
+  !! The lifetime of the electronic state 
+  !! \(|n\rangle\). Input as \(\gamma\) and
+  !! changed to \(\gamma/\hbar\)
 real(kind = dp) :: limit
   !! Limit to truncate integration at since
   !! the integrand is exponentially decaying

@@ -350,7 +350,31 @@
     </div>
     
 
-    <ul>
+    <p>The program calculates the normalized Raman intensity
+ at given energy shifts for given laser energies.</p>
+<p>Input variables:
+  * <code>nIntSteps</code> -- number of integration steps
+  * <code>limit</code> -- limit to truncate the integration at
+  * <code>gamma_p</code> -- the lifetime <script type="math/tex">\gamma</script> of the electronic 
+     state <script type="math/tex">|n\rangle</script>
+  * <code>alpha</code> -- smearing parameter
+  * <code>elevel</code> -- energy <script type="math/tex">E_a</script> of the intermediate state
+  * <code>elaser(elaser_num)</code> -- laser energies
+  * <code>eshift(eshift_num)</code> -- energy shifts to calculate 
+    intensities at
+  * <code>Sj</code> -- <script type="math/tex">S_j = \dfrac{\omega_j^2}{2\hbar}\delta q_j^2</script>
+  * <code>omega_j</code> -- phonon frequencies <script type="math/tex">\omega_j</script> in the 
+     ground state <script type="math/tex">|0\rangle</script>
+  * <code>omega_{nj}</code> -- phonon frequencies <script type="math/tex">omega_{nj}</script> in
+    the electronic states <script type="math/tex">|n\rangle</script>
+</p>
+<p>Output variables:
+  * <code>elaser</code> -- same laser energies from input
+  * <code>eshift</code> (meV) -- same energy shifts from input
+  * <code>eshift</code> (cm<script type="math/tex">^{-1}</script>) -- converted energy shifts
+  * Normalized Raman intensity for each laser energy and 
+    energy shift</p>
+<ul>
 <li>
 <p>Initialize MPI pool</p>
 </li>
@@ -1044,9 +1068,7 @@
   
   
   <td></td><td>::</td>
-  <td><strong>elevel</strong></td><td></td><td></td><td><p>
-<script type="math/tex">E_a</script> or <script type="math/tex">E_n</script>
-</p></td>
+  <td><strong>elevel</strong></td><td></td><td></td><td><p>Energy <script type="math/tex">E_a</script> of the intermediate state</p></td>
   
 </tr>
 
@@ -1060,8 +1082,9 @@
   
   
   <td></td><td>::</td>
-  <td><strong>gamma_p</strong></td><td></td><td></td><td><p>
-<script type="math/tex">\gamma/\hbar</script>
+  <td><strong>gamma_p</strong></td><td></td><td></td><td><p>The lifetime of the electronic state 
+ <script type="math/tex">|n\rangle</script>. Input as <script type="math/tex">\gamma</script> and
+ changed to <script type="math/tex">\gamma/\hbar</script>
 </p></td>
   
 </tr>
@@ -1670,6 +1693,32 @@
     <section>
     <h2 id="src">Source Code</h2>
     <div class="highlight"><pre><span></span><span class="k">program </span><span class="n">ramanIntensity</span>
+  <span class="c">!! The program calculates the normalized Raman intensity</span>
+  <span class="c">!! at given energy shifts for given laser energies.</span>
+  <span class="c">!!</span>
+  <span class="c">!! Input variables:</span>
+  <span class="c">!!  * `nIntSteps` -- number of integration steps</span>
+  <span class="c">!!  * `limit` -- limit to truncate the integration at</span>
+  <span class="c">!!  * `gamma_p` -- the lifetime \(\gamma\) of the electronic </span>
+  <span class="c">!!     state \(|n\rangle\)</span>
+  <span class="c">!!  * `alpha` -- smearing parameter</span>
+  <span class="c">!!  * `elevel` -- energy \(E_a\) of the intermediate state</span>
+  <span class="c">!!  * `elaser(elaser_num)` -- laser energies</span>
+  <span class="c">!!  * `eshift(eshift_num)` -- energy shifts to calculate </span>
+  <span class="c">!!    intensities at</span>
+  <span class="c">!!  * `Sj` -- \(S_j = \dfrac{\omega_j^2}{2\hbar}\delta q_j^2\)</span>
+  <span class="c">!!  * `omega_j` -- phonon frequencies \(\omega_j\) in the </span>
+  <span class="c">!!     ground state \(|0\rangle\)</span>
+  <span class="c">!!  * `omega_{nj}` -- phonon frequencies \(omega_{nj}\) in</span>
+  <span class="c">!!    the electronic states \(|n\rangle\)</span>
+  <span class="c">!!</span>
+  <span class="c">!! Output variables:</span>
+  <span class="c">!!  * `elaser` -- same laser energies from input</span>
+  <span class="c">!!  * `eshift` (meV) -- same energy shifts from input</span>
+  <span class="c">!!  * `eshift` (cm\(^{-1}\)) -- converted energy shifts</span>
+  <span class="c">!!  * Normalized Raman intensity for each laser energy and </span>
+  <span class="c">!!    energy shift</span>
+
 <span class="k">use </span><span class="n">para</span>
 <span class="k">use </span><span class="n">mpi</span>
 
@@ -1717,9 +1766,11 @@
   <span class="c">!! Count used to set interval limits</span>
   <span class="c">!! for each process</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">elevel</span>
-  <span class="c">!! \(E_a\) or \(E_n\)</span>
+  <span class="c">!! Energy \(E_a\) of the intermediate state</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">gamma_p</span>
-  <span class="c">!! \(\gamma/\hbar\)</span>
+  <span class="c">!! The lifetime of the electronic state </span>
+  <span class="c">!! \(|n\rangle\). Input as \(\gamma\) and</span>
+  <span class="c">!! changed to \(\gamma/\hbar\)</span>
 <span class="kt">real</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">limit</span>
   <span class="c">!! Limit to truncate integration at since</span>
   <span class="c">!! the integrand is exponentially decaying</span>
