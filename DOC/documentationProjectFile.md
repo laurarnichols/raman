@@ -31,7 +31,8 @@ git clone https://github.com/laurarnichols/raman.git
 ```
 
 * Change into the `raman` directory
-* Compile using [ADD DIRECTIONS ONCE COMPILE]
+* Compile using `mpif90 ramanIntensity.f90 -o ramanIntensity.x` or
+  some equivalent fortran mpi compiler
 
 ## Documentation
 
@@ -42,7 +43,34 @@ This documentation is in progress. Please report any issues you find.
 @endnote
 
 ## How to Run
-I don't know how to run yet.
+To run this code, use the Quantum Espresso method of input and output:
+```
+./ramanIntensity.x < input.in > output.out
+```
   
 ## Input and Output
 
+Input variables:
+
+  * `nIntSteps` -- number of integration steps
+  * `limit` -- limit to truncate the integration at
+  * `gamma_p` -- the lifetime \(\gamma\) of the electronic 
+     state \(|n\rangle\)
+  * `alpha` -- smearing parameter
+  * `elevel` -- energy \(E_a\) of the intermediate state
+  * `elaser(elaser_num)` -- laser energies
+  * `eshift(eshift_num)` -- energy shifts to calculate 
+    intensities at
+  * `Sj` -- \(S_j = \dfrac{\omega_j^2}{2\hbar}\delta q_j^2\)
+  * `omega_j` -- phonon frequencies \(\omega_j\) in the 
+     ground state \(|0\rangle\)
+  * `omega_{nj}` -- phonon frequencies \(\omega_{nj}\) in
+    the electronic states \(|n\rangle\)
+
+Output variables:
+
+  * `elaser` -- same laser energies from input
+  * `eshift` (meV) -- same energy shifts from input
+  * `eshift` (cm\(^{-1}\)) -- converted energy shifts
+  * Normalized Raman intensity for each laser energy and 
+    energy shift
