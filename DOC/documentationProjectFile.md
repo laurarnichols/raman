@@ -1,7 +1,7 @@
 ---
 project: Raman Intensities
 project_gitub: https://github.com/laurarnichols/raman.git
-summary: This program calculates Raman intensities
+summary: This program calculates the normalized Raman intensity at given energy shifts for given laser energies
 src_dir: ../src
 output_dir:./documentation
 media_dir:./media
