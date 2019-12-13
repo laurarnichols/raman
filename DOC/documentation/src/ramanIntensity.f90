@@ -37,7 +37,7 @@ program ramanIntensity
   !!  * `Sj` -- \(S_j = \dfrac{\omega_j^2}{2\hbar}\delta q_j^2\)
   !!  * `omega_j` -- phonon frequencies \(\omega_j\) in the 
   !!     ground state \(|0\rangle\)
-  !!  * `omega_{nj}` -- phonon frequencies \(omega_{nj}\) in
+  !!  * `omega_{nj}` -- phonon frequencies \(\omega_{nj}\) in
   !!    the electronic states \(|n\rangle\)
   !!
   !! Output variables:
@@ -215,7 +215,7 @@ scalingFactor = 1.0d14
   !!   results.
 nExpSteps = 100000
   !! * Define the number of exponentials to pre-calculate in order
-  !!   to do the linear interpolation of \(e^(i\omega_j t)\)
+  !!   to do the linear interpolation of \(e^{i\omega_j t}\)
 
 if(id == 0) then
   !! * If root process

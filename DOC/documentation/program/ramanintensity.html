@@ -369,7 +369,7 @@
 <li><code>omega_j</code> -- phonon frequencies <script type="math/tex">\omega_j</script> in the 
      ground state <script type="math/tex">|0\rangle</script>
 </li>
-<li><code>omega_{nj}</code> -- phonon frequencies <script type="math/tex">omega_{nj}</script> in
+<li><code>omega_{nj}</code> -- phonon frequencies <script type="math/tex">\omega_{nj}</script> in
     the electronic states <script type="math/tex">|n\rangle</script>
 </li>
 </ul>
@@ -394,7 +394,7 @@
 </li>
 <li>
 <p>Define the number of exponentials to pre-calculate in order
-   to do the linear interpolation of <script type="math/tex">e^(i\omega_j t)</script>
+   to do the linear interpolation of <script type="math/tex">e^{i\omega_j t}</script>
 </p>
 </li>
 <li>
@@ -1718,7 +1718,7 @@
   <span class="c">!!  * `Sj` -- \(S_j = \dfrac{\omega_j^2}{2\hbar}\delta q_j^2\)</span>
   <span class="c">!!  * `omega_j` -- phonon frequencies \(\omega_j\) in the </span>
   <span class="c">!!     ground state \(|0\rangle\)</span>
-  <span class="c">!!  * `omega_{nj}` -- phonon frequencies \(omega_{nj}\) in</span>
+  <span class="c">!!  * `omega_{nj}` -- phonon frequencies \(\omega_{nj}\) in</span>
   <span class="c">!!    the electronic states \(|n\rangle\)</span>
   <span class="c">!!</span>
   <span class="c">!! Output variables:</span>
@@ -1896,7 +1896,7 @@
   <span class="c">!!   results.</span>
 <span class="n">nExpSteps</span> <span class="o">=</span> <span class="mi">100000</span>
   <span class="c">!! * Define the number of exponentials to pre-calculate in order</span>
-  <span class="c">!!   to do the linear interpolation of \(e^(i\omega_j t)\)</span>
+  <span class="c">!!   to do the linear interpolation of \(e^{i\omega_j t}\)</span>
 
 <span class="k">if</span><span class="p">(</span><span class="n">id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
   <span class="c">!! * If root process</span>
