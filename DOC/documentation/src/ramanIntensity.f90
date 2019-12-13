@@ -113,7 +113,7 @@ real(kind = dp) :: omega_a
 real(kind = dp) :: intStep
   !! Step size for the integration
 real(kind = dp) :: expStep
-  !! Step to go from 0 to \(\2\pi) in `nExpSteps`
+  !! Step to go from 0 to \(2\pi\) in `nExpSteps`
 real(kind = dp) :: scalingFactor
   !! Factor to scale down inputs to ensure that
   !! integration scale is small enough to give 
