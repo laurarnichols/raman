@@ -571,7 +571,13 @@
    shift</p>
 </li>
 </ul>
-<p></p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out why only multiply <code>global_sum</code> by 2 and not <script type="math/tex">\dfrac{\kappa^{\prime}}{2\pi}</script> </p></div>
+<p></p><div class="alert alert-info" role="alert"><h4>Note</h4><p>The final intensity is the <code>global_sum</code> multiplied by 2*<script type="math/tex">\Delta x\Delta y\Delta t</script>.
+  The step sizes convert the sum into an integral and the 2 accounts for the fact that
+  we only integrated over the positive half of the total time integral. We do not multiply
+  by <script type="math/tex">\dfrac{\kappa^{\prime}}{2\pi} = \dfrac{|\beta_{1n}\beta_{2n}|^2}{\hbar\sum_ie^{-\beta\Theta_i}}</script>
+  because there are many unknown parameters and we only care about the normalized signal
+  intensity.
+ </p></div>
 <p>
     
     <br>
@@ -2207,7 +2213,14 @@
       <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="n">eshift</span><span class="p">(</span><span class="n">iShiftE</span><span class="p">),</span> <span class="n">eshift</span><span class="p">(</span><span class="n">iShiftE</span><span class="p">)</span><span class="o">*</span><span class="n">mevtocm</span><span class="p">,</span> <span class="n">intStep</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="kt">Real</span><span class="p">(</span><span class="n">global_sum</span><span class="p">(</span><span class="n">iShiftE</span><span class="p">,</span><span class="n">ilaserE</span><span class="p">))</span><span class="o">*</span><span class="mf">2.0</span>
         <span class="c">! When outputting the global sum, multiply by \(\Delta x\Delta y\Delta t\) to make it </span>
         <span class="c">! equivalent to the integral. Also multiply by 2 for some reason?</span>
-        <span class="c">!! @todo Figure out why only multiply `global_sum` by 2 and not \(\dfrac{\kappa^{\prime}}{2\pi}\) @endtodo</span>
+        <span class="c">!! @note </span>
+        <span class="c">!!  The final intensity is the `global_sum` multiplied by 2*\(\Delta x\Delta y\Delta t\).</span>
+        <span class="c">!!  The step sizes convert the sum into an integral and the 2 accounts for the fact that</span>
+        <span class="c">!!  we only integrated over the positive half of the total time integral. We do not multiply</span>
+        <span class="c">!!  by \(\dfrac{\kappa^{\prime}}{2\pi} = \dfrac{|\beta_{1n}\beta_{2n}|^2}{\hbar\sum_ie^{-\beta\Theta_i}}\)</span>
+        <span class="c">!!  because there are many unknown parameters and we only care about the normalized signal</span>
+        <span class="c">!!  intensity.</span>
+        <span class="c">!! @endnote</span>
     <span class="n">enddo</span>
 
   <span class="n">enddo</span>

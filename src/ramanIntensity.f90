@@ -528,7 +528,14 @@ if(id == 0) then
       write(*,*) eshift(iShiftE), eshift(iShiftE)*mevtocm, intStep**3*Real(global_sum(iShiftE,ilaserE))*2.0
         ! When outputting the global sum, multiply by \(\Delta x\Delta y\Delta t\) to make it 
         ! equivalent to the integral. Also multiply by 2 for some reason?
-        !! @todo Figure out why only multiply `global_sum` by 2 and not \(\dfrac{\kappa^{\prime}}{2\pi}\) @endtodo
+        !! @note 
+        !!  The final intensity is the `global_sum` multiplied by 2*\(\Delta x\Delta y\Delta t\).
+        !!  The step sizes convert the sum into an integral and the 2 accounts for the fact that
+        !!  we only integrated over the positive half of the total time integral. We do not multiply
+        !!  by \(\dfrac{\kappa^{\prime}}{2\pi} = \dfrac{|\beta_{1n}\beta_{2n}|^2}{\hbar\sum_ie^{-\beta\Theta_i}}\)
+        !!  because there are many unknown parameters and we only care about the normalized signal
+        !!  intensity.
+        !! @endnote
     enddo
 
   enddo
