@@ -285,7 +285,7 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-theta">theta</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor1">zfactor1</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-tfractionfactor">TFractionFactor</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-partitionfunction">partitionFunction</a>
       
@@ -676,7 +676,7 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-theta">theta</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor1">zfactor1</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-tfractionfactor">TFractionFactor</a>
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-partitionfunction">partitionFunction</a>
       
@@ -1613,7 +1613,7 @@
   <td>allocatable</td><td>::</td>
   <td><strong>theta</strong>(:)</td><td></td><td></td><td><p>Serves as the argument for the sines in the fraction
  factor <code>FjFractionFactor</code> and the exponentials in
- <code>zfactor1</code> </p></td>
+ <code>TFractionFactor</code> </p></td>
   
 </tr>
 
@@ -1623,11 +1623,11 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-zfactor1"></span>complex(kind=dp),</td>
+  <td><span class="anchor" id="variable-tfractionfactor"></span>complex(kind=dp),</td>
   
   
   <td>allocatable</td><td>::</td>
-  <td><strong>zfactor1</strong>(:)</td><td></td><td></td><td><p>Fraction factor in equation 42</p></td>
+  <td><strong>TFractionFactor</strong>(:)</td><td></td><td></td><td><p>Fraction factor in equation 42</p></td>
   
 </tr>
 
@@ -1809,8 +1809,8 @@
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">theta</span><span class="p">(:)</span>
   <span class="c">!! Serves as the argument for the sines in the fraction</span>
   <span class="c">!! factor `FjFractionFactor` and the exponentials in</span>
-  <span class="c">!! `zfactor1` </span>
-<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">zfactor1</span><span class="p">(:)</span>
+  <span class="c">!! `TFractionFactor` </span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">TFractionFactor</span><span class="p">(:)</span>
   <span class="c">!! Fraction factor in equation 42</span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">partitionFunction</span><span class="p">(:)</span>
   <span class="c">!! Partition function \(Z = \dfrac{e^{\frac{1}{2}\beta\hbar\omega_j}}{e^{\beta\hbar\omega_j} - 1}\)</span>
@@ -1862,7 +1862,7 @@
 <span class="k">allocate</span><span class="p">(</span><span class="n">s1</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s2</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">,</span><span class="n">elaser_num</span><span class="p">),</span> <span class="n">s3</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">,</span><span class="n">elaser_num</span><span class="p">),</span> <span class="n">global_sum</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">,</span><span class="n">elaser_num</span><span class="p">))</span>
 <span class="k">allocate</span><span class="p">(</span><span class="n">Sj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">hbarOmegaBeta</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">nmode</span><span class="p">))</span>
 <span class="k">allocate</span><span class="p">(</span><span class="n">Fj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expForFj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expT</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expX</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expY</span><span class="p">(</span><span class="n">nmode</span><span class="p">))</span>
-<span class="k">allocate</span><span class="p">(</span><span class="n">domega</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">theta</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">zfactor1</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">partitionFunction</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">ex1</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">nExpSteps</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">count2</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="k">allocate</span><span class="p">(</span><span class="n">domega</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">theta</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">TFractionFactor</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">partitionFunction</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">ex1</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">nExpSteps</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">count2</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
 
 <span class="n">expStep</span> <span class="o">=</span> <span class="n">tpi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">nExpSteps</span><span class="p">)</span>
   <span class="c">!! * Calculate the step size for the exponential pre-calculation</span>
@@ -2026,8 +2026,8 @@
       
 
       <span class="n">theta</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">hbarOmegaBeta</span><span class="p">(:)</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="n">domega</span><span class="p">(:)</span> <span class="o">*</span> <span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> 
-      <span class="n">zfactor1</span><span class="p">(:)</span> <span class="o">=</span> <span class="nb">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">theta</span><span class="p">(:))</span> <span class="o">/</span> <span class="p">(</span> <span class="nb">exp</span><span class="p">(</span><span class="n">theta</span><span class="p">(:))</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>        
-      <span class="n">zfactor</span> <span class="o">=</span> <span class="nb">product</span><span class="p">(</span><span class="n">zfactor1</span><span class="p">(:)</span><span class="o">/</span><span class="n">partitionFunction</span><span class="p">(:))</span>
+      <span class="n">TFractionFactor</span><span class="p">(:)</span> <span class="o">=</span> <span class="nb">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">theta</span><span class="p">(:))</span> <span class="o">/</span> <span class="p">(</span> <span class="nb">exp</span><span class="p">(</span><span class="n">theta</span><span class="p">(:))</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>        
+      <span class="n">zfactor</span> <span class="o">=</span> <span class="nb">product</span><span class="p">(</span><span class="n">TFractionFactor</span><span class="p">(:)</span><span class="o">/</span><span class="n">partitionFunction</span><span class="p">(:))</span>
         <span class="c">!! * Calculate `zfactor` which includes the fraction factor</span>
         <span class="c">!!   \(\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\)</span>
         <span class="c">!!   and the partition function</span>
@@ -2123,7 +2123,7 @@
 <span class="k">deallocate</span><span class="p">(</span><span class="n">omega_j</span><span class="p">,</span> <span class="n">omega_nj</span><span class="p">,</span> <span class="n">omega_s</span><span class="p">,</span> <span class="n">omega_l</span><span class="p">)</span>
 <span class="k">deallocate</span><span class="p">(</span><span class="n">Sj</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">hbarOmegaBeta</span><span class="p">,</span> <span class="n">FjFractionFactor</span><span class="p">)</span>
 <span class="k">deallocate</span><span class="p">(</span><span class="n">Fj</span><span class="p">,</span> <span class="n">expForFj</span><span class="p">,</span> <span class="n">expX</span><span class="p">,</span> <span class="n">expY</span><span class="p">,</span> <span class="n">expT</span><span class="p">,</span> <span class="n">domega</span><span class="p">)</span>
-<span class="k">deallocate</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">zfactor1</span><span class="p">,</span> <span class="n">partitionFunction</span><span class="p">,</span> <span class="n">ex1</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">count2</span><span class="p">)</span>
+<span class="k">deallocate</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">TFractionFactor</span><span class="p">,</span> <span class="n">partitionFunction</span><span class="p">,</span> <span class="n">ex1</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">count2</span><span class="p">)</span>
 
 
 <span class="k">call </span><span class="n">MPI_Barrier</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span><span class="n">ierror</span><span class="p">)</span> 

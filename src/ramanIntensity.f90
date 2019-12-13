@@ -159,8 +159,8 @@ complex(kind = dp), allocatable :: s3(:,:)
 complex(kind = dp), allocatable :: theta(:)
   !! Serves as the argument for the sines in the fraction
   !! factor `FjFractionFactor` and the exponentials in
-  !! `zfactor1` 
-complex(kind = dp), allocatable :: zfactor1(:)
+  !! `TFractionFactor` 
+complex(kind = dp), allocatable :: TFractionFactor(:)
   !! Fraction factor in equation 42
 complex(kind = dp), allocatable :: partitionFunction(:)
   !! Partition function \(Z = \dfrac{e^{\frac{1}{2}\beta\hbar\omega_j}}{e^{\beta\hbar\omega_j} - 1}\)
@@ -212,7 +212,7 @@ allocate(eshift(eshift_num), elaser(elaser_num), omega_s(eshift_num), omega_l(el
 allocate(s1(eshift_num), s2(eshift_num,elaser_num), s3(eshift_num,elaser_num), global_sum(eshift_num,elaser_num))
 allocate(Sj(nmode), omega_j(nmode), omega_nj(nmode), hbarOmegaBeta(nmode), FjFractionFactor(nmode))
 allocate(Fj(nmode), expForFj(nmode), expT(nmode), expX(nmode), expY(nmode))
-allocate(domega(nmode), theta(nmode), zfactor1(nmode), partitionFunction(nmode), ex1(0:nExpSteps+1), interval(2), count2(2))
+allocate(domega(nmode), theta(nmode), TFractionFactor(nmode), partitionFunction(nmode), ex1(0:nExpSteps+1), interval(2), count2(2))
 
 expStep = tpi/float(nExpSteps)
   !! * Calculate the step size for the exponential pre-calculation
@@ -376,8 +376,8 @@ do iX = interval(1), interval(2)
       
 
       theta(:) = hbarOmegaBeta(:) + I*domega(:) * ( x - y ) 
-      zfactor1(:) = exp(0.5*theta(:)) / ( exp(theta(:)) - 1 )        
-      zfactor = product(zfactor1(:)/partitionFunction(:))
+      TFractionFactor(:) = exp(0.5*theta(:)) / ( exp(theta(:)) - 1 )        
+      zfactor = product(TFractionFactor(:)/partitionFunction(:))
         !! * Calculate `zfactor` which includes the fraction factor
         !!   \(\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\)
         !!   and the partition function
@@ -473,7 +473,7 @@ enddo
 deallocate(omega_j, omega_nj, omega_s, omega_l)
 deallocate(Sj, s1, s2, hbarOmegaBeta, FjFractionFactor)
 deallocate(Fj, expForFj, expX, expY, expT, domega)
-deallocate(theta, zfactor1, partitionFunction, ex1, interval, count2)
+deallocate(theta, TFractionFactor, partitionFunction, ex1, interval, count2)
 
 
 call MPI_Barrier(MPI_COMM_WORLD,ierror) 
