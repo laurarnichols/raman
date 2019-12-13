@@ -23,15 +23,6 @@ program ramanIntensity
 use para
 use mpi
 
-!! In the previous version of the code, you define 
-!! `zfactor =`\(\prod\) `zfactor1*zfactor2` or
-!! `zfactor` \(=\displaystyle\prod\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\dfrac{e^{\beta\hbar\omega_j} - 1}{e^{\frac{1}{2}\beta\hbar\omega_j}}\)
-!! The \(\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\) part matches
-!! the fraction in equation 42 (the one in the picture in your email), but \(\dfrac{e^{\beta\hbar\omega_j} - 1}{e^{\frac{1}{2}\beta\hbar\omega_j}}\)
-!! doesn't match anything in the paper that I can find. Where does that come from?
-!!
-!! And sorry for not being clear. I meant why is there a negative sign in the equation `tmp_r = -phonon(imode,2)*t/tpi`?
-
 implicit none
 
 integer :: elaser_num
@@ -171,8 +162,8 @@ complex(kind = dp), allocatable :: theta(:)
   !! `zfactor1` 
 complex(kind = dp), allocatable :: zfactor1(:)
   !! Fraction factor in equation 42
-complex(kind = dp), allocatable :: zfactor2(:)
-  !! ??
+complex(kind = dp), allocatable :: partitionFunction(:)
+  !! Partition function \(Z = \dfrac{e^{\frac{1}{2}\beta\hbar\omega_j}}{e^{\beta\hbar\omega_j} - 1}\)
 
 ! Define a namelist to read in all of the input variables from the input file
 namelist /ramanInput/ temperature, nIntSteps, limit, gamma_p, alpha, elevel, &
@@ -221,7 +212,7 @@ allocate(eshift(eshift_num), elaser(elaser_num), omega_s(eshift_num), omega_l(el
 allocate(s1(eshift_num), s2(eshift_num,elaser_num), s3(eshift_num,elaser_num), global_sum(eshift_num,elaser_num))
 allocate(Sj(nmode), omega_j(nmode), omega_nj(nmode), hbarOmegaBeta(nmode), FjFractionFactor(nmode))
 allocate(Fj(nmode), expForFj(nmode), expT(nmode), expX(nmode), expY(nmode))
-allocate(domega(nmode), theta(nmode), zfactor1(nmode), zfactor2(nmode), ex1(0:nExpSteps+1), interval(2), count2(2))
+allocate(domega(nmode), theta(nmode), zfactor1(nmode), partitionFunction(nmode), ex1(0:nExpSteps+1), interval(2), count2(2))
 
 expStep = tpi/float(nExpSteps)
   !! * Calculate the step size for the exponential pre-calculation
@@ -241,6 +232,7 @@ if(id == 0) then
   !!      \(S_j\), \(\omega_j\), and \(\omega_{nj}\)
   !!    * Calculate \(\text{hbarOmegaBeta}=\hbar\omega\beta\omega_j\) for
   !!      each \(\omega_j\)
+  !!    * Calculate the partition function for each \(\omega_j\)
   !!    * Calculate \(\delta\omega_{nj} = \omega_{nj} - \omega_j\) for all
   !!      \(\omega_j\)/\(\omega_{nj}\) pair
   !!    * Read in the energy shifts and laser energies
@@ -261,6 +253,7 @@ if(id == 0) then
   end do
 
      hbarOmegaBeta(:) = (hbar*scalingFactor)*omega_j(:)*beta
+     partitionFunction(:) =exp(0.5*hbarOmegaBeta(:)) / ( exp(hbarOmegaBeta(:)) - 1 )
      
      domega(:) = omega_nj(:)  - omega_j(:)
   
@@ -284,6 +277,7 @@ call MPI_Bcast( Sj, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( omega_j, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( omega_nj, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror)
 call MPI_Bcast( hbarOmegaBeta, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror) 
+call MPI_Bcast( partitionFunction, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror) 
 call MPI_Bcast( domega, nmode, MPI_DOUBLE, 0, MPI_COMM_WORLD, ierror) 
 call MPI_Barrier(MPI_COMM_WORLD,ierror)
   !! * Broadcast input variables to other processes
@@ -383,14 +377,10 @@ do iX = interval(1), interval(2)
 
       theta(:) = hbarOmegaBeta(:) + I*domega(:) * ( x - y ) 
       zfactor1(:) = exp(0.5*theta(:)) / ( exp(theta(:)) - 1 )        
-       !! Calculate the first fraction in equation 42
-      zfactor2(:) =exp(0.5*hbarOmegaBeta(:)) / ( exp(hbarOmegaBeta(:)) - 1 )
-       !! @todo Figure out where `zfactor2` comes from @endtodo
-      zfactor = product(zfactor1(:)/zfactor2(:))
-      !zfactor = product(exp( 0.5*I*domega(:)*(x-y) ) * ( exp( hbarOmegaBeta(:) ) - 1 ) / ( exp( theta(:) ) - 1 ))
+      zfactor = product(zfactor1(:)/partitionFunction(:))
         !! * Calculate `zfactor` which includes the fraction factor
         !!   \(\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\)
-        !!   from equation 42 and something else
+        !!   and the partition function
 
 
       theta(:) = domega(:)*( x - y ) - I*hbarOmegaBeta(:)
@@ -483,7 +473,7 @@ enddo
 deallocate(omega_j, omega_nj, omega_s, omega_l)
 deallocate(Sj, s1, s2, hbarOmegaBeta, FjFractionFactor)
 deallocate(Fj, expForFj, expX, expY, expT, domega)
-deallocate(theta, zfactor1, zfactor2, ex1, interval, count2)
+deallocate(theta, zfactor1, partitionFunction, ex1, interval, count2)
 
 
 call MPI_Barrier(MPI_COMM_WORLD,ierror) 

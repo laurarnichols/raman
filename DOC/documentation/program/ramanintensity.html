@@ -124,7 +124,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="100.0% of total for programs.">209 statements</a>
+    title="100.0% of total for programs.">210 statements</a>
      </li> 
      
      
@@ -287,7 +287,7 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor1">zfactor1</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor2">zfactor2</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-partitionfunction">partitionFunction</a>
       
     </div>
   </div>
@@ -350,15 +350,7 @@
     </div>
     
 
-    <p>In the previous version of the code, you define 
- <code>zfactor =</code><script type="math/tex">\prod</script>
-<code>zfactor1*zfactor2</code> or
- <code>zfactor</code> <script type="math/tex">=\displaystyle\prod\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\dfrac{e^{\beta\hbar\omega_j} - 1}{e^{\frac{1}{2}\beta\hbar\omega_j}}</script>
- The <script type="math/tex">\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}</script> part matches
- the fraction in equation 42 (the one in the picture in your email), but <script type="math/tex">\dfrac{e^{\beta\hbar\omega_j} - 1}{e^{\frac{1}{2}\beta\hbar\omega_j}}</script>
- doesn't match anything in the paper that I can find. Where does that come from?</p>
-<p>And sorry for not being clear. I meant why is there a negative sign in the equation <code>tmp_r = -phonon(imode,2)*t/tpi</code>?</p>
-<ul>
+    <ul>
 <li>
 <p>Initialize MPI pool</p>
 </li>
@@ -404,6 +396,8 @@
 </li>
 <li>Calculate <script type="math/tex">\text{hbarOmegaBeta}=\hbar\omega\beta\omega_j</script> for
   each <script type="math/tex">\omega_j</script>
+</li>
+<li>Calculate the partition function for each <script type="math/tex">\omega_j</script>
 </li>
 <li>Calculate <script type="math/tex">\delta\omega_{nj} = \omega_{nj} - \omega_j</script> for all
   <script type="math/tex">\omega_j</script>/<script type="math/tex">\omega_{nj}</script> pair</li>
@@ -462,13 +456,11 @@
    <script type="math/tex">e^{-i\omega_j y^{\prime}}</script> for the current <script type="math/tex">y</script>
 </p>
 </li>
-</ul>
-<p>Calculate the first fraction in equation 42
- </p><div class="alert alert-success" role="alert"><h4>Todo</h4><p>Figure out where <code>zfactor2</code> comes from </p></div>
-<p>* Calculate <code>zfactor</code> which includes the fraction factor
+<li>
+<p>Calculate <code>zfactor</code> which includes the fraction factor
    <script type="math/tex">\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}</script>
-   from equation 42 and something else</p>
-<ul>
+   and the partition function</p>
+</li>
 <li>
 <p>Calculate the fractional factor in front of the cosines in
    <script type="math/tex">F_j</script> (equation 44)
@@ -686,7 +678,7 @@
       
       <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor1">zfactor1</a>
       
-      <a class="list-group-item" href="../program/ramanintensity.html#variable-zfactor2">zfactor2</a>
+      <a class="list-group-item" href="../program/ramanintensity.html#variable-partitionfunction">partitionFunction</a>
       
     </div>
   </div>
@@ -1645,11 +1637,12 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-zfactor2"></span>complex(kind=dp),</td>
+  <td><span class="anchor" id="variable-partitionfunction"></span>complex(kind=dp),</td>
   
   
   <td>allocatable</td><td>::</td>
-  <td><strong>zfactor2</strong>(:)</td><td></td><td></td><td><p>??</p></td>
+  <td><strong>partitionFunction</strong>(:)</td><td></td><td></td><td><p>Partition function <script type="math/tex">Z = \dfrac{e^{\frac{1}{2}\beta\hbar\omega_j}}{e^{\beta\hbar\omega_j} - 1}</script>
+</p></td>
   
 </tr>
 
@@ -1679,15 +1672,6 @@
     <div class="highlight"><pre><span></span><span class="k">program </span><span class="n">ramanIntensity</span>
 <span class="k">use </span><span class="n">para</span>
 <span class="k">use </span><span class="n">mpi</span>
-
-<span class="c">!! In the previous version of the code, you define </span>
-<span class="c">!! `zfactor =`\(\prod\) `zfactor1*zfactor2` or</span>
-<span class="c">!! `zfactor` \(=\displaystyle\prod\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\dfrac{e^{\beta\hbar\omega_j} - 1}{e^{\frac{1}{2}\beta\hbar\omega_j}}\)</span>
-<span class="c">!! The \(\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\) part matches</span>
-<span class="c">!! the fraction in equation 42 (the one in the picture in your email), but \(\dfrac{e^{\beta\hbar\omega_j} - 1}{e^{\frac{1}{2}\beta\hbar\omega_j}}\)</span>
-<span class="c">!! doesn&#39;t match anything in the paper that I can find. Where does that come from?</span>
-<span class="c">!!</span>
-<span class="c">!! And sorry for not being clear. I meant why is there a negative sign in the equation `tmp_r = -phonon(imode,2)*t/tpi`?</span>
 
 <span class="k">implicit none</span>
 
@@ -1828,8 +1812,8 @@
   <span class="c">!! `zfactor1` </span>
 <span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">zfactor1</span><span class="p">(:)</span>
   <span class="c">!! Fraction factor in equation 42</span>
-<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">zfactor2</span><span class="p">(:)</span>
-  <span class="c">!! ??</span>
+<span class="kt">complex</span><span class="p">(</span><span class="nb">kind</span> <span class="o">=</span> <span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">partitionFunction</span><span class="p">(:)</span>
+  <span class="c">!! Partition function \(Z = \dfrac{e^{\frac{1}{2}\beta\hbar\omega_j}}{e^{\beta\hbar\omega_j} - 1}\)</span>
 
 <span class="c">! Define a namelist to read in all of the input variables from the input file</span>
 <span class="k">namelist</span> <span class="o">/</span><span class="n">ramanInput</span><span class="o">/</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">nIntSteps</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">gamma_p</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">elevel</span><span class="p">,</span> <span class="p">&amp;</span>
@@ -1878,7 +1862,7 @@
 <span class="k">allocate</span><span class="p">(</span><span class="n">s1</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">),</span> <span class="n">s2</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">,</span><span class="n">elaser_num</span><span class="p">),</span> <span class="n">s3</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">,</span><span class="n">elaser_num</span><span class="p">),</span> <span class="n">global_sum</span><span class="p">(</span><span class="n">eshift_num</span><span class="p">,</span><span class="n">elaser_num</span><span class="p">))</span>
 <span class="k">allocate</span><span class="p">(</span><span class="n">Sj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">omega_j</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">omega_nj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">hbarOmegaBeta</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">FjFractionFactor</span><span class="p">(</span><span class="n">nmode</span><span class="p">))</span>
 <span class="k">allocate</span><span class="p">(</span><span class="n">Fj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expForFj</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expT</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expX</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">expY</span><span class="p">(</span><span class="n">nmode</span><span class="p">))</span>
-<span class="k">allocate</span><span class="p">(</span><span class="n">domega</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">theta</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">zfactor1</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">zfactor2</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">ex1</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">nExpSteps</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">count2</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="k">allocate</span><span class="p">(</span><span class="n">domega</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">theta</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">zfactor1</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">partitionFunction</span><span class="p">(</span><span class="n">nmode</span><span class="p">),</span> <span class="n">ex1</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">nExpSteps</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">interval</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">count2</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
 
 <span class="n">expStep</span> <span class="o">=</span> <span class="n">tpi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">nExpSteps</span><span class="p">)</span>
   <span class="c">!! * Calculate the step size for the exponential pre-calculation</span>
@@ -1898,6 +1882,7 @@
   <span class="c">!!      \(S_j\), \(\omega_j\), and \(\omega_{nj}\)</span>
   <span class="c">!!    * Calculate \(\text{hbarOmegaBeta}=\hbar\omega\beta\omega_j\) for</span>
   <span class="c">!!      each \(\omega_j\)</span>
+  <span class="c">!!    * Calculate the partition function for each \(\omega_j\)</span>
   <span class="c">!!    * Calculate \(\delta\omega_{nj} = \omega_{nj} - \omega_j\) for all</span>
   <span class="c">!!      \(\omega_j\)/\(\omega_{nj}\) pair</span>
   <span class="c">!!    * Read in the energy shifts and laser energies</span>
@@ -1918,6 +1903,7 @@
   <span class="k">end do</span>
 
 <span class="k">     </span><span class="n">hbarOmegaBeta</span><span class="p">(:)</span> <span class="o">=</span> <span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">scalingFactor</span><span class="p">)</span><span class="o">*</span><span class="n">omega_j</span><span class="p">(:)</span><span class="o">*</span><span class="n">beta</span>
+     <span class="n">partitionFunction</span><span class="p">(:)</span> <span class="o">=</span><span class="nb">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">hbarOmegaBeta</span><span class="p">(:))</span> <span class="o">/</span> <span class="p">(</span> <span class="nb">exp</span><span class="p">(</span><span class="n">hbarOmegaBeta</span><span class="p">(:))</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>
      
      <span class="n">domega</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">omega_nj</span><span class="p">(:)</span>  <span class="o">-</span> <span class="n">omega_j</span><span class="p">(:)</span>
   
@@ -1941,6 +1927,7 @@
 <span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">omega_j</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
 <span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">omega_nj</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span>
 <span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">hbarOmegaBeta</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span> 
+<span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">partitionFunction</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span> 
 <span class="k">call </span><span class="n">MPI_Bcast</span><span class="p">(</span> <span class="n">domega</span><span class="p">,</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">MPI_DOUBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">ierror</span><span class="p">)</span> 
 <span class="k">call </span><span class="n">MPI_Barrier</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span><span class="n">ierror</span><span class="p">)</span>
   <span class="c">!! * Broadcast input variables to other processes</span>
@@ -2040,14 +2027,10 @@
 
       <span class="n">theta</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">hbarOmegaBeta</span><span class="p">(:)</span> <span class="o">+</span> <span class="n">I</span><span class="o">*</span><span class="n">domega</span><span class="p">(:)</span> <span class="o">*</span> <span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> 
       <span class="n">zfactor1</span><span class="p">(:)</span> <span class="o">=</span> <span class="nb">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">theta</span><span class="p">(:))</span> <span class="o">/</span> <span class="p">(</span> <span class="nb">exp</span><span class="p">(</span><span class="n">theta</span><span class="p">(:))</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>        
-       <span class="c">!! Calculate the first fraction in equation 42</span>
-      <span class="n">zfactor2</span><span class="p">(:)</span> <span class="o">=</span><span class="nb">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">hbarOmegaBeta</span><span class="p">(:))</span> <span class="o">/</span> <span class="p">(</span> <span class="nb">exp</span><span class="p">(</span><span class="n">hbarOmegaBeta</span><span class="p">(:))</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>
-       <span class="c">!! @todo Figure out where `zfactor2` comes from @endtodo</span>
-      <span class="n">zfactor</span> <span class="o">=</span> <span class="nb">product</span><span class="p">(</span><span class="n">zfactor1</span><span class="p">(:)</span><span class="o">/</span><span class="n">zfactor2</span><span class="p">(:))</span>
-      <span class="c">!zfactor = product(exp( 0.5*I*domega(:)*(x-y) ) * ( exp( hbarOmegaBeta(:) ) - 1 ) / ( exp( theta(:) ) - 1 ))</span>
+      <span class="n">zfactor</span> <span class="o">=</span> <span class="nb">product</span><span class="p">(</span><span class="n">zfactor1</span><span class="p">(:)</span><span class="o">/</span><span class="n">partitionFunction</span><span class="p">(:))</span>
         <span class="c">!! * Calculate `zfactor` which includes the fraction factor</span>
         <span class="c">!!   \(\dfrac{e^{\frac{1}{2}(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)}}{e^{(i\delta\omega_{nj}(x - y)+\beta\hbar\omega_j)} - 1}\)</span>
-        <span class="c">!!   from equation 42 and something else</span>
+        <span class="c">!!   and the partition function</span>
 
 
       <span class="n">theta</span><span class="p">(:)</span> <span class="o">=</span> <span class="n">domega</span><span class="p">(:)</span><span class="o">*</span><span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">I</span><span class="o">*</span><span class="n">hbarOmegaBeta</span><span class="p">(:)</span>
@@ -2140,7 +2123,7 @@
 <span class="k">deallocate</span><span class="p">(</span><span class="n">omega_j</span><span class="p">,</span> <span class="n">omega_nj</span><span class="p">,</span> <span class="n">omega_s</span><span class="p">,</span> <span class="n">omega_l</span><span class="p">)</span>
 <span class="k">deallocate</span><span class="p">(</span><span class="n">Sj</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">hbarOmegaBeta</span><span class="p">,</span> <span class="n">FjFractionFactor</span><span class="p">)</span>
 <span class="k">deallocate</span><span class="p">(</span><span class="n">Fj</span><span class="p">,</span> <span class="n">expForFj</span><span class="p">,</span> <span class="n">expX</span><span class="p">,</span> <span class="n">expY</span><span class="p">,</span> <span class="n">expT</span><span class="p">,</span> <span class="n">domega</span><span class="p">)</span>
-<span class="k">deallocate</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">zfactor1</span><span class="p">,</span> <span class="n">zfactor2</span><span class="p">,</span> <span class="n">ex1</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">count2</span><span class="p">)</span>
+<span class="k">deallocate</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">zfactor1</span><span class="p">,</span> <span class="n">partitionFunction</span><span class="p">,</span> <span class="n">ex1</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">count2</span><span class="p">)</span>
 
 
 <span class="k">call </span><span class="n">MPI_Barrier</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span><span class="n">ierror</span><span class="p">)</span> 
