@@ -419,7 +419,6 @@ do iX = interval(1), interval(2)
       FjFractionFactor(:) = sin(theta(:))/( 1 - cos(theta(:))  )
        !! * Calculate the fractional factor in front of the cosines in
        !!   \(F_j\) (equation 44)
-       !!   @todo Do a note on how this lines up with equation 44 @endtodo
 
       interval_t = int((loglimit/intStep - gamma_p*iX - gamma_p*iY)/alpha)
 
