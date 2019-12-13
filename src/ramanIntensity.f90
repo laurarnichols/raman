@@ -24,6 +24,7 @@ program ramanIntensity
   !! at given energy shifts for given laser energies.
   !!
   !! Input variables:
+  !!
   !!  * `nIntSteps` -- number of integration steps
   !!  * `limit` -- limit to truncate the integration at
   !!  * `gamma_p` -- the lifetime \(\gamma\) of the electronic 
@@ -40,6 +41,7 @@ program ramanIntensity
   !!    the electronic states \(|n\rangle\)
   !!
   !! Output variables:
+  !!
   !!  * `elaser` -- same laser energies from input
   !!  * `eshift` (meV) -- same energy shifts from input
   !!  * `eshift` (cm\(^{-1}\)) -- converted energy shifts
