@@ -10,7 +10,7 @@
     <meta name="author" content="" >
     <link rel="icon" href="../favicon.png">
 
-    <title>para &ndash; Raman Intensities</title>
+    <title>computeSj &ndash; Raman Intensities</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -110,8 +110,8 @@
     
   
   <div class="row">
-    <h1>para 
-    <small>Module</small>
+    <h1>computeSj
+      <small>Subroutine</small>
     
     </h1>
     
@@ -128,22 +128,24 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 8.7% of total for modules and submodules.">11 statements</a>
+    title="20.4% of total for procedures.">20 statements</a>
      </li> 
      
      
      
-    <li><i class="fa fa-code"></i><a href="../src/ramanIntensity.f90"> Source File</a></li>
+    <li><i class="fa fa-code"></i><a href="../src/main.f90"> Source File</a></li>
      
      
   </ul>
   <ol class="breadcrumb in-well text-right">
   
     
-     <li><a href='../sourcefile/ramanintensity.f90.html'>ramanIntensity.f90</a></li>
+     <li><a href='../sourcefile/main.f90.html'>main.f90</a></li>
+    
+     <li><a href='../module/ramancal.html'>ramancal</a></li>
     
   
-     <li class="active">para</li>
+     <li class="active">computeSj</li>
   </ol>
 </div>
 </div>
@@ -171,23 +173,11 @@
   <div id="vars-0" class="panel-collapse collapse">
     <div class="list-group">
       
-      <a class="list-group-item" href="../module/para.html#variable-dp">dp</a>
+      <a class="list-group-item" href="../proc/computesj.html#variable-iq%7E2">iq</a>
       
-      <a class="list-group-item" href="../module/para.html#variable-ev">ev</a>
+      <a class="list-group-item" href="../proc/computesj.html#variable-imode%7E2">iMode</a>
       
-      <a class="list-group-item" href="../module/para.html#variable-hbar">hbar</a>
-      
-      <a class="list-group-item" href="../module/para.html#variable-kb">kB</a>
-      
-      <a class="list-group-item" href="../module/para.html#variable-mev">mev</a>
-      
-      <a class="list-group-item" href="../module/para.html#variable-mevtocm">mevtocm</a>
-      
-      <a class="list-group-item" href="../module/para.html#variable-pi">pi</a>
-      
-      <a class="list-group-item" href="../module/para.html#variable-tpi">tpi</a>
-      
-      <a class="list-group-item" href="../module/para.html#variable-i">I</a>
+      <a class="list-group-item" href="../proc/computesj.html#variable-iatom%7E2">iAtom</a>
       
     </div>
   </div>
@@ -218,14 +208,27 @@
     </div>
     
     <div class="col-md-9" id='text'>
+    <h2>
+public subroutine computeSj()
     
-      
+    
+   
+</h2>
     
   
 
-    
+
     
 
+    <h3>Arguments</h3>
+    
+    <em>None</em>
+    <br>
+    
+    
+    
+    
+     
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
@@ -240,23 +243,11 @@
   <div id="vars-1" class="panel-collapse collapse">
     <div class="list-group">
       
-      <a class="list-group-item" href="../module/para.html#variable-dp">dp</a>
+      <a class="list-group-item" href="../proc/computesj.html#variable-iq%7E2">iq</a>
       
-      <a class="list-group-item" href="../module/para.html#variable-ev">ev</a>
+      <a class="list-group-item" href="../proc/computesj.html#variable-imode%7E2">iMode</a>
       
-      <a class="list-group-item" href="../module/para.html#variable-hbar">hbar</a>
-      
-      <a class="list-group-item" href="../module/para.html#variable-kb">kB</a>
-      
-      <a class="list-group-item" href="../module/para.html#variable-mev">mev</a>
-      
-      <a class="list-group-item" href="../module/para.html#variable-mevtocm">mevtocm</a>
-      
-      <a class="list-group-item" href="../module/para.html#variable-pi">pi</a>
-      
-      <a class="list-group-item" href="../module/para.html#variable-tpi">tpi</a>
-      
-      <a class="list-group-item" href="../module/para.html#variable-i">I</a>
+      <a class="list-group-item" href="../proc/computesj.html#variable-iatom%7E2">iAtom</a>
       
     </div>
   </div>
@@ -288,8 +279,8 @@
     
 
     
-    <section>
-    <h2>Variables</h2>
+    <section>    
+      <h2>Variables</h2>
     
 <table class="table table-striped varlist">
 <thead><tr><th>Type</th><th>Visibility</th>
@@ -306,25 +297,11 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-dp"></span>integer,</td>
+  <td><span class="anchor" id="variable-iq%7E2"></span>integer,</td>
   
-  <td>public,</td>
-  <td>parameter</td><td>::</td>
-  <td><strong>dp</strong></td><td> =</td><td>selected_real_kind(15, 307)</td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-ev"></span>real(kind=dp),</td>
-  
-  <td>public,</td>
-  <td>parameter</td><td>::</td>
-  <td><strong>ev</strong></td><td> =</td><td>1.6021766d-19</td><td><p>Conversion factor from eV to J</p></td>
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>iq</strong></td><td></td><td></td><td></td>
   
 </tr>
 
@@ -334,13 +311,11 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-hbar"></span>real(kind=dp),</td>
+  <td><span class="anchor" id="variable-imode%7E2"></span>integer,</td>
   
-  <td>public,</td>
-  <td>parameter</td><td>::</td>
-  <td><strong>hbar</strong></td><td> =</td><td>1.0545718d-34</td><td><p>
-<script type="math/tex">\bar{h}</script>
-</p></td>
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>iMode</strong></td><td></td><td></td><td></td>
   
 </tr>
 
@@ -350,88 +325,11 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-kb"></span>real(kind=dp),</td>
+  <td><span class="anchor" id="variable-iatom%7E2"></span>integer,</td>
   
-  <td>public,</td>
-  <td>parameter</td><td>::</td>
-  <td><strong>kB</strong></td><td> =</td><td>1.38064852d-23</td><td><p>Boltzmann constant</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-mev"></span>real(kind=dp),</td>
-  
-  <td>public,</td>
-  <td>parameter</td><td>::</td>
-  <td><strong>mev</strong></td><td> =</td><td>1.6021766d-22</td><td><p>Conversion factor from meV to J</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-mevtocm"></span>real(kind=dp),</td>
-  
-  <td>public,</td>
-  <td>parameter</td><td>::</td>
-  <td><strong>mevtocm</strong></td><td> =</td><td>8.0655438354</td><td><p>Conversion factor from meV to cm<script type="math/tex">^{-1}</script>
-</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-pi"></span>real(kind=dp),</td>
-  
-  <td>public,</td>
-  <td>parameter</td><td>::</td>
-  <td><strong>pi</strong></td><td> =</td><td>3.1415926535897932_dp</td><td><p>
-<script type="math/tex">\pi</script>
-</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-tpi"></span>real(kind=dp),</td>
-  
-  <td>public,</td>
-  <td>parameter</td><td>::</td>
-  <td><strong>tpi</strong></td><td> =</td><td>2.0*3.1415926535897932_dp</td><td><p>
-<script type="math/tex">2\pi</script>
-</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-i"></span>complex(kind=dp),</td>
-  
-  <td>public,</td>
-  <td>parameter</td><td>::</td>
-  <td><strong>I</strong></td><td> =</td><td>cmplx(0.0d0, 1.0d0, dp)</td><td><p>
-<script type="math/tex">i</script>
-</p></td>
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>iAtom</strong></td><td></td><td></td><td></td>
   
 </tr>
 
@@ -452,13 +350,15 @@
     
     
 
+
+    
     
     
     
     </div>
   </div>
 
-  
+
     <hr>    
     </div> <!-- /container -->
     <footer>
