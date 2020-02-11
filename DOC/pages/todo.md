@@ -1,5 +1,4 @@
 title: Todo
 author: Laura Nichols
-date: 12/13/2019
+date: 02/11/2020
 
-* `../src/ramanIntensity.f90:455:` Add detailed derivation of this in a separate page

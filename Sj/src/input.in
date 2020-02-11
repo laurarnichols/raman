@@ -1,0 +1,4 @@
+&ramanInput
+  phononsInput = './MoS2-WS2.lfs'
+  temperature = 300 ! K
+/

@@ -1,13 +1,13 @@
 &ramanInput
  temperature = 300
- n1 = 500
+ nIntSteps = 500
  limit = 0.0001
  gamma_p = 5.00
  alpha = 0.1
  elevel = 1.5979
  elaser_num = 1
  eshift_num = 4
- SjInputFile = 'Sj.out'
+ SjOutputFile = 'Sj.out'
 /
 
 ESHIFT
